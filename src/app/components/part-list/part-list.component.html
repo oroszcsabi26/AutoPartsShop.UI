@@ -1,0 +1,81 @@
+<!-- 🔹 Alkatrészek keresése -->
+<div class="part-search-container"> 
+  <h2>Alkatrészek keresése</h2>
+
+  <input 
+    type="text" 
+    [(ngModel)]="searchQuery" 
+    (keyup.enter)="searchParts()" 
+    placeholder="Írd be az alkatrész nevét..." 
+  />
+  <button (click)="searchParts()">Keresés</button>
+
+  <!-- 🔹 Keresési találatok (Alkatrészek) -->
+  <div class="results-container" *ngIf="parts.length > 0">
+    <h3>Találatok</h3>
+    <ul>
+      <li *ngFor="let part of parts" class="part-item">
+        <div class="part-info">
+          <span class="part-name">{{ part.name }}</span>
+          <span class="part-price">{{ part.price | currency:'HUF' }}</span>
+        </div>
+
+        <div class="quantity-controls">
+          <button class="quantity-btn" (click)="decreaseQuantity(part)">➖</button>
+          <span class="quantity-value">{{ part.quantity }}</span>
+          <button class="quantity-btn" (click)="increaseQuantity(part)">➕</button>
+        </div>
+
+        <button class="cart-button" (click)="addToCart(part)">🛒 Kosárba</button>
+      </li>
+    </ul>
+  </div>
+
+  <p *ngIf="parts.length === 0" class="no-results">Nincsenek találatok.</p>
+</div>
+
+<!-- 🔹 Felszerelési cikkek keresése -->
+<div class="part-search-container">
+  <h2>Felszerelési cikkek keresése</h2>
+
+  <label for="equipmentCategory">Kategória:</label>
+  <select id="equipmentCategory" [(ngModel)]="selectedEquipmentCategoryId">
+    <option *ngFor="let category of equipmentCategories" [value]="category.id">
+      {{ category.name }}
+    </option>
+  </select>
+
+  <input 
+    type="text" 
+    [(ngModel)]="equipmentSearchQuery" 
+    (keyup.enter)="searchEquipments()" 
+    placeholder="Írd be a felszerelési cikk nevét..." 
+  />
+  <button (click)="searchEquipments()">Keresés</button>
+
+<!-- 🔹 Visszajelzés az elem hozzáadásáról -->
+<div *ngIf="showSuccessMessage" class="success-message">
+  ✅ A termék sikeresen hozzáadásra került a kosárhoz!
+</div>
+
+  <!-- 🔹 Keresési találatok (Felszerelési cikkek) -->
+  <div class="results-container" *ngIf="equipments.length > 0">
+    <h3>Találatok</h3>
+    <ul>
+      <li *ngFor="let equipment of equipments" class="part-item">
+        <div class="part-info">
+          <span class="part-name">{{ equipment.name }}</span>
+          <span class="part-price">{{ equipment.price | currency:'HUF' }}</span>
+        </div>
+
+        <div class="quantity-controls">
+          <button class="quantity-btn" (click)="decreaseQuantity(equipment)">➖</button>
+          <span class="quantity-value">{{ equipment.quantity }}</span>
+          <button class="quantity-btn" (click)="increaseQuantity(equipment)">➕</button>
+        </div>
+
+        <button class="cart-button" (click)="addToCart(equipment)">🛒 Kosárba</button>
+      </li>
+    </ul>
+  </div>
+</div>

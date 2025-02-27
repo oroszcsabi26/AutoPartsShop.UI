@@ -1,0 +1,45 @@
+<div class="cart-container">
+  <h2>🛒 Kosár</h2>
+
+  <!-- 🔹 Ha a kosár üres -->
+  <div *ngIf="cartItems.length === 0" class="empty-cart">
+    A kosár üres.
+  </div>
+
+  <!-- 🔹 Kosár tartalmának megjelenítése -->
+  <div *ngIf="cartItems.length > 0">
+    <table class="cart-table">
+      <thead>
+        <tr>
+          <th>Termék</th>
+          <th>Egységár</th>
+          <th>Mennyiség</th>
+          <th>Összesen</th>
+          <th>Műveletek</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of cartItems">
+          <td>{{ item.name }}</td>
+          <td>{{ item.price | currency:'HUF' }}</td>
+          <td>
+            <div class="quantity-controls">
+              <button class="quantity-btn" (click)="decreaseQuantity(item)">➖</button>
+              {{ item.quantity }}
+              <button class="quantity-btn" (click)="increaseQuantity(item)">➕</button>
+            </div>
+          </td>
+          <td>{{ item.price * item.quantity | currency:'HUF' }}</td>
+          <td>
+            <button class="delete-btn" (click)="removeItem(item)">🗑️ Törlés</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 🔹 Kosár összértéke -->
+    <div class="cart-total">
+      <strong>Összesen: {{ totalPrice | currency:'HUF' }}</strong>
+    </div>
+  </div>
+</div>

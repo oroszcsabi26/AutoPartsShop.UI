@@ -1,0 +1,26 @@
+<div class="car-list-container">
+  <h2>Autómárkák és modellek</h2>
+
+  <!-- 🔹 Ha nincs adat, mutassunk egy üzenetet -->
+  <p *ngIf="carBrands.length === 0">Nincsenek elérhető autómárkák.</p>
+
+  <!-- 🔹 Lista az autómárkákról -->
+  <ul>
+    <li *ngFor="let brand of carBrands">
+      <!-- 🔹 Márkanév és lenyitás gomb -->
+      <div class="brand-header" (click)="toggleModels(brand.id)">
+        <strong>{{ brand.name }}</strong>
+        <span class="toggle-icon">
+          {{ isExpanded(brand.id) ? '▲' : '▼' }}
+        </span>
+      </div>
+
+      <!-- 🔹 Modell lista, ha az autómárka ki van nyitva -->
+      <ul *ngIf="isExpanded(brand.id)">
+        <li *ngFor="let model of brand.carModels">
+          {{ model.name }} ({{ model.year }})
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>

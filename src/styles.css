@@ -1,1 +1,167 @@
-/* You can add global styles to this file, and also import other style files */
+/* 🔹 Az oldal teljes magassága és elrendezése */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 🔹 Az egész oldal szerkezete */
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Legalább az ablak magassága */
+}
+
+/* 🔹 A tartalom terület */
+.content {
+    flex: 1; /* A fő tartalom kitölti a rendelkezésre álló helyet */
+    padding-bottom: 20px; /* Kis távolság a lábléc felett */
+}
+
+/* 🔹 Kosár oldal tartalmának igazítása */
+.cart-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 70vh; /* Minimum magasság, hogy ne legyen túl kicsi */
+}
+
+/* 🔹 Felső sáv stílusa */
+.header {
+    background-color: #003366;
+    color: white;
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+    padding: 20px 0;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 🔹 Az oldal teljes hátterének világoskék beállítása */
+body {
+    background-color: #e3f2fd;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 🔹 Kereső és eredmények konténer */
+.search-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 🔹 Űrlap elemei */
+.search-container select,
+.search-container input,
+.search-container button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* 🔹 Keresés gomb */
+.search-container button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-container button:hover {
+    background-color: #0056b3;
+}
+
+/* 🔹 Találatok listája */
+.results-container {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 🔹 Keresési találatok stílusa */
+.results-container h3 {
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+/* 🔹 Egy-egy találat megjelenése */
+.results-container ul {
+    list-style: none;
+    padding: 0;
+}
+
+.results-container li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* 🔹 Alkatrész neve és felszerelési cikk neve */
+.part-name {
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* 🔹 Alkatrész ára és felszerelési cikk ára */
+.part-price {
+    font-weight: bold;
+    color: #28a745;
+}
+
+/* 🔹 Ha nincs találat, ez jelenik meg */
+.no-results {
+    color: #dc3545;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* 🔹 Footer mindig az oldal alján, de a tartalom alatt */
+.footer {
+    background-color: #333;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 16px;
+    width: 100%;
+    margin-top: auto; /* Footer mindig az alján marad */
+}
+
+/* 🔹 Footer belső elemek stílusa */
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.footer-section {
+    margin-bottom: 10px;
+}
+
+.footer-section h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.footer-section p {
+    margin: 5px 0;
+}
+

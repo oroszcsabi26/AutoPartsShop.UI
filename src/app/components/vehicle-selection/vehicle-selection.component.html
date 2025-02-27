@@ -1,0 +1,17 @@
+<!-- 🔹 Autómárka választó -->
+<label for="carBrand">Autómárka:</label>
+<select id="carBrand" [(ngModel)]="selectedBrandId" (change)="loadCarModels()">
+  <option *ngFor="let brand of carBrands" [value]="brand.id">{{ brand.name }}</option>
+</select>
+
+<!-- 🔹 Autómodell választó -->
+<label for="carModel">Autómodell:</label>
+<select id="carModel" [(ngModel)]="selectedModelId" (change)="onModelSelected($event)">
+  <option *ngFor="let model of carModels" [value]="model.id">{{ model.name }}</option>
+</select>
+
+<!-- 🔹 Alkatrész kategória választó -->
+<label for="partsCategory">Alkatrész kategória:</label>
+<select id="partsCategory" [(ngModel)]="selectedCategoryId" (change)="onCategorySelected($event)">
+  <option *ngFor="let category of partCategories" [value]="category.id">{{ category.name }}</option>
+</select>

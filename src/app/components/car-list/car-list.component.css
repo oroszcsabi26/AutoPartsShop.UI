@@ -1,0 +1,82 @@
+/* 🔹 A fő konténer stílusa */
+.car-list-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 🔹 Címsor stílusa */
+h2 {
+  text-align: center;
+  color: #333;
+}
+
+/* 🔹 Lista stílusok */
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  padding: 8px 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* 🔹 Az utolsó listaelem határának eltüntetése */
+li:last-child {
+  border-bottom: none;
+}
+
+/* 🔹 Az autómárkák neve félkövér és nagyobb */
+strong {
+  font-size: 18px;
+  color: #333;
+}
+
+/* 🔹 Az autómodellek stílusa */
+li ul {
+  margin-top: 5px;
+  padding-left: 20px;
+}
+
+li ul li {
+  font-size: 14px;
+  color: #555;
+}
+
+/* 🔹 ÚJ: Az autómárkák fejlécének stílusa (kattintható elem) */
+.brand-header {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  margin-bottom: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.brand-header:hover {
+  background-color: #0056b3;
+}
+
+/* 🔹 ÚJ: Az autómodellek listájának bal oldali vonala */
+.brand-header + ul {
+  margin-left: 20px;
+  padding-left: 10px;
+  border-left: 2px solid #007bff;
+}
+
+/* 🔹 ÚJ: Az autómodellek kinézete */
+.brand-header + ul li {
+  padding: 5px 0;
+  font-size: 16px;
+}
