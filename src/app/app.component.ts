@@ -23,6 +23,8 @@ export class AppComponent implements OnInit {
   isLoginPage: boolean = false;
   isRegisterPage: boolean = false;
   isAuthenticated: boolean = false;
+  isOrderPage: boolean = false;
+  isSuccessPage: boolean = false;
   userName: string | null = null;
 
   // 🔹 Equipment kereséshez szükséges változók
@@ -51,6 +53,8 @@ export class AppComponent implements OnInit {
         this.isCartPage = this.router.url.includes('/kosar');
         this.isLoginPage = this.router.url.includes('/bejelentkezes');
         this.isRegisterPage = this.router.url.includes('/regisztracio');
+        this.isOrderPage = this.router.url.includes('/rendeles');
+        this.isSuccessPage = this.router.url.includes('/success');
       }
     });
 

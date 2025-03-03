@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartService, CartItem } from '../../services/cart.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -13,7 +14,7 @@ export class CartComponent implements OnInit {
   cartItems: CartItem[] = [];
   totalPrice: number = 0;
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadCart();
@@ -55,6 +56,10 @@ export class CartComponent implements OnInit {
       next: () => this.loadCart(),
       error: (err) => console.error('Hiba történt a termék eltávolításakor:', err)
     });
+  }
+
+  goToOrderPage(): void {
+    this.router.navigate(['/rendeles']);
   }
 }
 

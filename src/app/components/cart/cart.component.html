@@ -41,5 +41,10 @@
     <div class="cart-total">
       <strong>Összesen: {{ totalPrice | currency:'HUF' }}</strong>
     </div>
+
+    <!-- 🔹 Rendelés leadása gomb -->
+    <div class="order-btn-container">
+      <button class="order-btn" (click)="goToOrderPage()">✅ Rendelés leadása</button>
+    </div>
   </div>
 </div>

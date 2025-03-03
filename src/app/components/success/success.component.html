@@ -1,0 +1,9 @@
+<div class="success-container">
+    <h2>✅ Sikeres rendelés!</h2>
+  
+    <p *ngIf="orderId">A rendelés azonosítója: <strong>#{{ orderId }}</strong></p>
+    <p>Köszönjük, hogy nálunk vásároltál! Hamarosan értesítünk a rendelés állapotáról.</p>
+  
+    <button (click)="goToHome()">🏠 Vissza a főoldalra</button>
+  </div>
+  

@@ -1,0 +1,131 @@
+/* 🔹 Alap konténer stílus */
+.order-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 🔹 Címsor középre igazítva */
+h2 {
+  text-align: center;
+  color: #333;
+}
+
+/* 🔹 Kosár tartalom stílus */
+.order-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.order-container li {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.order-container li:last-child {
+  border-bottom: none;
+}
+
+/* 🔹 Űrlap konténer */
+.order-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* 🔹 Label-ek formázása */
+.order-form label {
+  font-weight: bold;
+  color: #333;
+}
+
+/* 🔹 Input mezők és textarea */
+.order-form input,
+.order-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* 🔹 Readonly mezők halványabb színnel */
+.order-form input[readonly] {
+  background-color: #e9ecef;
+  color: #495057;
+}
+
+/* 🔹 Megjegyzés mező formázása */
+.order-form textarea {
+  height: 80px;
+  resize: none;
+}
+
+/* 🔹 Gomb stílus */
+.order-form button {
+  background-color: #007bff;
+  color: white;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.order-form button:hover {
+  background-color: #0056b3;
+}
+
+/* 🔹 Reszponzivitás */
+@media (max-width: 600px) {
+  .order-container {
+      width: 90%;
+      padding: 15px;
+  }
+}
+
+/* 🔹 MODÁL ABLAK STÍLUSOK */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  width: 300px;
+}
+
+.modal h2 {
+  margin: 0 0 10px;
+}
+
+.modal button {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.modal button:hover {
+  background-color: #218838;
+}

@@ -10,38 +10,39 @@
                 <a *ngIf="isAuthenticated" (click)="logout()" class="auth-link logout-button">🚪 Kijelentkezés</a>
             </div>
             <div class="nav-right">
+                <!-- 🔹 Kosár gomb csak bejelentkezett felhasználóknak -->
                 <a *ngIf="isAuthenticated" routerLink="/kosar" class="cart-link">🛒 Kosár</a>
             </div>
         </nav>
     </header>
-  
+
     <!-- 🔹 A fő tartalom -->
     <div class="content">
-        <!-- 🔹 Ha a bejelentkezési vagy regisztrációs oldalon vagyunk, csak az adott komponens jelenjen meg -->
-        <div *ngIf="isLoginPage || isRegisterPage">
+        <!-- 🔹 Ha a bejelentkezési, regisztrációs vagy rendelés oldalon vagyunk, csak az adott komponens jelenjen meg -->
+        <div *ngIf="isLoginPage || isRegisterPage || isOrderPage || isSuccessPage || isCartPage">
             <router-outlet></router-outlet>
         </div>
-  
-        <!-- 🔹 Ha nem a bejelentkezési vagy regisztrációs oldalon vagyunk, akkor jelenjenek meg a keresési modulok -->
-        <div *ngIf="!isLoginPage && !isRegisterPage">
-            <div *ngIf="!isCartPage" class="search-container">
+
+        <!-- 🔹 Ha nem ezeken az oldalakon vagyunk, akkor jelenjenek meg a keresési modulok -->
+        <div *ngIf="!isLoginPage && !isRegisterPage && !isOrderPage && !isSuccessPage && !isCartPage">
+            <div class="search-container">
                 <app-vehicle-selection
                     (selectedModelChange)="selectedModelId = $event"
                     (selectedCategoryChange)="selectedCategoryId = $event">
                 </app-vehicle-selection>
-  
+
                 <app-part-list
                     [selectedModelId]="selectedModelId"
                     [selectedCategoryId]="selectedCategoryId"
                     [selectedEquipmentCategoryId]="selectedEquipmentCategoryId">
                 </app-part-list>
             </div>
-  
+
             <!-- 🔹 Angular Router kimeneti hely -->
             <router-outlet></router-outlet>
         </div>
     </div>
-  
+
     <!-- 🔹 Footer -->
     <footer class="footer">
         <div class="footer-container">
@@ -54,4 +55,3 @@
         </div>
     </footer>
 </div>
-

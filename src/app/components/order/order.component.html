@@ -1,0 +1,51 @@
+<div class="order-container">
+  <h2>📦 Rendelés leadása</h2>
+
+  <!-- 🔹 Kosár tartalma -->
+  <div *ngIf="cartItems.length > 0">
+      <h3>🛒 Kosár tartalma</h3>
+      <ul>
+          <li *ngFor="let item of cartItems">
+              <strong>{{ item.name }}</strong> - {{ item.quantity }} db × {{ item.price | currency:'HUF' }} =
+              {{ item.price * item.quantity | currency:'HUF' }}
+          </li>
+      </ul>
+
+      <!-- 🔹 Összesített ár -->
+      <p><strong>Összesen: {{ totalPrice | currency:'HUF' }}</strong></p>
+  </div>
+
+  <!-- 🔹 Szállítási és számlázási adatok megadása -->
+  <form (ngSubmit)="placeOrder()" class="order-form">
+      
+      <!-- 🔹 Felhasználói adatok -->
+      <label for="name">👤 Név:</label>
+      <input type="text" id="name" [(ngModel)]="orderData.name" name="name" readonly>
+
+      <label for="phone">📞 Telefonszám:</label>
+      <input type="text" id="phone" [(ngModel)]="orderData.phoneNumber" name="phone">
+
+      <!-- 🔹 Szállítási és számlázási cím -->
+      <label for="shippingAddress">📍 Szállítási cím:</label>
+      <input type="text" id="shippingAddress" [(ngModel)]="orderData.shippingAddress" name="shippingAddress" required>
+
+      <label for="billingAddress">📜 Számlázási cím:</label>
+      <input type="text" id="billingAddress" [(ngModel)]="orderData.billingAddress" name="billingAddress" required>
+
+      <!-- 🔹 Megjegyzés -->
+      <label for="comment">✍️ Megjegyzés:</label>
+      <textarea id="comment" [(ngModel)]="orderData.comment" name="comment" maxlength="200"
+          placeholder="Pl. Egyéb kérések a rendeléshez..."></textarea>
+
+      <!-- 🔹 Rendelés leadása gomb -->
+      <button type="submit">✅ Rendelés leadása</button>
+  </form>
+  <!-- 🔹 Sikeres rendelési modál ablak -->
+<div *ngIf="showSuccessModal" class="modal-overlay">
+    <div class="modal">
+      <h2>✅ Sikeres rendelés!</h2>
+      <p>A rendelés sikeresen leadva!</p>
+      <button (click)="closeSuccessModal()">OK</button>
+    </div>
+  </div>
+</div>
