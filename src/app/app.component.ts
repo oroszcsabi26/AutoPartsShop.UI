@@ -25,6 +25,8 @@ export class AppComponent implements OnInit {
   isAuthenticated: boolean = false;
   isOrderPage: boolean = false;
   isSuccessPage: boolean = false;
+  isProfileMenuOpen: boolean = false;
+  isProfilePage: boolean = false;
   userName: string | null = null;
 
   // 🔹 Equipment kereséshez szükséges változók
@@ -55,10 +57,14 @@ export class AppComponent implements OnInit {
         this.isRegisterPage = this.router.url.includes('/regisztracio');
         this.isOrderPage = this.router.url.includes('/rendeles');
         this.isSuccessPage = this.router.url.includes('/success');
+        this.isProfilePage = this.router.url.includes('/profil');
+
+        // Ha navigálunk, akkor zárjuk be a profil menüt
+      this.isProfileMenuOpen = false;
       }
     });
 
-    // 🔹 Figyeljük a bejelentkezési állapotot
+    // Figyeljük a bejelentkezési állapotot
     this.authService.isAuthenticated().subscribe(authStatus => {
       this.isAuthenticated = authStatus;
 
@@ -66,7 +72,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  // 🔹 Ellenőrzi, hogy a felhasználó be van-e jelentkezve
+  // Ellenőrzi, hogy a felhasználó be van-e jelentkezve
   private checkAuthenticationStatus(): void {
     this.authService.isAuthenticated().subscribe((authStatus) => {
       this.isAuthenticated = authStatus;
@@ -85,9 +91,9 @@ export class AppComponent implements OnInit {
     });
   }
 
-  // 🔹 Kijelentkezési funkció (kosár, user és token törlése is)
+  // Kijelentkezési funkció (kosár, user és token törlése is)
   logout(): void {
-    this.authService.logout(); // ❌ Elegendő csak ezt meghívni!
+    this.authService.logout(); // Elegendő csak ezt meghívni!
   
     localStorage.removeItem('cart'); // ❌ Kosár törlése (ezt már az auth.service.ts elvégzi)
     localStorage.removeItem('authToken'); // ❌ Token törlése (ezt is)
@@ -129,5 +135,9 @@ export class AppComponent implements OnInit {
         console.error('❌ Hiba történt a keresés során:', error);
       }
     });
+  }
+
+  toggleProfileMenu(): void {
+    this.isProfileMenuOpen = !this.isProfileMenuOpen;
   }
 }

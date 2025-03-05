@@ -1,0 +1,51 @@
+<div class="orders-container">
+    <h2>📦 Rendeléseim</h2>
+
+    <!-- 🔹 Betöltés jelzése -->
+    <div *ngIf="isLoading" class="loading-message">
+        🔄 Rendelések betöltése...
+    </div>
+
+    <!-- 🔹 Hibaüzenet megjelenítése -->
+    <div *ngIf="errorMessage" class="error-message">
+        ❌ {{ errorMessage }}
+    </div>
+
+    <!-- 🔹 Ha nincs rendelés -->
+    <div *ngIf="!isLoading && orders.length === 0" class="no-orders">
+        🚫 Még nem adtál le rendelést.
+    </div>
+
+    <!-- 🔹 Rendelések listája -->
+    <div *ngIf="!isLoading && orders.length > 0" class="orders-list">
+        <div *ngFor="let order of orders" class="order-card">
+            <h3>🛒 Rendelés azonosító: <span class="order-id">#{{ order.id }}</span></h3>
+            <p><strong>📅 Leadás dátuma:</strong> {{ order.orderDate | date:'yyyy.MM.dd HH:mm' }}</p>
+            <p><strong>📌 Státusz:</strong> {{ order.status }}</p>
+            <p><strong>💰 Végösszeg:</strong> <span class="total-price">{{ order.totalPrice | currency:'HUF' }}</span></p>
+
+            <!-- 🔹 Rendelési tételek -->
+            <div class="order-items">
+                <h4>📋 Rendelési tételek:</h4>
+                <table class="order-table">
+                    <thead>
+                        <tr>
+                            <th>📦 Termék</th>
+                            <th>📊 Mennyiség</th>
+                            <th>💰 Egységár</th>
+                            <th>💵 Összesen</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of order.orderItems">
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.quantity }} db</td>
+                            <td>{{ item.price | currency:'HUF' }}</td>
+                            <td>{{ item.quantity * item.price | currency:'HUF' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

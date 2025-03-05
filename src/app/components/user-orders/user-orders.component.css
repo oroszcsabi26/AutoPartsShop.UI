@@ -1,0 +1,122 @@
+/* 🔹 Rendelések fő konténer */
+.orders-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 900px; /* 📌 Szélesebb rendelési doboz */
+    margin: 50px auto;
+    text-align: center;
+}
+
+/* 🔹 Cím stílusa */
+.orders-container h2 {
+    font-size: 28px;
+    color: #003366;
+    margin-bottom: 25px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* 🔹 Betöltési üzenet, hibaüzenet, nincs rendelés */
+.loading-message,
+.error-message,
+.no-orders {
+    font-size: 18px;
+    font-weight: bold;
+    color: #dc3545;
+    margin-top: 20px;
+}
+
+/* 🔹 Rendelések listája */
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 🔹 Egy rendelés doboza */
+.order-card {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+/* 🔹 Rendelés azonosító */
+.order-card h3 {
+    font-size: 20px;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+/* 🔹 Rendelés adatok */
+.order-card p {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+/* 🔹 Rendelési végösszeg */
+.total-price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #28a745;
+}
+
+/* 🔹 Rendelési tételek */
+.order-items h4 {
+    margin-top: 15px;
+    font-size: 18px;
+    color: #28a745;
+}
+
+/* 🔹 Rendelési tételek táblázat */
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.order-table th, .order-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.order-table th {
+    background-color: #003366;
+    color: white;
+}
+
+.order-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* 🔹 Rendelési tételek lista */
+.order-items ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0 0;
+}
+
+.order-items li {
+    font-size: 16px;
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+}
+
+.order-items li:last-child {
+    border-bottom: none;
+}
+
+/* 🔹 Rendelés összesítő blokk */
+.order-summary {
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 10px;
+}

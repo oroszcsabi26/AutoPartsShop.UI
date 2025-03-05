@@ -1,0 +1,89 @@
+/* 🔹 Profil oldal fő konténer */
+.profile-container {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px; /* 📌 MÉG SZÉLESEBB DOBOZ */
+    margin: 50px auto;
+    text-align: center;
+}
+
+/* 🔹 Cím középre igazítása */
+.profile-container h2 {
+    font-size: 28px;
+    color: #003366;
+    margin-bottom: 25px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* 🔹 Űrlap beállításai */
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+/* 🔹 Űrlap mezők */
+.profile-form label {
+    font-weight: bold;
+    text-align: left;
+    display: block;
+    margin-top: 5px;
+    font-size: 16px;
+}
+
+/* 🔹 Input mezők (MÉG SZÉLESEBBEK) */
+.profile-form input {
+    padding: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 18px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 🔹 Flexbox a mezők igazításához */
+.profile-row {
+    display: flex;
+    gap: 20px; /* 📌 Távolság a mezők között */
+    width: 100%;
+}
+
+.profile-row .profile-field {
+    flex: 1; /* 📌 Egyenlő szélességű mezők */
+}
+
+/* 🔹 Mentés gomb */
+.profile-form button {
+    background-color: #28a745;
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.profile-form button:hover {
+    background-color: #218838;
+}
+
+/* 🔹 Sikerüzenet */
+.success-message {
+    color: #28a745;
+    font-size: 16px;
+    margin-top: 10px;
+}

@@ -9,22 +9,34 @@
                 <!-- 🔹 Kijelentkezés gomb, ha a felhasználó be van jelentkezve -->
                 <a *ngIf="isAuthenticated" (click)="logout()" class="auth-link logout-button">🚪 Kijelentkezés</a>
             </div>
+
             <div class="nav-right">
-                <!-- 🔹 Kosár gomb csak bejelentkezett felhasználóknak -->
+                <!-- 🔹 Kosár gomb -->
                 <a *ngIf="isAuthenticated" routerLink="/kosar" class="cart-link">🛒 Kosár</a>
-            </div>
+
+                <!-- 🔹 Profil gomb és menü -->
+                <div *ngIf="isAuthenticated" class="profile-dropdown">
+                    <button class="profile-btn" (click)="toggleProfileMenu()">
+                        👤 {{ userName }} ▼
+                    </button>
+                    <div *ngIf="isProfileMenuOpen" class="dropdown-menu">
+                        <a routerLink="/profil">📋 Adataim</a>
+                        <a routerLink="/rendeleseim">📦 Rendeléseim</a>
+                    </div>
+                </div>
+            </div>                       
         </nav>
     </header>
 
     <!-- 🔹 A fő tartalom -->
     <div class="content">
-        <!-- 🔹 Ha a bejelentkezési, regisztrációs vagy rendelés oldalon vagyunk, csak az adott komponens jelenjen meg -->
-        <div *ngIf="isLoginPage || isRegisterPage || isOrderPage || isSuccessPage || isCartPage">
+        <!-- 🔹 Csak az adott oldal tartalma jelenjen meg -->
+        <div *ngIf="isLoginPage || isRegisterPage || isOrderPage || isSuccessPage || isCartPage || isProfilePage">
             <router-outlet></router-outlet>
         </div>
 
-        <!-- 🔹 Ha nem ezeken az oldalakon vagyunk, akkor jelenjenek meg a keresési modulok -->
-        <div *ngIf="!isLoginPage && !isRegisterPage && !isOrderPage && !isSuccessPage && !isCartPage">
+        <!-- 🔹 Ha nem ezek az oldalak, akkor a keresési modulok jelenjenek meg -->
+        <div *ngIf="!(isLoginPage || isRegisterPage || isOrderPage || isSuccessPage || isCartPage || isProfilePage)">
             <div class="search-container">
                 <app-vehicle-selection
                     (selectedModelChange)="selectedModelId = $event"
