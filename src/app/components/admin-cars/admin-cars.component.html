@@ -1,0 +1,29 @@
+<div class="admin-container">
+    <h1>🚗 Autómárkák kezelése</h1>
+  
+    <!-- 🔹 Hibaüzenetek megjelenítése -->
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  
+    <!-- 🔹 Új autómárka hozzáadása -->
+    <div class="add-car">
+      <input type="text" [(ngModel)]="newCarName" placeholder="Új autómárka neve">
+      <button (click)="addCar()">➕ Hozzáadás</button>
+    </div>
+  
+    <!-- 🔹 Autómárkák listája -->
+    <ul class="car-list">
+      <li *ngFor="let car of cars">
+        <div>
+          <strong>{{ car.name }}</strong>
+          <span *ngIf="car.carModels.length > 0" class="model-info">({{ car.carModels.length }} modell)</span>
+        </div>
+  
+        <input *ngIf="editCarId === car.id" type="text" [(ngModel)]="editCarName">
+        
+        <button *ngIf="editCarId !== car.id" (click)="startEdit(car)">✏️ Szerkesztés</button>
+        <button *ngIf="editCarId === car.id" (click)="saveEdit()">💾 Mentés</button>
+        <button (click)="deleteCar(car.id)">🗑️ Törlés</button>
+      </li>
+    </ul>
+  </div>
+  

@@ -1,0 +1,51 @@
+/* 🔹 Központozás és alapbeállítások */
+.admin-login-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* 🔹 Cím stílusa */
+.admin-login-container h2 {
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* 🔹 Input mezők */
+.admin-login-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* 🔹 Bejelentkezés gomb */
+.admin-login-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.admin-login-container button:hover {
+    background-color: #0056b3;
+}
+
+/* 🔹 Hibaüzenet */
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}

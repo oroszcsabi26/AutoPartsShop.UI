@@ -27,6 +27,9 @@ export class AppComponent implements OnInit {
   isSuccessPage: boolean = false;
   isProfileMenuOpen: boolean = false;
   isProfilePage: boolean = false;
+  isAdminPage: boolean = false;
+  isAdminDashboardPage: boolean = false;
+  isAdminCarsPage: boolean = false;
   userName: string | null = null;
 
   // 🔹 Equipment kereséshez szükséges változók
@@ -58,6 +61,9 @@ export class AppComponent implements OnInit {
         this.isOrderPage = this.router.url.includes('/rendeles');
         this.isSuccessPage = this.router.url.includes('/success');
         this.isProfilePage = this.router.url.includes('/profil');
+        this.isAdminPage = this.router.url.includes('/admin/login');
+        this.isAdminDashboardPage = this.router.url.includes('/admin/dashboard');
+        this.isAdminCarsPage = this.router.url.includes('/admin/cars');
 
         // Ha navigálunk, akkor zárjuk be a profil menüt
       this.isProfileMenuOpen = false;
