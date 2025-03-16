@@ -1,1 +1,39 @@
-<p>admin-equipment-categories works!</p>
+<div class="admin-container">
+    <h1>🛠️ Felszerelés kategóriák kezelése</h1>
+  
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  
+    <!-- 🔹 Új kategória hozzáadása -->
+    <div class="add-category">
+      <input type="text" [(ngModel)]="newCategoryName" placeholder="Új kategória neve">
+      <button (click)="addCategory()">➕ Hozzáadás</button>
+    </div>
+  
+    <!-- 🔹 Kategóriák listája -->
+    <ul class="category-list">
+      <li *ngFor="let category of categories">
+        <div>
+          <strong>{{ category.name }}</strong>
+        </div>
+  
+        <input *ngIf="editCategoryId === category.id" type="text" [(ngModel)]="editCategoryName">
+        
+        <button *ngIf="editCategoryId !== category.id" (click)="startEdit(category)">✏️ Szerkesztés</button>
+        <button *ngIf="editCategoryId === category.id" (click)="saveEdit()">💾 Mentés</button>
+        <button (click)="openDeleteModal(category)">🗑️ Törlés</button>
+      </li>
+    </ul>
+  </div>
+  
+  <!-- 🔹 Törlés megerősítő modal -->
+  <div id="deleteModal" class="modal">
+    <div class="modal-content">
+      <p>Biztosan törölni szeretnéd?</p>
+      <strong>{{ categoryToDelete?.name }}</strong>
+      <div class="modal-buttons">
+        <button class="cancel" (click)="closeDeleteModal()">Mégse</button>
+        <button class="confirm" (click)="confirmDelete()">Törlés</button>
+      </div>
+    </div>
+  </div>
+  

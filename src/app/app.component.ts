@@ -30,7 +30,14 @@ export class AppComponent implements OnInit {
   isAdminPage: boolean = false;
   isAdminDashboardPage: boolean = false;
   isAdminCarsPage: boolean = false;
+  IsAdminModelsPage: boolean = false;
+  isAdminEquipmentCategoriesPage: boolean = false;
+  isAdminEquipmentPage: boolean = false;
+  isAdminPartsCategoriesPage: boolean = false;
+  isAdminPartsPage: boolean = false;
+  isAdminOrdersPage: boolean = false;
   userName: string | null = null;
+
 
   // 🔹 Equipment kereséshez szükséges változók
   equipmentCategories: EquipmentCategory[] = [];
@@ -64,6 +71,12 @@ export class AppComponent implements OnInit {
         this.isAdminPage = this.router.url.includes('/admin/login');
         this.isAdminDashboardPage = this.router.url.includes('/admin/dashboard');
         this.isAdminCarsPage = this.router.url.includes('/admin/cars');
+        this.IsAdminModelsPage = this.router.url.includes('/admin/models');
+        this.isAdminEquipmentCategoriesPage = this.router.url.includes('/admin/equipment-categories');
+        this.isAdminEquipmentPage = this.router.url.includes('/admin/equipment');
+        this.isAdminPartsCategoriesPage = this.router.url.includes('/admin/part-categories');
+        this.isAdminPartsPage = this.router.url.includes('/admin/parts');
+        this.isAdminOrdersPage = this.router.url.includes('/admin/orders');
 
         // Ha navigálunk, akkor zárjuk be a profil menüt
       this.isProfileMenuOpen = false;

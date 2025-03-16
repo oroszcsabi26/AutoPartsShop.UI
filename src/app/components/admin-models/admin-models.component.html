@@ -1,1 +1,47 @@
-<p>admin-models works!</p>
+<div class="admin-container">
+    <h1>🚗 Autómodellek kezelése</h1>
+  
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  
+    <!-- 🔹 Autómárkák kiválasztása -->
+    <select [(ngModel)]="selectedBrandId" (change)="loadModels()" class="dropdown">
+      <option [value]="null">Válassz egy autómárkát</option>
+      <option *ngFor="let brand of carBrands" [value]="brand.id">{{ brand.name }}</option>
+    </select>
+  
+    <!-- 🔹 Új autómodell hozzáadása -->
+    <div class="add-car">
+      <input type="text" [(ngModel)]="newModelName" placeholder="Új autómodell neve">
+      <input type="number" [(ngModel)]="newModelYear" placeholder="Gyártási év">
+      <button (click)="addModel()">➕ Hozzáadás</button>
+    </div>
+  
+    <!-- 🔹 Autómodellek listája -->
+    <ul class="car-list">
+      <li *ngFor="let model of carModels">
+        <div>
+          <strong>{{ model.name }}</strong> ({{ model.year }})
+        </div>
+  
+        <input *ngIf="editModelId === model.id" type="text" [(ngModel)]="editModelName">
+        <input *ngIf="editModelId === model.id" type="number" [(ngModel)]="editModelYear">
+        
+        <button *ngIf="editModelId !== model.id" (click)="startEdit(model)">✏️ Szerkesztés</button>
+        <button *ngIf="editModelId === model.id" (click)="saveEdit()">💾 Mentés</button>
+        <button (click)="openDeleteModal(model)">🗑️ Törlés</button>
+      </li>
+    </ul>
+  </div>
+  
+  <!-- 🔹 Törlés megerősítő modal -->
+  <div id="deleteModal" class="modal">
+    <div class="modal-content">
+      <p>Biztosan törölni szeretnéd?</p>
+      <strong>{{ modelToDelete?.name }}</strong>
+      <div class="modal-buttons">
+        <button class="cancel" (click)="closeDeleteModal()">Mégse</button>
+        <button class="confirm" (click)="confirmDelete()">Törlés</button>
+      </div>
+    </div>
+  </div>
+  

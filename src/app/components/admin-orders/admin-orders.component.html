@@ -1,1 +1,42 @@
-<p>admin-orders works!</p>
+<div class="admin-container">
+    <h1>📦 Rendelések kezelése</h1>
+
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+    <ul class="order-list">
+        <li *ngFor="let order of orders">
+            <div class="order-header">
+                <strong>🔹 Rendelés #{{ order.id }}</strong>
+                <span class="order-status">📝 {{ order.status }}</span>
+            </div>
+            <div class="order-info">
+                <p><strong>Felhasználó:</strong> {{ order.user.firstName }} {{ order.user.lastName }}</p>
+                <p><strong>Email:</strong> {{ order.user.email }}</p>
+                <p><strong>Telefonszám:</strong> {{ order.user.phoneNumber }}</p>
+                <p><strong>Szállítási cím:</strong> {{ order.shippingAddress }}</p>
+                <p><strong>Számlázási cím:</strong> {{ order.billingAddress }}</p>
+                <p><strong>Rendelés ideje:</strong> {{ order.orderDate | date:'yyyy-MM-dd HH:mm' }}</p>
+            </div>
+            <div class="order-items">
+                <p><strong>Termékek:</strong></p>
+                <ul>
+                    <li *ngFor="let item of order.orderItems">
+                        {{ item.name }} - {{ item.quantity }} db - {{ item.price * item.quantity }} Ft
+                    </li>
+                </ul>
+            </div>
+            <div class="order-actions">
+                <button class="delete" (click)="openDeleteModal(order)">🗑️ Törlés</button>
+            </div>
+        </li>
+    </ul>
+
+    <!-- 🔹 Törlés megerősítő modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <p>Biztosan törölni szeretnéd ezt a rendelést?</p>
+            <button class="confirm" (click)="confirmDelete()">✅ Igen</button>
+            <button class="cancel" (click)="closeDeleteModal()">❌ Mégse</button>
+        </div>
+    </div>
+</div>

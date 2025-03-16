@@ -31,12 +31,15 @@
     <!-- 🔹 A fő tartalom -->
     <div class="content">
         <!-- 🔹 Csak az adott oldal tartalma jelenjen meg -->
-        <div *ngIf="isLoginPage || isRegisterPage || isOrderPage || isSuccessPage || isCartPage || isProfilePage || isAdminPage || isAdminDashboardPage || isAdminCarsPage">
+        <div *ngIf="isLoginPage || isRegisterPage || isOrderPage || isSuccessPage || isCartPage || isProfilePage || isAdminPage || isAdminDashboardPage || isAdminCarsPage
+            || IsAdminModelsPage || isAdminEquipmentCategoriesPage || isAdminEquipmentPage || isAdminPartsCategoriesPage || isAdminPartsPage || isAdminOrdersPage">
             <router-outlet></router-outlet>
         </div>
 
         <!-- 🔹 Ha nem ezek az oldalak, akkor a keresési modulok jelenjenek meg -->
-        <div *ngIf="!(isLoginPage || isRegisterPage || isOrderPage || isSuccessPage || isCartPage || isProfilePage || isAdminPage || isAdminDashboardPage || isAdminCarsPage)">
+        <div *ngIf="!(isLoginPage || isRegisterPage || isOrderPage || isSuccessPage || isCartPage || isProfilePage || isAdminPage || isAdminDashboardPage || isAdminCarsPage
+            || IsAdminModelsPage || isAdminEquipmentCategoriesPage || isAdminEquipmentPage || isAdminPartsCategoriesPage || isAdminPartsPage || isAdminOrdersPage)">
+        
             <div class="search-container">
                 <app-vehicle-selection
                     (selectedModelChange)="selectedModelId = $event"

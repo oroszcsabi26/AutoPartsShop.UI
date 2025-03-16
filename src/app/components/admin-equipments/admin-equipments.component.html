@@ -1,1 +1,52 @@
-<p>admin-equipments works!</p>
+<div class="admin-container">
+  <h1>🔧 Felszerelések kezelése</h1>
+
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+  <!-- 🔹 Új felszerelés hozzáadása -->
+  <div class="add-equipment">
+    <input type="text" [(ngModel)]="newEquipment.name" placeholder="Név">
+    <input type="text" [(ngModel)]="newEquipment.manufacturer" placeholder="Gyártó">
+    <input type="text" [(ngModel)]="newEquipment.size" placeholder="Méret (opcionális)">
+    <input type="number" [(ngModel)]="newEquipment.price" placeholder="Ár">
+    <select [(ngModel)]="newEquipment.equipmentCategoryId">
+      <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+    </select>
+    <button (click)="addEquipment()">➕ Hozzáadás</button>
+  </div>
+
+  <!-- 🔹 Felszerelések listája -->
+  <ul class="equipment-list">
+    <li *ngFor="let equipment of equipments">
+      <div *ngIf="editEquipmentId !== equipment.id">
+        <strong>{{ equipment.name }}</strong> - {{ equipment.manufacturer }} - {{ equipment.price }} Ft
+        <span *ngIf="equipment.size"> ({{ equipment.size }})</span>
+        <span class="category-info">Kategória: {{ equipment.equipmentCategory?.name }}</span>
+      </div>
+
+      <!-- 🔹 Szerkesztő mezők -->
+      <div *ngIf="editEquipmentId === equipment.id">
+        <input type="text" [(ngModel)]="editEquipment.name">
+        <input type="text" [(ngModel)]="editEquipment.manufacturer">
+        <input type="text" [(ngModel)]="editEquipment.size">
+        <input type="number" [(ngModel)]="editEquipment.price">
+        <select [(ngModel)]="editEquipment.equipmentCategoryId">
+          <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+        </select>
+      </div>
+
+      <button *ngIf="editEquipmentId !== equipment.id" (click)="startEdit(equipment)">✏️ Szerkesztés</button>
+      <button *ngIf="editEquipmentId === equipment.id" (click)="saveEdit()">💾 Mentés</button>
+      <button (click)="openDeleteModal(equipment)">🗑️ Törlés</button>
+    </li>
+  </ul>
+
+  <!-- 🔹 Törlés megerősítő modal -->
+  <div id="deleteModal" class="modal">
+    <div class="modal-content">
+      <p>Biztosan törölni szeretnéd ezt a felszerelést?</p>
+      <button (click)="confirmDelete()">✅ Igen</button>
+      <button (click)="closeDeleteModal()">❌ Mégse</button>
+    </div>
+  </div>
+</div>
