@@ -13,29 +13,42 @@ import { CommonModule } from '@angular/common';
 export class AdminEquipmentsComponent implements OnInit {
   equipments: any[] = [];
   categories: any[] = [];
-  newEquipment = { name: '', manufacturer: '', size: '', price: 0, equipmentCategoryId: null };
+  newEquipment = { name: '', manufacturer: '', size: '', price: '', equipmentCategoryId: null, description : '', quantity: null, imageUrl: '' , material: '', side: '' };
   editEquipmentId: number | null = null;
   editEquipment: any = {};
   errorMessage: string = '';
   equipmentToDelete: any = null;
   selectedCategoryId: number | null = null; // Kiválasztott kategória ID
-  
+  searchQuery: string = ''; // Keresési lekérdezés
+
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.loadEquipments();
+    //this.loadEquipments();
     this.loadCategories();
   }
 
-  // 🔹 Felszerelések betöltése
   loadEquipments(): void {
+    // Ha nincs keresési kifejezés, ne jelenítsünk meg semmit
+    if (!this.searchQuery.trim()) {
+      this.equipments = [];
+      return;
+    }
+  
     this.http.get<any[]>('http://localhost:5214/api/equipment').subscribe({
-      next: (data) => this.equipments = data,
+      next: (data) => {
+        const query = this.searchQuery.toLowerCase();
+        this.equipments = data.filter(e =>
+          e.name.toLowerCase().includes(query) ||
+          e.manufacturer.toLowerCase().includes(query)
+        );
+      },
       error: () => this.errorMessage = 'Nem sikerült betölteni a felszereléseket!'
     });
   }
+   
 
-  // 🔹 Kategóriák betöltése
+  // Kategóriák betöltése
   loadCategories(): void {
     this.http.get<any[]>('http://localhost:5214/api/equipmentcategories').subscribe({
       next: (data) => this.categories = data,
@@ -43,29 +56,53 @@ export class AdminEquipmentsComponent implements OnInit {
     });
   }
 
-  // 🔹 Új felszerelés hozzáadása
+  // Új felszerelés hozzáadása
   addEquipment(): void {
-    if (!this.newEquipment.name.trim() || !this.newEquipment.manufacturer.trim() || this.newEquipment.price <= 0 || !this.newEquipment.equipmentCategoryId) {
+    const priceValue = parseFloat(this.newEquipment.price); // string → number
+  
+    if (
+      !this.newEquipment.name.trim() ||
+      !this.newEquipment.manufacturer.trim() ||
+      isNaN(priceValue) || priceValue <= 0 ||
+      !this.newEquipment.equipmentCategoryId
+    ) {
       this.errorMessage = 'Minden mező kitöltése kötelező!';
       return;
     }
-
-    this.http.post('http://localhost:5214/api/equipment', this.newEquipment).subscribe({
+  
+    // Frissített objektum szám formátumú árral
+    const equipmentToSend = {
+      ...this.newEquipment,
+      price: priceValue
+    };
+  
+    this.http.post('http://localhost:5214/api/equipment', equipmentToSend).subscribe({
       next: () => {
-        this.newEquipment = { name: '', manufacturer: '', size: '', price: 0, equipmentCategoryId: null };
+        this.newEquipment = {
+          name: '',
+          manufacturer: '',
+          size: '',
+          price: '',
+          equipmentCategoryId: null,
+          description : '',
+          quantity: null,
+          imageUrl: '' ,
+          material: '',
+          side: ''
+        };
         this.loadEquipments();
       },
       error: () => this.errorMessage = 'Hiba történt az új felszerelés hozzáadásakor!'
     });
-  }
+  }  
 
-  // 🔹 Szerkesztés indítása
+  // Szerkesztés indítása
   startEdit(equipment: any): void {
     this.editEquipmentId = equipment.id;
     this.editEquipment = { ...equipment };
   }
 
-  // 🔹 Módosítás mentése
+  // Módosítás mentése
   saveEdit(): void {
     if (!this.editEquipment.name.trim() || !this.editEquipment.manufacturer.trim() || this.editEquipment.price <= 0 || !this.editEquipment.equipmentCategoryId) {
       return;
@@ -80,12 +117,12 @@ export class AdminEquipmentsComponent implements OnInit {
       error: () => this.errorMessage = 'Hiba történt a felszerelés módosításakor!'
     });
   } 
-  // 🔹 Törlés megerősítő modal megnyitása
+  // Törlés megerősítő modal megnyitása
   openDeleteModal(equipment: any): void {
     this.equipmentToDelete = equipment;
     document.getElementById('deleteModal')!.style.display = 'block';
   }
-  // 🔹 Modal bezárása
+  // Modal bezárása
   closeDeleteModal(): void {
     this.equipmentToDelete = null;
     document.getElementById('deleteModal')!.style.display = 'none';
@@ -102,21 +139,4 @@ export class AdminEquipmentsComponent implements OnInit {
       error: () => this.errorMessage = 'Hiba történt a felszerelés törlésekor!'
     });
   }
-  /*
-  // 🔹 Felszerelés törlése
-  confirmDelete(): void {
-    if (!this.equipmentToDelete) return;
-
-    this.http.delete(http://localhost:5214/api/equipment/${this.equipmentToDelete.id}).subscribe({
-      next: () => {
-        this.loadEquipments(); // 🔹 Frissítjük a listát
-        this.closeDeleteModal();
-      },
-      error: (err) => {
-        console.error('Hiba történt a felszerelés törlésekor:', err);
-        this.errorMessage = 'Hiba történt a felszerelés törlésekor!';
-      }
-    });
-  }
-    */
 }

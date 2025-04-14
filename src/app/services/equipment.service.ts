@@ -2,15 +2,35 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-// 🔹 Equipment és EquipmentCategory interfészek
+// Equipment hozzáadásához/szerkesztéséhez használt interfész
 export interface Equipment {
   id: number;
   name: string;
   manufacturer: string;
-  size?: string;  // Kiszerelés (opcionális)
+  size?: string;
   price: number;
   equipmentCategoryId: number;
   quantity?: number;
+  imageUrl?: string;
+  material?: string;
+  side?: string;
+  description?: string;
+}
+
+// Bővített EquipmentDisplay csak megjelenítéshez
+export interface EquipmentDisplay {
+  id: number;
+  name: string;
+  manufacturer: string;
+  price: number;
+  size?: string;
+  description?: string;
+  quantity: number;
+  imageUrl?: string;
+  material?: string;
+  side?: string;
+  equipmentCategoryId: number;
+  categoryName: string;
 }
 
 export interface EquipmentCategory {
@@ -27,19 +47,9 @@ export class EquipmentService {
 
   constructor(private http: HttpClient) {}
 
-  // 🔹 Összes Equipment lekérése
-  getEquipments(): Observable<Equipment[]> {
-    return this.http.get<Equipment[]>(this.apiUrlGetEquipmentCategories);
-  }
-
   // 🔹 Egy adott kategóriához tartozó felszerelések lekérése
-  getEquipmentsByCategory(categoryId: number): Observable<Equipment[]> {
-    return this.http.get<Equipment[]>(`${this.apiUrlGetEquipments}/${categoryId}`);
-  }
-
-  // 🔹 Új Equipment hozzáadása
-  addEquipment(equipment: Equipment): Observable<Equipment> {
-    return this.http.post<Equipment>(this.apiUrlGetEquipmentCategories, equipment);
+  getEquipmentsByCategory(categoryId: number): Observable<EquipmentDisplay[]> {
+    return this.http.get<EquipmentDisplay[]>(`${this.apiUrlGetEquipments}/${categoryId}`);
   }
 
   // 🔹 Equipment kategóriák lekérése

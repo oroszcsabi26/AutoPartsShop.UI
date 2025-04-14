@@ -18,7 +18,7 @@ import { CartService } from './services/cart.service';
 export class AppComponent implements OnInit {
   title = 'AutoPartsShop.UI';
 
-  // 🔹 Oldal állapotok
+  // Oldal állapotok
   isCartPage: boolean = false;
   isLoginPage: boolean = false;
   isRegisterPage: boolean = false;
@@ -39,11 +39,11 @@ export class AppComponent implements OnInit {
   userName: string | null = null;
 
 
-  // 🔹 Equipment kereséshez szükséges változók
+  // Equipment kereséshez szükséges változók
   equipmentCategories: EquipmentCategory[] = [];
   selectedEquipmentCategoryId: number | null = null;
   equipmentSearchQuery: string = '';
-  equipmentResults: Equipment[] = []; // ✅ Ez most már nem tűnik el!
+  equipmentResults: Equipment[] = []; 
 
   selectedModelId: number | null = null;
   selectedCategoryId: number | null = null;
@@ -59,7 +59,7 @@ export class AppComponent implements OnInit {
     this.loadEquipmentCategories();
     this.checkAuthenticationStatus();
 
-    // 🔹 Figyeljük az útvonal változásait, hogy frissítsük az állapotokat
+    // Figyeljük az útvonal változásait, hogy frissítsük az állapotokat
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.isCartPage = this.router.url.includes('/kosar');
@@ -87,7 +87,7 @@ export class AppComponent implements OnInit {
     this.authService.isAuthenticated().subscribe(authStatus => {
       this.isAuthenticated = authStatus;
 
-      // ✅ Nem kérdezzük le automatikusan a kosarat, csak ha a user először rak bele terméket!
+      // Nem kérdezzük le automatikusan a kosarat, csak ha a user először rak bele terméket!
     });
   }
 
@@ -114,16 +114,16 @@ export class AppComponent implements OnInit {
   logout(): void {
     this.authService.logout(); // Elegendő csak ezt meghívni!
   
-    localStorage.removeItem('cart'); // ❌ Kosár törlése (ezt már az auth.service.ts elvégzi)
-    localStorage.removeItem('authToken'); // ❌ Token törlése (ezt is)
-    localStorage.removeItem('user'); // ❌ User törlése (ez is felesleges, mert az authService már kezeli)
+    localStorage.removeItem('cart'); // Kosár törlése (ezt már az auth.service.ts elvégzi)
+    localStorage.removeItem('authToken'); // Token törlése (ezt is)
+    localStorage.removeItem('user'); // User törlése (ez is felesleges, mert az authService már kezeli)
   
     this.isAuthenticated = false;
     this.userName = null;
     this.router.navigate(['/bejelentkezes']);
   }  
 
-  // 🔹 Felszerelési kategóriák betöltése
+  // Felszerelési kategóriák betöltése
   loadEquipmentCategories(): void {
     this.equipmentService.getEquipmentCategories().subscribe({
       next: (categories) => {
@@ -136,7 +136,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  // 🔹 Felszerelési cikkek keresése
+  // Felszerelési cikkek keresése
   searchEquipment(): void {
     if (this.equipmentSearchQuery.trim() === '') {
       console.warn('⚠️ A keresési mező üres!');

@@ -85,7 +85,7 @@ button.delete:hover {
     opacity: 0.8;
 }
 
-/* 🔹 Törlés megerősítő modal */
+/* Törlés megerősítő modal */
 .modal {
     display: none;
     position: fixed;
@@ -115,7 +115,7 @@ button.delete:hover {
     background-color: #ccc;
 }
 
-/* 🔹 Reszponzív stílus */
+/* Reszponzív stílus */
 @media (max-width: 600px) {
     .admin-container {
         max-width: 100%;
@@ -130,3 +130,15 @@ button.delete:hover {
         width: 90%;
     }
 }
+
+.search-bar {
+    margin-bottom: 15px;
+  }
+  
+  .search-bar input {
+    width: 100%;
+    max-width: 400px;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }

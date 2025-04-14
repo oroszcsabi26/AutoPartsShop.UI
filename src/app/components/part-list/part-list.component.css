@@ -1,4 +1,4 @@
-/* 🔹 Kereső konténer */
+/* Kereső konténer */
 .part-search-container {
     max-width: 800px;
     margin: 20px auto;
@@ -8,7 +8,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   
-  /* 🔹 Találatok listája */
+  /* Találatok listája */
   .results-container {
     margin-top: 20px;
     padding: 15px;
@@ -17,7 +17,15 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   
-  /* 🔹 Egy-egy találat stílusa */
+/* Alkatrész részletek stílusa */
+.part-details {
+  font-size: 13px;
+  color: #555;
+  margin-top: 5px;
+  line-height: 1.4;
+}
+  
+  /* Egy-egy találat stílusa */
   .part-item {
     display: flex;
     align-items: center;
@@ -26,7 +34,7 @@
     border-bottom: 1px solid #ddd;
   }
   
-  /* 🔹 Alkatrész neve és ára */
+  /* Alkatrész neve és ára */
   .part-info {
     flex-grow: 1;
   }
@@ -43,7 +51,7 @@
     display: block;
   }
   
-  /* 🔹 Kosár gomb */
+  /* Kosár gomb */
   .cart-button {
     background-color: #007bff;
     color: white;
@@ -62,7 +70,7 @@
     background-color: #0056b3;
   }
   
-  /* 🔹 Mennyiségválasztó konténer */
+  /* Mennyiségválasztó konténer */
   .quantity-controls {
     display: flex;
     align-items: center;
@@ -70,7 +78,7 @@
     margin-left: 10px;
   }
   
-  /* 🔹 Mennyiségváltoztató gombok */
+  /* Mennyiségváltoztató gombok */
   .quantity-btn {
     background-color: #ddd;
     border: none;
@@ -84,14 +92,14 @@
     background-color: #bbb;
   }
   
-  /* 🔹 Mennyiség érték */
+  /* Mennyiség érték */
   .quantity-value {
     font-size: 14px;
     font-weight: bold;
   }
   
-  /* 🔹 Sikerüzenet stílusa */
-/* 🔹 Sikerüzenet középre pozicionálva */
+  /* Sikerüzenet stílusa */
+/* Sikerüzenet középre pozicionálva */
 .success-message {
   position: fixed;
   top: 50%;
@@ -108,5 +116,18 @@
   transition: opacity 0.5s ease-in-out;
   z-index: 1000; /* Mindig elöl legyen */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.part-details {
+  font-size: 0.85rem;
+  color: #777;
+  margin-top: 0.3rem;
+}
+
+.equipment-image img {
+  max-width: 100px;
+  max-height: 100px;
+  object-fit: contain;
+  margin-top: 0.5rem;
 }
 

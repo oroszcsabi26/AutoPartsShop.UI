@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-// Alkatrész modell interfészek
+// 🔹 Alkatrész típus, amelyet hozzáadásnál/módosításnál használunk
 export interface Part {
   id: number;
   name: string;
@@ -12,6 +12,28 @@ export interface Part {
   quantity: number;
 }
 
+// 🔹 Keresési eredményekhez bővített megjelenítés
+export interface PartDisplay {
+  id: number;
+  name: string;
+  price: number;
+  manufacturer: string;
+  side?: string;
+  shape?: string;
+  size?: string;
+  type?: string;
+  material?: string;
+  description?: string;
+  quantity: number;
+  categoryName: string;
+  carModelName: string;
+  carBrandName: string;
+
+  carModelId: number;
+  partsCategoryId: number;
+}
+
+// 🔹 Alkatrész kategóriák
 export interface PartsCategory {
   id: number;
   name: string;
@@ -55,18 +77,17 @@ export class PartService {
     return this.http.get<PartsCategory[]>(`${this.apiUrl}/categories`);
   }
 
-  // 🔹 Alkatrészek keresése név alapján
-  // 🔹 Alkatrészek keresése név, autómodell és alkatrész kategória szerint
-  searchParts(query: string, carModelId: number | null, partsCategoryId: number | null): Observable<Part[]> {
+  // 🔹 Alkatrészek keresése név, autómodell és kategória alapján (bővített adattal tér vissza)
+  searchParts(query: string, carModelId: number | null, partsCategoryId: number | null): Observable<PartDisplay[]> {
     let url = `${this.apiUrl}/search?name=${query}`;
-    
+
     if (carModelId !== null) {
       url += `&carModelId=${carModelId}`;
     }
     if (partsCategoryId !== null) {
       url += `&partsCategoryId=${partsCategoryId}`;
     }
-  
-    return this.http.get<Part[]>(url);
-  }  
+
+    return this.http.get<PartDisplay[]>(url);
+  }
 }

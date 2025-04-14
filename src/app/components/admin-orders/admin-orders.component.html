@@ -1,6 +1,14 @@
 <div class="admin-container">
     <h1>📦 Rendelések kezelése</h1>
 
+    <div class="search-bar">
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          (input)="loadOrders()"
+          placeholder="🔍 Keresés a megrendelő neve alapján..." />
+      </div>
+
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 
     <ul class="order-list">
@@ -31,7 +39,7 @@
         </li>
     </ul>
 
-    <!-- 🔹 Törlés megerősítő modal -->
+    <!-- Törlés megerősítő modal -->
     <div id="deleteModal" class="modal">
         <div class="modal-content">
             <p>Biztosan törölni szeretnéd ezt a rendelést?</p>

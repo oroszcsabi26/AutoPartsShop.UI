@@ -14,6 +14,7 @@ export class AdminOrdersComponent implements OnInit {
   orders: any[] = [];
   errorMessage: string = '';
   orderToDelete: any = null;
+  searchQuery: string = '';
 
   constructor(private http: HttpClient) {}
 
@@ -21,27 +22,34 @@ export class AdminOrdersComponent implements OnInit {
     this.loadOrders();
   }
 
-  // 🔹 Összes rendelés lekérése
+  // Összes rendelés lekérése
   loadOrders(): void {
     this.http.get<any[]>('http://localhost:5214/api/orders/all').subscribe({
-      next: (data) => this.orders = data,
+      next: (data) => {
+        const query = this.searchQuery.toLowerCase().trim();
+  
+        this.orders = data.filter(e => {
+          const fullName = `${e.user?.firstName ?? ''} ${e.user?.lastName ?? ''}`.toLowerCase();
+          return fullName.includes(query);
+        });
+      },
       error: () => this.errorMessage = 'Nem sikerült betölteni a rendeléseket!'
     });
   }
 
-  // 🔹 Törlés megerősítő modal megnyitása
+  // Törlés megerősítő modal megnyitása
   openDeleteModal(order: any): void {
     this.orderToDelete = order;
     document.getElementById('deleteModal')!.style.display = 'block';
   }
 
-  // 🔹 Modal bezárása
+  // Modal bezárása
   closeDeleteModal(): void {
     this.orderToDelete = null;
     document.getElementById('deleteModal')!.style.display = 'none';
   }
 
-  // 🔹 Rendelés törlése
+  // Rendelés törlése
   confirmDelete(): void {
     if (!this.orderToDelete) return;
 

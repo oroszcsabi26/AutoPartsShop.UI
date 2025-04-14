@@ -20,7 +20,20 @@ export class AdminPartsComponent implements OnInit {
   selectedModelId: number | null = null;
   selectedCategoryId: number | null = null;
 
-  newPart = { name: '', price: 0, carModelId: null as number | null, partsCategoryId: null as number | null };
+  newPart = {
+    name: '',
+    price: '' as string | number,
+    carModelId: null as number | null,
+    partsCategoryId: null as number | null,
+    manufacturer: '',
+    side: '',
+    shape: '',
+    size: '',
+    type: '',
+    material: '',
+    description: '',
+    quantity: '' as string | number
+  };
   editPartId: number | null = null;
   editPart: any = {};
   errorMessage: string = '';
@@ -33,7 +46,7 @@ export class AdminPartsComponent implements OnInit {
     this.loadCategories();
   }
 
-  // 🔹 Autómárkák betöltése
+  // Autómárkák betöltése
   loadCarBrands(): void {
     this.http.get<any[]>('http://localhost:5214/api/cars').subscribe({
       next: (data) => this.carBrands = data,
@@ -41,7 +54,7 @@ export class AdminPartsComponent implements OnInit {
     });
   }
 
-  // 🔹 Modellek betöltése a kiválasztott márka alapján
+  // Modellek betöltése a kiválasztott márka alapján
   loadCarModels(): void {
     this.carModels = [];
     this.selectedModelId = null;
@@ -55,7 +68,7 @@ export class AdminPartsComponent implements OnInit {
     });
   }
 
-  // 🔹 Alkatrész kategóriák betöltése
+  // Alkatrész kategóriák betöltése
   loadCategories(): void {
     this.http.get<any[]>('http://localhost:5214/api/parts/categories').subscribe({
       next: (data) => this.categories = data,
@@ -63,7 +76,7 @@ export class AdminPartsComponent implements OnInit {
     });
   }
 
-  // 🔹 Alkatrészek betöltése (csak ha minden szűrési feltétel megvan)
+  // Alkatrészek betöltése (csak ha minden szűrési feltétel megvan)
   loadParts(): void {
     this.parts = [];
 
@@ -76,36 +89,62 @@ export class AdminPartsComponent implements OnInit {
       });
   }
 
-  // 🔹 Új alkatrész hozzáadása
+  // Új alkatrész hozzáadása
   addPart(): void {
-    if (!this.newPart.name.trim() || this.newPart.price <= 0 || !this.selectedModelId || !this.selectedCategoryId) {
+    if (!this.newPart.name.trim() || parseFloat(this.newPart.price as string) <= 0 || !this.selectedModelId || !this.selectedCategoryId || !this.newPart.manufacturer.trim()) {
       this.errorMessage = 'Minden mező kitöltése kötelező!';
       return;
     }
 
+    if (this.newPart.quantity === null || isNaN(Number(this.newPart.quantity))) {
+      this.newPart.quantity = 1;
+    }
+
     this.newPart.carModelId = this.selectedModelId;
     this.newPart.partsCategoryId = this.selectedCategoryId;
+    this.newPart.price = parseFloat(this.newPart.price as string);
+    this.newPart.quantity = parseInt(this.newPart.quantity as string) || 1;
 
     this.http.post('http://localhost:5214/api/parts', this.newPart).subscribe({
       next: () => {
-        this.newPart = { name: '', price: 0, carModelId: null, partsCategoryId: null };
+        this.newPart = {
+          name: '',
+          price: 0,
+          carModelId: null,
+          partsCategoryId: null,
+          manufacturer: '',
+          side: '',
+          shape: '',
+          size: '',
+          type: '',
+          material: '',
+          description: '',
+          quantity: 1
+        };
         this.loadParts();
       },
       error: () => this.errorMessage = 'Hiba történt az alkatrész hozzáadásakor!'
     });
   }
 
-  // 🔹 Szerkesztés indítása
+  // Szerkesztés indítása
   startEdit(part: any): void {
     this.editPartId = part.id;
     this.editPart = { ...part };
   }
 
-  // 🔹 Módosítás mentése
+  // Módosítás mentése
   saveEdit(): void {
     if (!this.editPart.name.trim() || this.editPart.price <= 0) {
       return;
     }
+
+    if (this.editPart.quantity === null || isNaN(Number(this.editPart.quantity))) {
+      this.editPart.quantity = 1;
+    }
+
+    this.editPart.price = parseFloat(this.editPart.price);
+    this.editPart.quantity = parseInt(this.editPart.quantity) || 1;
 
     this.http.put(`http://localhost:5214/api/parts/${this.editPartId}`, this.editPart).subscribe({
       next: () => {
@@ -117,19 +156,19 @@ export class AdminPartsComponent implements OnInit {
     });
   }
 
-  // 🔹 Törlés megerősítő modal megnyitása
+  // Törlés megerősítő modal megnyitása
   openDeleteModal(part: any): void {
     this.partToDelete = part;
     document.getElementById('deleteModal')!.style.display = 'block';
   }
 
-  // 🔹 Modal bezárása
+  // Modal bezárása
   closeDeleteModal(): void {
     this.partToDelete = null;
     document.getElementById('deleteModal')!.style.display = 'none';
   }
 
-  // 🔹 Alkatrész törlése
+  // Alkatrész törlése
   confirmDelete(): void {
     if (!this.partToDelete) return;
 

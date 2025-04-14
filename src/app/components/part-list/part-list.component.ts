@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core'; 
-import { PartService, Part } from '../../services/part.service';
+import { PartService, Part, PartDisplay } from '../../services/part.service';
 import { EquipmentService, Equipment } from '../../services/equipment.service';
-import { CartService, CartItem } from '../../services/cart.service'; // ✅ Kosárkezelő szolgáltatás importálása
+import { CartService, CartItem } from '../../services/cart.service'; // Kosárkezelő szolgáltatás importálása
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -13,12 +13,12 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./part-list.component.css']
 })
 export class PartListComponent implements OnInit {
-  parts: Part[] = []; // ✅ Az API-ból érkező alkatrészek listája
+  parts: PartDisplay[] = []; // Az API-ból érkező alkatrészek listája
   equipments: Equipment[] = [];  
-  searchQuery: string = '';   // ✅ Keresési mező tartalma
+  searchQuery: string = '';   // Keresési mező tartalma
   equipmentSearchQuery: string = ''; 
   equipmentCategories: { id: number, name: string }[] = []; 
-  showSuccessMessage = false;   // ✅ Sikeres hozzáadás üzenet megjelenítése
+  showSuccessMessage = false;   // Sikeres hozzáadás üzenet megjelenítése
 
   @Input() selectedModelId: number | null = null;
   @Input() selectedCategoryId: number | null = null;
@@ -27,14 +27,14 @@ export class PartListComponent implements OnInit {
   constructor(
     private partService: PartService,
     private equipmentService: EquipmentService,
-    private cartService: CartService // ✅ Kosárkezelő szolgáltatás injektálása
+    private cartService: CartService // Kosárkezelő szolgáltatás injektálása
   ) {}
 
   ngOnInit(): void {
     this.loadEquipmentCategories();
   }
 
-  // 🔹 Felszerelési kategóriák betöltése
+  // Felszerelési kategóriák betöltése
   loadEquipmentCategories(): void {
     this.equipmentService.getEquipmentCategories().subscribe({
       next: (categories) => {
@@ -46,7 +46,7 @@ export class PartListComponent implements OnInit {
     });
   }
 
-  // 🔹 Alkatrészek keresése
+  // Alkatrészek keresése
   searchParts(): void {
     if (this.searchQuery.trim() === '') {
       this.parts = [];
@@ -55,7 +55,7 @@ export class PartListComponent implements OnInit {
 
     this.partService.searchParts(this.searchQuery, this.selectedModelId, this.selectedCategoryId).subscribe({
       next: (data) => {
-        this.parts = data.map(part => ({ ...part, quantity: 1 }));
+        this.parts = data.map(part => ({ ...part, quantity: part.quantity || 1 }));
       },
       error: (error) => {
         console.error("❌ Hiba történt az alkatrészek keresése során:", error);
@@ -63,7 +63,7 @@ export class PartListComponent implements OnInit {
     });
   }
 
-  // 🔹 Felszerelési cikkek keresése
+  // Felszerelési cikkek keresése
   searchEquipments(): void {
     if (!this.selectedEquipmentCategoryId || this.equipmentSearchQuery.trim() === '') {
       this.equipments = [];
@@ -82,38 +82,39 @@ export class PartListComponent implements OnInit {
     });
   }
 
-  // 🔹 Mennyiség növelése
-  increaseQuantity(item: Part | Equipment): void {
+  // Mennyiség növelése
+  increaseQuantity(item: PartDisplay | Equipment): void {
     item.quantity = (item.quantity || 1) + 1;
   }
 
-  // 🔹 Mennyiség csökkentése (minimum 1)
-  decreaseQuantity(item: Part | Equipment): void {
+  // Mennyiség csökkentése (minimum 1)
+  decreaseQuantity(item: PartDisplay | Equipment): void {
     if (item.quantity && item.quantity > 1) {
       item.quantity -= 1;
     }
   }
 
-  // 🔹 Kosárba helyezés
-  addToCart(item: Part | Equipment): void {
+  // Kosárba helyezés
+  addToCart(item: PartDisplay | Equipment): void {
     if (!item || !item.id || !item.name || !item.price || !item.quantity) {
       console.error("Hiba: Érvénytelen adat küldése a kosárhoz!", item);
       return;
     }
 
-    // Kosár elem létrehozása a backend elvárásai szerint
+    const isPart = 'PartsCategoryId' in item; // Ellenőrizzük, hogy alkatrész-e 
+
     const cartItem: CartItem = {
-      itemType: item.hasOwnProperty('carModelId') ? "Part" : "Equipment",
+      itemType: isPart ? "Part" : "Equipment",
       quantity: item.quantity || 1,
       name: item.name,
       price: item.price,
-      partId: item.hasOwnProperty('carModelId') ? item.id : undefined,
-      equipmentId: item.hasOwnProperty('carModelId') ? undefined : item.id
+      partId: isPart ? item.id : undefined,
+      equipmentId: isPart ? undefined : item.id
     };
 
     console.log("🛒 Kosárba helyezett termék:", cartItem);
 
-    // 🔹 Termék hozzáadása a kosárhoz
+    // Termék hozzáadása a kosárhoz
     this.cartService.addToCart(cartItem).subscribe({
       next: () => {
         console.log("Sikeresen hozzáadva a kosárhoz!", cartItem);
