@@ -34,6 +34,7 @@
         <input type="text" [(ngModel)]="newPart.material" placeholder="Anyag">
         <input type="text" [(ngModel)]="newPart.description" placeholder="Leírás">
         <input type="text" [(ngModel)]="newPart.quantity" placeholder="Mennyiség" inputmode="numeric">
+        <input type="file" (change)="onFileSelected($event)" accept="image/*">
         <button (click)="addPart()">➕ Hozzáadás</button>
     </div>
 
@@ -44,8 +45,6 @@
           <div *ngIf="editPartId === part.id">
             <input type="text" [(ngModel)]="editPart.name" placeholder="Alkatrész neve">
             <input type="number" [(ngModel)]="editPart.price" placeholder="Ár">
-      
-            <!-- 🔽 IDE jönnek az új mezők -->
             <input type="text" [(ngModel)]="editPart.manufacturer" placeholder="Gyártó">
             <input type="text" [(ngModel)]="editPart.side" placeholder="Oldal">
             <input type="text" [(ngModel)]="editPart.shape" placeholder="Forma">
@@ -54,7 +53,8 @@
             <input type="text" [(ngModel)]="editPart.material" placeholder="Anyag">
             <input type="text" [(ngModel)]="editPart.description" placeholder="Leírás">
             <input type="number" [(ngModel)]="editPart.quantity" placeholder="Mennyiség">
-      
+            <input type="file" (change)="onEditFileSelected($event)" accept="image/*">
+            
             <button class="save" (click)="saveEdit()">💾 Mentés</button>
             <button class="delete" (click)="editPartId = null">❌ Mégse</button>
           </div>
@@ -62,14 +62,16 @@
           <!-- Ha NEM szerkesztés alatt van -->
           <div *ngIf="editPartId !== part.id">
             <strong>{{ part.name }}</strong> - {{ part.price }} Ft
+              <!-- 🔽 Kép megjelenítése, ha van -->
+            <div *ngIf="part.imageUrl" class="part-image-container">
+              <img [src]="'http://localhost:5214' + part.imageUrl" alt="Alkatrész kép" class="part-image">
+            </div>
             <button class="edit" (click)="startEdit(part)">✏️ Szerkesztés</button>
             <button class="delete" (click)="openDeleteModal(part)">🗑️ Törlés</button>
           </div>
-      
         </li>
       </ul>
       
-
     <div id="deleteModal" class="modal">
         <div class="modal-content">
             <p>Biztosan törölni szeretnéd ezt az alkatrészt?</p>

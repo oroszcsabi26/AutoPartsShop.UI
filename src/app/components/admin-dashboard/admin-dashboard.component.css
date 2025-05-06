@@ -21,18 +21,25 @@ h1 {
 }
 
 .admin-menu li {
-    margin: 10px;
+    margin: 8px;
 }
 
 .admin-menu a {
-    display: block;
-    width: 200px; /* ✅ Egységes szélesség */
-    padding: 10px;
+    display: flex; /* Flex, hogy az ikon és szöveg egy sorban legyen */
+    align-items: center;
+    justify-content: center;
+
+    width: 220px; /* elég széles minden szövegnek */
+    padding: 12px;
     background-color: #007bff;
     color: white;
     text-decoration: none;
     border-radius: 5px;
-    text-align: center; /* ✅ Szöveg középre igazítása */
+    text-align: center;
+    font-size: 15px; /* kisebb, hogy egy sorba férjen */
+    white-space: nowrap; /* ❗ Ne törjön sort */
+    overflow: hidden;
+    text-overflow: ellipsis; /* hosszú szövegnél "..." */
 }
 
 .admin-menu a:hover {

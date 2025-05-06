@@ -34,6 +34,8 @@ export class AdminPartsComponent implements OnInit {
     description: '',
     quantity: '' as string | number
   };
+  selectedImageFile: File | null = null;
+  editImageFile: File | null = null;
   editPartId: number | null = null;
   editPart: any = {};
   errorMessage: string = '';
@@ -95,17 +97,33 @@ export class AdminPartsComponent implements OnInit {
       this.errorMessage = 'Minden mező kitöltése kötelező!';
       return;
     }
-
+  
     if (this.newPart.quantity === null || isNaN(Number(this.newPart.quantity))) {
       this.newPart.quantity = 1;
     }
-
+  
     this.newPart.carModelId = this.selectedModelId;
     this.newPart.partsCategoryId = this.selectedCategoryId;
     this.newPart.price = parseFloat(this.newPart.price as string);
     this.newPart.quantity = parseInt(this.newPart.quantity as string) || 1;
-
-    this.http.post('http://localhost:5214/api/parts', this.newPart).subscribe({
+  
+    const formData = new FormData();
+  
+    // Adatok hozzáadása a formData-hoz
+    for (const key in this.newPart) {
+      const value = (this.newPart as any)[key];
+      if (value !== null && value !== undefined) {
+        formData.append(key, value.toString());
+      }
+    }
+  
+    // Kép csatolása, ha van
+    if (this.selectedImageFile) {
+      formData.append('imageFile', this.selectedImageFile);
+    }
+  
+    // Küldés backendre
+    this.http.post('http://localhost:5214/api/parts', formData).subscribe({
       next: () => {
         this.newPart = {
           name: '',
@@ -121,11 +139,12 @@ export class AdminPartsComponent implements OnInit {
           description: '',
           quantity: 1
         };
+        this.selectedImageFile = null;
         this.loadParts();
       },
       error: () => this.errorMessage = 'Hiba történt az alkatrész hozzáadásakor!'
     });
-  }
+  }  
 
   // Szerkesztés indítása
   startEdit(part: any): void {
@@ -138,23 +157,40 @@ export class AdminPartsComponent implements OnInit {
     if (!this.editPart.name.trim() || this.editPart.price <= 0) {
       return;
     }
-
+  
     if (this.editPart.quantity === null || isNaN(Number(this.editPart.quantity))) {
       this.editPart.quantity = 1;
     }
-
+  
     this.editPart.price = parseFloat(this.editPart.price);
     this.editPart.quantity = parseInt(this.editPart.quantity) || 1;
-
-    this.http.put(`http://localhost:5214/api/parts/${this.editPartId}`, this.editPart).subscribe({
+  
+    const formData = new FormData();
+  
+    // Adatok hozzáadása
+    for (const key in this.editPart) {
+      const value = this.editPart[key];
+      if (value !== null && value !== undefined) {
+        formData.append(key, value.toString());
+      }
+    }
+  
+    // Ha új képet választottak
+    if (this.editImageFile) {
+      formData.append('imageFile', this.editImageFile);
+    }
+  
+    // PUT kérés küldése
+    this.http.put(`http://localhost:5214/api/parts/${this.editPartId}`, formData).subscribe({
       next: () => {
         this.editPartId = null;
         this.editPart = {};
+        this.editImageFile = null;
         this.loadParts();
       },
       error: () => this.errorMessage = 'Hiba történt az alkatrész módosításakor!'
     });
-  }
+  }  
 
   // Törlés megerősítő modal megnyitása
   openDeleteModal(part: any): void {
@@ -179,5 +215,19 @@ export class AdminPartsComponent implements OnInit {
       },
       error: () => this.errorMessage = 'Hiba történt az alkatrész törlésekor!'
     });
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedImageFile = input.files[0];
+    }
+  }
+  
+  onEditFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.editImageFile = input.files[0];
+    }
   }
 }

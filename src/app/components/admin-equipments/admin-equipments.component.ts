@@ -13,14 +13,16 @@ import { CommonModule } from '@angular/common';
 export class AdminEquipmentsComponent implements OnInit {
   equipments: any[] = [];
   categories: any[] = [];
-  newEquipment = { name: '', manufacturer: '', size: '', price: '', equipmentCategoryId: null, description : '', quantity: null, imageUrl: '' , material: '', side: '' };
+  newEquipment: { name: string; manufacturer: string; size: string; price: string; equipmentCategoryId: number | null; description: string; quantity: number | null; imageUrl: string; material: string; side: string } = 
+  { name: '', manufacturer: '', size: '', price: '', equipmentCategoryId: null, description: '', quantity: null, imageUrl: '', material: '', side: '' };
   editEquipmentId: number | null = null;
   editEquipment: any = {};
   errorMessage: string = '';
   equipmentToDelete: any = null;
   selectedCategoryId: number | null = null; // Kiválasztott kategória ID
   searchQuery: string = ''; // Keresési lekérdezés
-
+  selectedImageFile: File | null = null;
+  
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
@@ -58,43 +60,55 @@ export class AdminEquipmentsComponent implements OnInit {
 
   // Új felszerelés hozzáadása
   addEquipment(): void {
-    const priceValue = parseFloat(this.newEquipment.price); // string → number
-  
-    if (
-      !this.newEquipment.name.trim() ||
-      !this.newEquipment.manufacturer.trim() ||
-      isNaN(priceValue) || priceValue <= 0 ||
-      !this.newEquipment.equipmentCategoryId
-    ) {
-      this.errorMessage = 'Minden mező kitöltése kötelező!';
-      return;
-    }
-  
-    // Frissített objektum szám formátumú árral
-    const equipmentToSend = {
-      ...this.newEquipment,
-      price: priceValue
-    };
-  
-    this.http.post('http://localhost:5214/api/equipment', equipmentToSend).subscribe({
-      next: () => {
-        this.newEquipment = {
-          name: '',
-          manufacturer: '',
-          size: '',
-          price: '',
-          equipmentCategoryId: null,
-          description : '',
-          quantity: null,
-          imageUrl: '' ,
-          material: '',
-          side: ''
-        };
-        this.loadEquipments();
-      },
-      error: () => this.errorMessage = 'Hiba történt az új felszerelés hozzáadásakor!'
-    });
-  }  
+  const priceValue = parseFloat(this.newEquipment.price);
+
+  if (
+    !this.newEquipment.name.trim() ||
+    !this.newEquipment.manufacturer.trim() ||
+    isNaN(priceValue) || priceValue <= 0 ||
+    !this.newEquipment.equipmentCategoryId
+  ) {
+    this.errorMessage = 'Minden kötelező mezőt ki kell tölteni!';
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('Name', this.newEquipment.name);
+  formData.append('Manufacturer', this.newEquipment.manufacturer);
+  formData.append('Price', priceValue.toString());
+  formData.append('EquipmentCategoryId', this.newEquipment.equipmentCategoryId!.toString());
+
+  if (this.newEquipment.size) formData.append('Size', this.newEquipment.size);
+  if (this.newEquipment.description) formData.append('Description', this.newEquipment.description);
+  if (this.newEquipment.quantity !== null && this.newEquipment.quantity !== undefined) formData.append('Quantity', this.newEquipment.quantity.toString());
+  if (this.newEquipment.material) formData.append('Material', this.newEquipment.material);
+  if (this.newEquipment.side) formData.append('Side', this.newEquipment.side);
+
+  if (this.selectedImageFile) {
+    formData.append('ImageFile', this.selectedImageFile);
+  }
+
+  this.http.post('http://localhost:5214/api/equipment', formData).subscribe({
+    next: () => {
+      this.newEquipment = {
+        name: '',
+        manufacturer: '',
+        size: '',
+        price: '',
+        equipmentCategoryId: null,
+        description: '',
+        quantity: null,
+        imageUrl: '',
+        material: '',
+        side: ''
+      };
+      this.selectedImageFile = null;
+      this.loadEquipments();
+    },
+    error: () => this.errorMessage = 'Hiba történt az új felszerelés hozzáadásakor!'
+  });
+}
+
 
   // Szerkesztés indítása
   startEdit(equipment: any): void {
@@ -138,5 +152,12 @@ export class AdminEquipmentsComponent implements OnInit {
       },
       error: () => this.errorMessage = 'Hiba történt a felszerelés törlésekor!'
     });
+  }
+
+  onImageSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedImageFile = file;
+    }
   }
 }

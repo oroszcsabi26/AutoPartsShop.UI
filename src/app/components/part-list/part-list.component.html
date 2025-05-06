@@ -11,43 +11,50 @@
   <button (click)="searchParts()">Keresés</button>
 
   <!-- Keresési találatok (Alkatrészek) -->
-<div class="results-container" *ngIf="parts.length > 0">
-  <h3>Találatok</h3>
-  <ul>
-    <li *ngFor="let part of parts" class="part-item">
-      <div class="part-info">
-        <!-- Gyártó + név -->
-        <span class="part-name">{{ part.manufacturer }} {{ part.name }}</span>
+  <div class="results-container" *ngIf="parts.length > 0">
+    <h3>Találatok</h3>
+    <ul>
+      <li *ngFor="let part of parts" class="part-item">
+        <div class="part-info">
+          <!-- Gyártó + név -->
+          <span class="part-name">{{ part.manufacturer }} {{ part.name }}
+            <i class="bi bi-camera" role="button"
+            (click)="openImageModal('http://localhost:5214' + part.imageUrl)"
+            *ngIf="part.imageUrl"
+            title="Kép megtekintése"
+            style="margin-left: 10px; color: #007bff; cursor: pointer;">
+            </i>       
+          </span>
 
-        <!-- Ár -->
-        <span class="part-price">{{ part.price | currency:'HUF' }}</span>
+          <!-- Ár -->
+          <span class="part-price">{{ part.price | currency:'HUF' }}</span>
 
-        <!-- További jellemzők -->
-        <div class="part-details" *ngIf="part.side || part.shape || part.size || part.type || part.material || part.description">
-          <small *ngIf="part.side">Oldal: {{ part.side }}</small><br />
-          <small *ngIf="part.shape">Forma: {{ part.shape }}</small><br />
-          <small *ngIf="part.size">Méret: {{ part.size }}</small><br />
-          <small *ngIf="part.type">Kivitel: {{ part.type }}</small><br />
-          <small *ngIf="part.material">Anyag: {{ part.material }}</small><br />
-          <small *ngIf="part.description">Leírás: {{ part.description }}</small>
+          <!-- További jellemzők -->
+          <div class="part-details" *ngIf="part.side || part.shape || part.size || part.type || part.material || part.description">
+            <small *ngIf="part.side">Oldal: {{ part.side }}</small><br />
+            <small *ngIf="part.shape">Forma: {{ part.shape }}</small><br />
+            <small *ngIf="part.size">Méret: {{ part.size }}</small><br />
+            <small *ngIf="part.type">Kivitel: {{ part.type }}</small><br />
+            <small *ngIf="part.material">Anyag: {{ part.material }}</small><br />
+            <small *ngIf="part.description">Leírás: {{ part.description }}</small>
+          </div>
         </div>
-      </div>
 
-      <!-- Mennyiség és kosár -->
-      <div class="quantity-controls">
-        <button class="quantity-btn" (click)="decreaseQuantity(part)">➖</button>
-        <span class="quantity-value">{{ part.quantity }}</span>
-        <button class="quantity-btn" (click)="increaseQuantity(part)">➕</button>
-      </div>
+        <!-- Mennyiség és kosár -->
+        <div class="quantity-controls">
+          <button class="quantity-btn" (click)="decreaseQuantity(part)">➖</button>
+          <span class="quantity-value">{{ part.quantity }}</span>
+          <button class="quantity-btn" (click)="increaseQuantity(part)">➕</button>
+        </div>
 
-      <button class="cart-button" (click)="addToCart(part)">🛒 Kosárba</button>
-    </li>
-  </ul>
+        <button class="cart-button" (click)="addToCart(part)">🛒 Kosárba</button>
+      </li>
+    </ul>
+  </div>
+    <p *ngIf="parts.length === 0" class="no-results">Nincsenek találatok.</p>
 </div>
 
-
-  <p *ngIf="parts.length === 0" class="no-results">Nincsenek találatok.</p>
-</div>
+<div class="search-separator"></div>
 
 <!-- Felszerelési cikkek keresése -->
 <div class="part-search-container">
@@ -79,7 +86,14 @@
     <ul>
       <li *ngFor="let equipment of equipments" class="part-item">
         <div class="part-info">
-          <span class="part-name">{{ equipment.manufacturer }} {{ equipment.name }}</span>
+          <span class="part-name">{{ equipment.manufacturer }} {{ equipment.name }}
+            <i class="bi bi-camera" role="button"
+              (click)="openImageModal('http://localhost:5214' + equipment.imageUrl)"
+              *ngIf="equipment.imageUrl"
+              title="Kép megtekintése"
+              style="margin-left: 10px; color: #007bff; cursor: pointer;">
+            </i>
+          </span>
           <span class="part-price">{{ equipment.price | currency:'HUF' }}</span>
           <div class="part-details">
             <small *ngIf="equipment.description">Leírás: {{ equipment.description }}</small><br />
@@ -87,10 +101,6 @@
             <small *ngIf="equipment.side">Oldal: {{ equipment.side }}</small><br />
             <small *ngIf="equipment.quantity !== undefined">Mennyiség: {{ equipment.quantity }}</small>
           </div>
-        </div>
-
-        <div *ngIf="equipment.imageUrl" class="equipment-image">
-          <img [src]="equipment.imageUrl" alt="{{ equipment.name }}" />
         </div>
 
         <div class="quantity-controls">
@@ -102,5 +112,20 @@
         <button class="cart-button" (click)="addToCart(equipment)">🛒 Kosárba</button>
       </li>
     </ul>
+  </div>
+
+  <!-- Bootstrap Modal: Termékkép megjelenítése -->
+  <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="imageModalLabel">Termékkép</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Bezárás"></button>
+        </div>
+        <div class="modal-body text-center">
+          <img [src]="selectedImageUrl" class="img-fluid" alt="Termékkép">
+        </div>
+      </div>
+    </div>
   </div>
 </div>

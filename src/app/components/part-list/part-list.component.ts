@@ -4,6 +4,7 @@ import { EquipmentService, Equipment } from '../../services/equipment.service';
 import { CartService, CartItem } from '../../services/cart.service'; // Kosárkezelő szolgáltatás importálása
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import * as bootstrap from 'bootstrap';
 
 @Component({
   selector: 'app-part-list',
@@ -19,6 +20,7 @@ export class PartListComponent implements OnInit {
   equipmentSearchQuery: string = ''; 
   equipmentCategories: { id: number, name: string }[] = []; 
   showSuccessMessage = false;   // Sikeres hozzáadás üzenet megjelenítése
+  selectedImageUrl: string | null = null; // Kép URL tárolása
 
   @Input() selectedModelId: number | null = null;
   @Input() selectedCategoryId: number | null = null;
@@ -74,7 +76,7 @@ export class PartListComponent implements OnInit {
       next: (data) => {
         this.equipments = data.filter(equipment =>
           equipment.name.toLowerCase().includes(this.equipmentSearchQuery.toLowerCase())
-        ).map(equipment => ({ ...equipment, quantity: 1 }));
+        ).map(equipment => ({ ...equipment, quantity: equipment.quantity || 1 }));
       },
       error: (error) => {
         console.error("❌ Hiba történt a felszerelések keresése során:", error);
@@ -125,5 +127,15 @@ export class PartListComponent implements OnInit {
         console.error("Hiba történt a kosárba helyezéskor:", error);
       }
     });
+  }
+
+  openImageModal(imageUrl: string): void {
+    this.selectedImageUrl = imageUrl;
+  
+    const modalElement = document.getElementById('imageModal');
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
+    }
   }
 }

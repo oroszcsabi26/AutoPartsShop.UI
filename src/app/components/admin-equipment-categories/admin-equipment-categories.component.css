@@ -13,7 +13,7 @@ h1 {
     margin-bottom: 20px;
 }
 
-/* 🔹 Hibaüzenet stílusa */
+/* Hibaüzenet stílusa */
 .error-message {
     color: #dc3545;
     background-color: #f8d7da;
@@ -23,7 +23,7 @@ h1 {
     border-radius: 5px;
 }
 
-/* 🔹 Új kategória hozzáadásának stílusa */
+/* Új kategória hozzáadásának stílusa */
 .add-category {
     display: flex;
     justify-content: center;
@@ -53,7 +53,7 @@ h1 {
     background-color: #218838;
 }
 
-/* 🔹 Kategóriák listája */
+/* Kategóriák listája */
 .category-list {
     list-style-type: none;
     padding: 0;
@@ -70,7 +70,7 @@ h1 {
     justify-content: space-between;
 }
 
-/* 🔹 Modal ablak stílusok */
+/* Modal ablak stílusok */
 .modal {
     display: none;
     position: fixed;

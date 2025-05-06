@@ -23,7 +23,7 @@ export class AdminCarsComponent implements OnInit {
     this.loadCars();
   }
 
-  // 🔹 Autómárkák betöltése az adatbázisból
+  // Autómárkák betöltése az adatbázisból
   loadCars(): void {
     this.http.get<any[]>('http://localhost:5214/api/cars').subscribe({
       next: (data) => this.cars = data,
@@ -34,7 +34,7 @@ export class AdminCarsComponent implements OnInit {
     });
   }
 
-  // 🔹 Új autómárka hozzáadása
+  // Új autómárka hozzáadása
   addCar(): void {
     this.errorMessage = '';
     if (!this.newCarName.trim()) {
@@ -54,7 +54,7 @@ export class AdminCarsComponent implements OnInit {
     });
   }
 
-  // 🔹 Autómárka szerkesztése
+  // Autómárka szerkesztése
   startEdit(car: any): void {
     this.editCarId = car.id;
     this.editCarName = car.name;
@@ -77,7 +77,7 @@ export class AdminCarsComponent implements OnInit {
     });
   }
 
-  // 🔹 Autómárka törlése
+  // Autómárka törlése
   deleteCar(carId: number): void {
     this.errorMessage = '';
     if (!confirm('Biztosan törölni szeretnéd ezt az autómárkát?')) return;
