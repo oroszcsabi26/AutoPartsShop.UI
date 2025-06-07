@@ -1,6 +1,6 @@
 /* 🔹 Kosár fő konténer */
 .cart-container {
-    width: auto;
+    min-width: 600px;
     max-width: 900px;
     margin: 20px auto;
     padding: 20px;

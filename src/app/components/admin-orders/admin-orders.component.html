@@ -14,8 +14,22 @@
     <ul class="order-list">
         <li *ngFor="let order of orders">
             <div class="order-header">
-                <strong>🔹 Rendelés #{{ order.id }}</strong>
-                <span class="order-status">📝 {{ order.status }}</span>
+                <strong> Rendelés #{{ order.id }}</strong>
+            </div>
+            <div class="order-status-control">
+                <label for="statusSelect">📝 Státusz:</label>
+                    <select 
+                    [id]="'statusSelect_' + order.id"
+                    [(ngModel)]="selectedStatusMap[order.id]"
+                    (change)="updateStatus(order.id)">
+                        <option *ngFor="let status of orderStatuses" [value]="status.key">
+                            {{ status.label }}
+                        </option>
+                    </select>
+                <!-- ✅ Sikeres frissítés üzenet -->
+                <div *ngIf="statusUpdateMessageMap[order.id]" class="status-message">
+                {{ statusUpdateMessageMap[order.id] }}
+                </div>
             </div>
             <div class="order-info">
                 <p><strong>Felhasználó:</strong> {{ order.user.firstName }} {{ order.user.lastName }}</p>

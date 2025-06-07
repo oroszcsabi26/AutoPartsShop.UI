@@ -37,12 +37,6 @@ h1 {
     margin-bottom: 10px;
 }
 
-.order-status {
-    font-size: 14px;
-    font-weight: bold;
-    color: #007bff;
-}
-
 .order-info p, .order-items p {
     margin: 5px 0;
 }
@@ -142,3 +136,17 @@ button.delete:hover {
     border-radius: 5px;
     border: 1px solid #ccc;
   }
+
+  .order-status-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.status-message {
+  color: green;
+  font-size: 14px;
+  margin-top: 5px;
+}

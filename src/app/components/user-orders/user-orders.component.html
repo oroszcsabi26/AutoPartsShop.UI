@@ -21,7 +21,7 @@
         <div *ngFor="let order of orders" class="order-card">
             <h3>🛒 Rendelés azonosító: <span class="order-id">#{{ order.id }}</span></h3>
             <p><strong>📅 Leadás dátuma:</strong> {{ order.orderDate | date:'yyyy.MM.dd HH:mm' }}</p>
-            <p><strong>📌 Státusz:</strong> {{ order.status }}</p>
+            <p><strong>📌 Státusz:</strong> {{ selectedStatusMap[order.id] }}</p>
             <p><strong>💰 Végösszeg:</strong> <span class="total-price">{{ order.totalPrice | currency:'HUF' }}</span></p>
 
             <!-- 🔹 Rendelési tételek -->

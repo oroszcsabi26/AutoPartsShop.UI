@@ -7,9 +7,9 @@ import { OrderComponent } from './components/order/order.component';
 import { SuccessComponent } from './components/success/success.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { UserOrdersComponent } from './components/user-orders/user-orders.component';
-import { adminGuard } from './guards/admin.guard'; // ✅ Importáljuk az Admin Guardot
+import { adminGuard } from './guards/admin.guard'; // Importáljuk az Admin Guardot
 
-// 🔹 Importáljuk az admin komponenseket
+// Importáljuk az admin komponenseket
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { AdminCarsComponent } from './components/admin-cars/admin-cars.component';
 import { AdminModelsComponent } from './components/admin-models/admin-models.component';
@@ -30,7 +30,7 @@ export const routes: Routes = [
     { path: 'profil', component: ProfileComponent },
     { path: 'rendeleseim', component: UserOrdersComponent },
 
-    // 🔹 Admin oldalak
+    // Admin oldalak
     { path: 'admin/login', component: AdminLoginComponent },
     { path: 'admin/dashboard', component: AdminDashboardComponent, canActivate: [adminGuard] },
     { path: 'admin/cars', component: AdminCarsComponent },

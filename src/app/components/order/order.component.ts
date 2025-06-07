@@ -15,7 +15,6 @@ import { Router } from '@angular/router';
 export class OrderComponent implements OnInit {
   cartItems: CartItem[] = [];
   totalPrice: number = 0;
-  showSuccessModal: boolean = false;
 
   orderData = {
     shippingAddress: '',
@@ -71,14 +70,8 @@ export class OrderComponent implements OnInit {
       comment: this.orderData.comment
     }).subscribe({
       next: (response) => {
-        this.showSuccessModal = true; // ✅ Sikeres rendelés esetén mutatja a modált
-        //this.cartService.clearCartOnLogout().subscribe(); // ✅ Töröljük a kosarat a backendből
-       },
+        this.router.navigate(['/success']);},
       error: (err) => console.error('Hiba történt a rendelés leadásakor:', err)
     });
-  }
-  closeSuccessModal(): void {
-    this.showSuccessModal = false;
-    this.router.navigate(['/success']); // ✅ Navigálás a sikeres rendelési oldalra
   }
 }

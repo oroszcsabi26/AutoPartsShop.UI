@@ -1,0 +1,5 @@
+{
+  "rules": {
+    "passing-generics-to-types": "off"
+  }
+}

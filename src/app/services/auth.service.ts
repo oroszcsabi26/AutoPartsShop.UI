@@ -45,7 +45,7 @@ export class AuthService {
     this.loadUserFromStorage();
   }
 
-  // 🔹 Betölti a felhasználói adatokat a localStorage-ból
+  // Betölti a felhasználói adatokat a localStorage-ból
   private loadUserFromStorage(): void {
     const storedUser = localStorage.getItem(this.userKey);
     const storedToken = localStorage.getItem(this.tokenKey);
@@ -55,7 +55,7 @@ export class AuthService {
     }
   }
 
-  // 🔹 Bejelentkezés a backend API-n keresztül
+  // Bejelentkezés a backend API-n keresztül
   login(credentials: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials).pipe(
       tap((response) => {
@@ -67,27 +67,27 @@ export class AuthService {
     );
   }
 
-  // 🔹 Regisztráció a backend API-n keresztül
+  // Regisztráció a backend API-n keresztül
   register(userData: RegisterRequest): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, userData);
   }
 
-  // 🔹 Token visszaadása
+  // Token visszaadása
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
 
-  // 🔹 Figyeljük, hogy be van-e jelentkezve
+  // Figyeljük, hogy be van-e jelentkezve
   isAuthenticated(): Observable<boolean> {
     return this.authState.asObservable();
   }
 
-  // 🔹 Lekéri a bejelentkezett felhasználó adatait
+  // Lekéri a bejelentkezett felhasználó adatait
   getUser(): Observable<LoginResponse['user'] | null> {
     return this.userSubject.asObservable();
   }
 
-  // 🔹 Kijelentkezés (backend + frontend kosár törlés)
+  // Kijelentkezés (backend + frontend kosár törlés)
   logout(): void {
     this.cartService.clearCartOnLogout().subscribe({
       next: () => console.log('✅ Kosár törölve a backendről kijelentkezéskor.'),
@@ -95,10 +95,10 @@ export class AuthService {
       complete: () => {
         localStorage.removeItem(this.tokenKey);
         localStorage.removeItem(this.userKey);
-        localStorage.removeItem('cartId'); // 🔹 Kijelentkezéskor a cartId is törlődik!
+        localStorage.removeItem('cartId'); // Kijelentkezéskor a cartId is törlődik!
         this.authState.next(false);
         this.userSubject.next(null);
-        this.cartService.clearLocalCart(); // 🔹 Frontend kosár törlése
+        this.cartService.clearLocalCart(); // Frontend kosár törlése
       }
     });
   }

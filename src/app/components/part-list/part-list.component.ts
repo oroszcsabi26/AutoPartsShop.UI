@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core'; 
-import { PartService, Part, PartDisplay } from '../../services/part.service';
+import { PartService, PartDisplay } from '../../services/part.service';
 import { EquipmentService, Equipment } from '../../services/equipment.service';
 import { CartService, CartItem } from '../../services/cart.service'; // Kosárkezelő szolgáltatás importálása
 import { CommonModule } from '@angular/common';
@@ -103,7 +103,7 @@ export class PartListComponent implements OnInit {
       return;
     }
 
-    const isPart = 'PartsCategoryId' in item; // Ellenőrizzük, hogy alkatrész-e 
+    const isPart = 'partsCategoryId' in item; // Ellenőrizzük, hogy alkatrész-e 
 
     const cartItem: CartItem = {
       itemType: isPart ? "Part" : "Equipment",

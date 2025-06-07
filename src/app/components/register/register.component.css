@@ -1,6 +1,6 @@
 /* 🔹 Regisztrációs űrlap központozása */
 .register-container {
-    max-width: 400px;
+    width: 600px;
     margin: 40px auto;
     padding: 20px;
     background-color: #f9f9f9;
