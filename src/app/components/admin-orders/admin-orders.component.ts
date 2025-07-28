@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { OrderStatus } from '../../enums/order-status.enum';
+import { environment } from '../../../environments/environment';  
 
 @Component({
   selector: 'app-admin-orders',
@@ -38,7 +39,7 @@ export class AdminOrdersComponent implements OnInit {
 
   // Összes rendelés lekérése
   loadOrders(): void {
-    this.http.get<any[]>('http://localhost:5214/api/orders/all').subscribe({
+    this.http.get<any[]>(`${environment.azureApiUrl}/api/orders/all`).subscribe({
       next: (data) => {
         const query = this.searchQuery.toLowerCase().trim();
   
@@ -78,7 +79,7 @@ export class AdminOrdersComponent implements OnInit {
   confirmDelete(): void {
     if (!this.orderToDelete) return;
 
-    this.http.delete(`http://localhost:5214/api/orders/delete/${this.orderToDelete.id}`).subscribe({
+    this.http.delete(`${environment.azureApiUrl}/api/orders/delete/${this.orderToDelete.id}`).subscribe({
       next: () => {
         this.loadOrders();
         this.closeDeleteModal();
@@ -91,7 +92,7 @@ export class AdminOrdersComponent implements OnInit {
     const newStatus = this.selectedStatusMap[orderId];
     const body = { newStatus };
 
-    this.http.put(`http://localhost:5214/api/orders/update-status/${orderId}`, body).subscribe({
+    this.http.put(`${environment.azureApiUrl}/api/orders/update-status/${orderId}`, body).subscribe({
       next: () => {
         this.statusUpdateMessageMap[orderId] = '✅ Sikeresen frissítve!';
 

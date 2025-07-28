@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';  
 
 // 🔹 DTO a felhasználói adatokhoz
 export interface UserProfile {
@@ -31,7 +32,7 @@ export interface OrderItem {
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:5214/api/user'; // Backend API URL
+  private apiUrl = `${environment.azureApiUrl}/api/user`; // Backend API URL
 
   constructor(private http: HttpClient) {} // 🔹 Itt injektáljuk a HttpClient-et!
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';  
 
 // Alkatrész típus, amelyet hozzáadásnál/módosításnál használunk
 export interface Part {
@@ -45,7 +46,7 @@ export interface PartsCategory {
   providedIn: 'root'
 })
 export class PartService {
-  private apiUrl = 'http://localhost:5214/api/parts';  // Backend API URL
+  private apiUrl = `${environment.azureApiUrl}/api/parts`;  // Backend API URL
 
   constructor(private http: HttpClient) {}
 

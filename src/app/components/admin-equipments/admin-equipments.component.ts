@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../environments/environment';  
 
 @Component({
   selector: 'app-admin-equipments',
@@ -37,7 +38,7 @@ export class AdminEquipmentsComponent implements OnInit {
       return;
     }
   
-    this.http.get<any[]>('http://localhost:5214/api/equipment').subscribe({
+    this.http.get<any[]>(`${environment.azureApiUrl}/api/equipment`).subscribe({
       next: (data) => {
         const query = this.searchQuery.toLowerCase();
         this.equipments = data.filter(e =>
@@ -52,7 +53,7 @@ export class AdminEquipmentsComponent implements OnInit {
 
   // Kategóriák betöltése
   loadCategories(): void {
-    this.http.get<any[]>('http://localhost:5214/api/equipmentcategories').subscribe({
+    this.http.get<any[]>(`${environment.azureApiUrl}/api/equipmentcategories`).subscribe({
       next: (data) => this.categories = data,
       error: () => this.errorMessage = 'Nem sikerült betölteni a kategóriákat!'
     });
@@ -88,7 +89,7 @@ export class AdminEquipmentsComponent implements OnInit {
     formData.append('ImageFile', this.selectedImageFile);
   }
 
-  this.http.post('http://localhost:5214/api/equipment', formData).subscribe({
+  this.http.post(`${environment.azureApiUrl}/api/equipment`, formData).subscribe({
     next: () => {
       this.newEquipment = {
         name: '',
@@ -122,7 +123,7 @@ export class AdminEquipmentsComponent implements OnInit {
       return;
     }
 
-    this.http.put(`http://localhost:5214/api/equipment/${this.editEquipmentId}`, this.editEquipment).subscribe({
+    this.http.put(`${environment.azureApiUrl}/api/equipment/${this.editEquipmentId}`, this.editEquipment).subscribe({
       next: () => {
         this.editEquipmentId = null;
         this.editEquipment = {};
@@ -145,7 +146,7 @@ export class AdminEquipmentsComponent implements OnInit {
   confirmDelete(): void {
     if (!this.equipmentToDelete) return;
 
-    this.http.delete(`http://localhost:5214/api/equipment/${this.equipmentToDelete.id}`).subscribe({
+    this.http.delete(`${environment.azureApiUrl}/api/equipment/${this.equipmentToDelete.id}`).subscribe({
       next: () => {
         this.loadEquipments();
         this.closeDeleteModal();

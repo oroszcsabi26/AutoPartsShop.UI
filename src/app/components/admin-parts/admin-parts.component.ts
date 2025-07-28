@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../environments/environment';  
 
 @Component({
   selector: 'app-admin-parts',
@@ -50,7 +51,7 @@ export class AdminPartsComponent implements OnInit {
 
   // Autómárkák betöltése
   loadCarBrands(): void {
-    this.http.get<any[]>('http://localhost:5214/api/cars').subscribe({
+    this.http.get<any[]>(`${environment.azureApiUrl}/api/cars`).subscribe({
       next: (data) => this.carBrands = data,
       error: () => this.errorMessage = 'Nem sikerült betölteni az autómárkákat!'
     });
@@ -64,7 +65,7 @@ export class AdminPartsComponent implements OnInit {
 
     if (!this.selectedBrandId) return;
 
-    this.http.get<any[]>(`http://localhost:5214/api/cars/models/brand/${this.selectedBrandId}`).subscribe({
+    this.http.get<any[]>(`${environment.azureApiUrl}/api/cars/models/brand/${this.selectedBrandId}`).subscribe({
       next: (data) => this.carModels = data,
       error: () => this.errorMessage = 'Nem sikerült betölteni az autómodelleket!'
     });
@@ -72,7 +73,7 @@ export class AdminPartsComponent implements OnInit {
 
   // Alkatrész kategóriák betöltése
   loadCategories(): void {
-    this.http.get<any[]>('http://localhost:5214/api/parts/categories').subscribe({
+    this.http.get<any[]>(`${environment.azureApiUrl}/api/parts/categories`).subscribe({
       next: (data) => this.categories = data,
       error: () => this.errorMessage = 'Nem sikerült betölteni az alkatrész kategóriákat!'
     });
@@ -84,7 +85,7 @@ export class AdminPartsComponent implements OnInit {
 
     if (!this.selectedModelId || !this.selectedCategoryId) return;
 
-    this.http.get<any[]>(`http://localhost:5214/api/parts/search?carModelId=${this.selectedModelId}&partsCategoryId=${this.selectedCategoryId}`)
+    this.http.get<any[]>(`${environment.azureApiUrl}/api/parts/search?carModelId=${this.selectedModelId}&partsCategoryId=${this.selectedCategoryId}`)
       .subscribe({
         next: (data) => this.parts = data,
         error: () => this.errorMessage = 'Nem sikerült betölteni az alkatrészeket!'
@@ -123,7 +124,7 @@ export class AdminPartsComponent implements OnInit {
     }
   
     // Küldés backendre
-    this.http.post('http://localhost:5214/api/parts', formData).subscribe({
+    this.http.post(`${environment.azureApiUrl}/api/parts`, formData).subscribe({
       next: () => {
         this.newPart = {
           name: '',
@@ -181,7 +182,7 @@ export class AdminPartsComponent implements OnInit {
     }
   
     // PUT kérés küldése
-    this.http.put(`http://localhost:5214/api/parts/${this.editPartId}`, formData).subscribe({
+    this.http.put(`${environment.azureApiUrl}/api/parts/${this.editPartId}`, formData).subscribe({
       next: () => {
         this.editPartId = null;
         this.editPart = {};
@@ -208,7 +209,7 @@ export class AdminPartsComponent implements OnInit {
   confirmDelete(): void {
     if (!this.partToDelete) return;
 
-    this.http.delete(`http://localhost:5214/api/parts/${this.partToDelete.id}`).subscribe({
+    this.http.delete(`${environment.azureApiUrl}/api/parts/${this.partToDelete.id}`).subscribe({
       next: () => {
         this.loadParts();
         this.closeDeleteModal();

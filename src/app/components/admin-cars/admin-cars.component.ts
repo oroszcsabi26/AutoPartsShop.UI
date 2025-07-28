@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { environment } from '../../../environments/environment';  
 
 @Component({
   selector: 'app-admin-cars',
@@ -25,7 +26,7 @@ export class AdminCarsComponent implements OnInit {
 
   // Autómárkák betöltése az adatbázisból
   loadCars(): void {
-    this.http.get<any[]>('http://localhost:5214/api/cars').subscribe({
+    this.http.get<any[]>(`${environment.azureApiUrl}/api/cars`).subscribe({
       next: (data) => this.cars = data,
       error: (err) => {
         console.error('Hiba az autómárkák lekérésekor:', err);
@@ -42,7 +43,7 @@ export class AdminCarsComponent implements OnInit {
       return;
     }
 
-    this.http.post('http://localhost:5214/api/cars', { name: this.newCarName }).subscribe({
+    this.http.post(`${environment.azureApiUrl}/api/cars`, { name: this.newCarName }).subscribe({
       next: () => {
         this.newCarName = '';
         this.loadCars();
@@ -64,7 +65,7 @@ export class AdminCarsComponent implements OnInit {
     this.errorMessage = '';
     if (this.editCarId === null || !this.editCarName.trim()) return;
 
-    this.http.put(`http://localhost:5214/api/cars/${this.editCarId}`, { name: this.editCarName }).subscribe({
+    this.http.put(`${environment.azureApiUrl}/api/cars/${this.editCarId}`, { name: this.editCarName }).subscribe({
       next: () => {
         this.editCarId = null;
         this.editCarName = '';
@@ -82,7 +83,7 @@ export class AdminCarsComponent implements OnInit {
     this.errorMessage = '';
     if (!confirm('Biztosan törölni szeretnéd ezt az autómárkát?')) return;
 
-    this.http.delete(`http://localhost:5214/api/cars/${carId}`).subscribe({
+    this.http.delete(`${environment.azureApiUrl}/api/cars/${carId}`).subscribe({
       next: () => this.loadCars(),
       error: (err) => {
         console.error('Hiba az autómárka törlésekor:', err);

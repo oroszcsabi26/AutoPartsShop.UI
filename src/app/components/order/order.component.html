@@ -1,45 +1,55 @@
 <div class="order-container">
   <h2>📦 Rendelés leadása</h2>
 
-  <!-- Kosár tartalma -->
   <div *ngIf="cartItems.length > 0">
-      <h3>🛒 Kosár tartalma</h3>
-      <ul>
-          <li *ngFor="let item of cartItems">
-              <strong>{{ item.name }}</strong> - {{ item.quantity }} db × {{ item.price | currency:'HUF' }} =
-              {{ item.price * item.quantity | currency:'HUF' }}
-          </li>
-      </ul>
-
-      <!-- Összesített ár -->
-      <p><strong>Összesen: {{ totalPrice | currency:'HUF' }}</strong></p>
+    <h3>🛒 Kosár tartalma</h3>
+    <ul>
+      <li *ngFor="let item of cartItems">
+        <strong>{{ item.name }}</strong> - {{ item.quantity }} db × {{ item.price | currency:'HUF' }} =
+        {{ item.price * item.quantity | currency:'HUF' }}
+      </li>
+    </ul>
+    <p><strong>Összesen: {{ totalPrice | currency:'HUF' }}</strong></p>
   </div>
 
-  <!-- Szállítási és számlázási adatok megadása -->
   <form (ngSubmit)="placeOrder()" class="order-form">
-      
-      <!-- Felhasználói adatok -->
-      <label for="name">👤 Név:</label>
-      <input type="text" id="name" [(ngModel)]="orderData.name" name="name" readonly>
 
-      <label for="phone">📞 Telefonszám:</label>
-      <input type="text" id="phone" [(ngModel)]="orderData.phoneNumber" name="phone">
+    <label for="name">👤 Név:</label>
+    <input type="text" id="name" [(ngModel)]="orderData.name" name="name" readonly>
 
-      <!-- Szállítási és számlázási cím -->
-      <label for="shippingAddress">📍 Szállítási cím:</label>
-      <input type="text" id="shippingAddress" [(ngModel)]="orderData.shippingAddress" name="shippingAddress" required>
+    <label for="phone">📞 Telefonszám:</label>
+    <input type="text" id="phone" [(ngModel)]="orderData.phoneNumber" name="phone">
 
-      <label for="billingAddress">📜 Számlázási cím:</label>
-      <input type="text" id="billingAddress" [(ngModel)]="orderData.billingAddress" name="billingAddress" required>
+    <label for="shippingAddress">📍 Szállítási cím:</label>
+    <input type="text" id="shippingAddress" [(ngModel)]="orderData.shippingAddress" name="shippingAddress" required>
 
-      <!-- Megjegyzés -->
-      <label for="comment">✍️ Megjegyzés:</label>
-      <textarea id="comment" [(ngModel)]="orderData.comment" name="comment" maxlength="200"
-          placeholder="Pl. Egyéb kérések a rendeléshez..."></textarea>
+    <label for="billingAddress">📜 Számlázási cím:</label>
+    <input type="text" id="billingAddress" [(ngModel)]="orderData.billingAddress" name="billingAddress" required>
 
-      <!-- Rendelés leadása gomb -->
-      <button type="submit">✅ Rendelés leadása</button>
+    <label for="shippingMethod">🚚 Szállítási mód:</label>
+    <select id="shippingMethod" [(ngModel)]="orderData.shippingMethod" name="shippingMethod" required>
+      <option *ngFor="let method of shippingMethods" [value]="method">
+        {{ method }}
+      </option>
+    </select>
+
+    <label for="paymentMethod">💳 Fizetési mód:</label>
+    <label class="payment-note">
+      Készpénz, Bankkártya átvételkor => + 1000,-Ft<br>
+      Átutalás, Online Bankkártya => Ingyenes
+    </label>
+
+    <select id="paymentMethod" [(ngModel)]="orderData.paymentMethod" name="paymentMethod" required (change)="calculateTotalPrice()">
+      <option *ngFor="let method of paymentMethods" [value]="method">
+        {{ method }}
+      </option>
+    </select>
+
+    <label for="comment">✍️ Megjegyzés:</label>
+    <textarea id="comment" [(ngModel)]="orderData.comment" name="comment" maxlength="200"
+      placeholder="Pl. Egyéb kérések a rendeléshez..."></textarea>
+
+    <button type="submit">✅ Rendelés leadása</button>
   </form>
 </div>
-
 

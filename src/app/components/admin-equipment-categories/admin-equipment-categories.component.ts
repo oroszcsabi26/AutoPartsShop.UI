@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../environments/environment';  
 
 @Component({
   selector: 'app-admin-equipment-categories',
@@ -26,7 +27,7 @@ export class AdminEquipmentCategoriesComponent implements OnInit {
 
   // 🔹 Kategóriák betöltése
   loadCategories(): void {
-    this.http.get<any[]>('http://localhost:5214/api/equipmentcategories').subscribe({
+    this.http.get<any[]>(`${environment.azureApiUrl}/api/equipmentcategories`).subscribe({
       next: (data) => this.categories = data,
       error: () => this.errorMessage = 'Nem sikerült betölteni a kategóriákat!'
     });
@@ -40,7 +41,7 @@ export class AdminEquipmentCategoriesComponent implements OnInit {
     }
 
     const newCategory = { name: this.newCategoryName };
-    this.http.post('http://localhost:5214/api/equipmentcategories', newCategory).subscribe({
+    this.http.post(`${environment.azureApiUrl}/api/equipmentcategories`, newCategory).subscribe({
       next: () => {
         this.newCategoryName = '';
         this.loadCategories();
@@ -60,7 +61,7 @@ export class AdminEquipmentCategoriesComponent implements OnInit {
     if (this.editCategoryId === null || !this.editCategoryName.trim()) return;
 
     const updatedCategory = { name: this.editCategoryName };
-    this.http.put(`http://localhost:5214/api/equipmentcategories/${this.editCategoryId}`, updatedCategory).subscribe({
+    this.http.put(`${environment.azureApiUrl}/api/equipmentcategories/${this.editCategoryId}`, updatedCategory).subscribe({
       next: () => {
         this.editCategoryId = null;
         this.editCategoryName = '';
@@ -88,7 +89,7 @@ export class AdminEquipmentCategoriesComponent implements OnInit {
   confirmDelete(): void {
     if (!this.categoryToDelete) return;
 
-    this.http.delete(`http://localhost:5214/api/equipmentcategories/${this.categoryToDelete.id}`).subscribe({
+    this.http.delete(`${environment.azureApiUrl}/api/equipmentcategories/${this.categoryToDelete.id}`).subscribe({
       next: () => {
         this.loadCategories();
         this.closeDeleteModal();

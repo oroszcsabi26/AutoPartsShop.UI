@@ -1,5 +1,7 @@
 {
       "rules": {
     "passing-generics-to-types": "off"
-  }
+  },
+  "appService.defaultWebAppToDeploy": "/subscriptions/12110c69-1be6-49c8-b83a-980b167373bf/resourceGroups/autopartsshop-rg/providers/Microsoft.Web/sites/autopartsshopfrontend",
+  "appService.deploySubpath": "dist/auto-parts-shop.ui/browser"
 }

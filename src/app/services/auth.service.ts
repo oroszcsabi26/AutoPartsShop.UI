@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { CartService } from './cart.service';
+import { environment } from '../../environments/environment';  
 
 export interface LoginResponse {
   token: string;
@@ -33,7 +34,7 @@ export interface RegisterRequest {
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:5214/api/user';
+  private apiUrl = `${environment.azureApiUrl}/api/user`;
   private tokenKey = 'authToken';
   private userKey = 'user';
 

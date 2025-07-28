@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';  
 
 // 🔹 Autómárka és modell interfészek
 export interface CarBrand {
@@ -18,7 +19,7 @@ export interface CarModel {
   providedIn: 'root'
 })
 export class CarService {
-  private apiUrl = 'http://localhost:5214/api/cars';
+  private apiUrl = `${environment.azureApiUrl}/api/cars`;
 
   constructor(private http: HttpClient) {}
 

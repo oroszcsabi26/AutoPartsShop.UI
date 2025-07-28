@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';  
 
 // Equipment hozzáadásához/szerkesztéséhez használt interfész
 export interface Equipment {
@@ -42,8 +43,8 @@ export interface EquipmentCategory {
   providedIn: 'root'
 })
 export class EquipmentService {
-  private apiUrlGetEquipmentCategories = 'http://localhost:5214/api/equipmentcategories';  // API URL
-  private apiUrlGetEquipments = 'http://localhost:5214/api/equipment/category';  // API URL
+  private apiUrlGetEquipmentCategories = `${environment.azureApiUrl}/api/equipmentcategories`;  // API URL
+  private apiUrlGetEquipments = `${environment.azureApiUrl}/api/equipment/category`;  // API URL
 
   constructor(private http: HttpClient) {}
 

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';  
 
 // 🔹 Kosár elem interfész
 export interface CartItem {
@@ -19,7 +20,7 @@ export interface CartItem {
   providedIn: 'root'
 })
 export class CartService {
-  private apiUrl = 'http://localhost:5214/api/cart';
+  private apiUrl = `${environment.azureApiUrl}/api/cart`;
   private router = inject(Router);
   private http = inject(HttpClient);
 

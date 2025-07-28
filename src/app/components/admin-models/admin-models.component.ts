@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../environments/environment';  
 
 @Component({
   selector: 'app-admin-models',
@@ -29,7 +30,7 @@ export class AdminModelsComponent implements OnInit {
   }
 
   loadBrands(): void {
-    this.http.get<any[]>('http://localhost:5214/api/cars').subscribe({
+    this.http.get<any[]>(`${environment.azureApiUrl}/api/cars`).subscribe({
       next: (data) => this.carBrands = data,
       error: () => this.errorMessage = 'Nem sikerült betölteni az autómárkákat!'
     });
@@ -41,7 +42,7 @@ export class AdminModelsComponent implements OnInit {
       return;
     }
 
-    this.http.get<any[]>(`http://localhost:5214/api/cars/models/brand/${this.selectedBrandId}`).subscribe({
+    this.http.get<any[]>(`${environment.azureApiUrl}/api/cars/models/brand/${this.selectedBrandId}`).subscribe({
       next: (data) => this.carModels = data,
       error: () => this.errorMessage = 'Nem sikerült betölteni az autómodelleket!'
     });
@@ -54,7 +55,7 @@ export class AdminModelsComponent implements OnInit {
     }
 
     const newModel = { name: this.newModelName, year: this.newModelYear };
-    this.http.post(`http://localhost:5214/api/cars/models/${this.selectedBrandId}`, newModel).subscribe({
+    this.http.post(`${environment.azureApiUrl}/api/cars/models/${this.selectedBrandId}`, newModel).subscribe({
       next: () => {
         this.newModelName = '';
         this.newModelYear = null;
@@ -74,7 +75,7 @@ export class AdminModelsComponent implements OnInit {
     if (this.editModelId === null || !this.editModelName.trim() || this.editModelYear === null) return;
 
     const updatedModel = { name: this.editModelName, year: this.editModelYear };
-    this.http.put(`http://localhost:5214/api/cars/models/${this.editModelId}`, updatedModel).subscribe({
+    this.http.put(`${environment.azureApiUrl}/api/cars/models/${this.editModelId}`, updatedModel).subscribe({
       next: () => {
         this.editModelId = null;
         this.editModelName = '';
@@ -103,7 +104,7 @@ export class AdminModelsComponent implements OnInit {
   confirmDelete(): void {
     if (!this.modelToDelete) return;
 
-    this.http.delete(`http://localhost:5214/api/cars/models/${this.modelToDelete.id}`).subscribe({
+    this.http.delete(`${environment.azureApiUrl}/api/cars/models/${this.modelToDelete.id}`).subscribe({
       next: () => {
         this.loadModels();
         this.closeDeleteModal();

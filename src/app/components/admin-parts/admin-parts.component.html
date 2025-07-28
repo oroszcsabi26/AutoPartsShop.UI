@@ -64,7 +64,7 @@
             <strong>{{ part.name }}</strong> - {{ part.price }} Ft
               <!-- 🔽 Kép megjelenítése, ha van -->
             <div *ngIf="part.imageUrl" class="part-image-container">
-              <img [src]="'http://localhost:5214' + part.imageUrl" alt="Alkatrész kép" class="part-image">
+              <img [src]="part.imageUrl" alt="Alkatrész kép" class="part-image">
             </div>
             <button class="edit" (click)="startEdit(part)">✏️ Szerkesztés</button>
             <button class="delete" (click)="openDeleteModal(part)">🗑️ Törlés</button>

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';  
 
 @Component({
   selector: 'app-admin-login',
@@ -21,7 +22,7 @@ export class AdminLoginComponent {
   login(): void {
     this.errorMessage = ''; // Hibaüzenet törlése az új próbálkozás előtt
 
-    this.http.post<{ token: string, user: any }>('http://localhost:5214/api/user/login', {
+    this.http.post<{ token: string, user: any }>(`${environment.azureApiUrl}/api/user/login`, {
       email: this.email,
       password: this.password
     }).subscribe({

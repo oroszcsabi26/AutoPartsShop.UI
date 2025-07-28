@@ -1,12 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ShippingMethod } from '../enums/shipping-method.enum';
+import { environment } from '../../environments/environment';  
 
 // 🔹 Rendelés létrehozásához szükséges adatok
 export interface OrderRequest {
   shippingAddress: string;
   billingAddress: string;
   comment?: string;
+  shippingMethod: string;
+  paymentMethod: string;
+  extraFee: number;
 }
 
 // 🔹 A backendről kapott felhasználói rendelési adatok struktúrája
@@ -21,7 +26,7 @@ export interface UserOrderData {
   providedIn: 'root'
 })
 export class OrderService {
-  private apiUrl = 'http://localhost:5214/api/orders';
+  private apiUrl = `${environment.azureApiUrl}/api/orders`;
 
   constructor(private http: HttpClient) {}
 
