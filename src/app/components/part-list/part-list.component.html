@@ -19,7 +19,7 @@
           <!-- Gyártó + név -->
           <span class="part-name">{{ part.manufacturer }} {{ part.name }}
             <i class="bi bi-camera" role="button"
-            (click)="openImageModal('http://localhost:5214' + part.imageUrl)"
+            (click)="openImageModal(part.imageUrl)"
             *ngIf="part.imageUrl"
             title="Kép megtekintése"
             style="margin-left: 10px; color: #007bff; cursor: pointer;">
@@ -88,7 +88,7 @@
         <div class="part-info">
           <span class="part-name">{{ equipment.manufacturer }} {{ equipment.name }}
             <i class="bi bi-camera" role="button"
-              (click)="openImageModal('http://localhost:5214' + equipment.imageUrl)"
+              (click)="openImageModal(equipment.imageUrl)"
               *ngIf="equipment.imageUrl"
               title="Kép megtekintése"
               style="margin-left: 10px; color: #007bff; cursor: pointer;">
@@ -96,9 +96,9 @@
           </span>
           <span class="part-price">{{ equipment.price | currency:'HUF' }}</span>
           <div class="part-details">
-            <small *ngIf="equipment.description">Leírás: {{ equipment.description }}</small><br />
-            <small *ngIf="equipment.material">Anyag: {{ equipment.material }}</small><br />
-            <small *ngIf="equipment.side">Oldal: {{ equipment.side }}</small><br />
+            <small *ngIf="equipment.description">Leírás: {{ equipment.description }}</small>
+            <small *ngIf="equipment.material">Anyag: {{ equipment.material }}</small>
+            <small *ngIf="equipment.side">Oldal: {{ equipment.side }}</small>
             <small *ngIf="equipment.quantity !== undefined">Mennyiség: {{ equipment.quantity }}</small>
           </div>
         </div>

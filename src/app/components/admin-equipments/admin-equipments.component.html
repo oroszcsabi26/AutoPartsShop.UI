@@ -20,9 +20,9 @@
     <input type="text" [(ngModel)]="newEquipment.price" placeholder="Ár">
     <input type="text" [(ngModel)]="newEquipment.description" placeholder="Leírás (opcionális)" />
     <input type="number" [(ngModel)]="newEquipment.quantity" placeholder="Mennyiség (opcionális)" />
-    <input type="text" [(ngModel)]="newEquipment.imageUrl" placeholder="Kép URL (opcionális)" />
     <input type="text" [(ngModel)]="newEquipment.material" placeholder="Anyag (opcionális)" />
     <input type="text" [(ngModel)]="newEquipment.side" placeholder="Oldal (opcionális)" />
+    <input type="file" (change)="onImageSelected($event)" />
     <select [(ngModel)]="newEquipment.equipmentCategoryId">
       <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
     </select>
@@ -33,6 +33,9 @@
   <ul class="equipment-list">
     <li *ngFor="let equipment of equipments">
       <div *ngIf="editEquipmentId !== equipment.id">
+        <div *ngIf="equipment.imageUrl" class="equipment-image-container">
+              <img [src]="equipment.imageUrl" alt="Felszerelés kép" class="equipment-image">
+        </div>
         <strong>{{ equipment.name }}</strong> - {{ equipment.manufacturer }} - {{ equipment.price }} Ft
         <span *ngIf="equipment.size"> ({{ equipment.size }})</span>
         <span class="category-info">Kategória: {{ equipment.equipmentCategory?.name }}</span>
