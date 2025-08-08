@@ -42,6 +42,9 @@ export interface PartsCategory {
   name: string;
 }
 
+let fuelType: string | null = null;
+let engineSize: number | null = null;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -81,16 +84,28 @@ export class PartService {
   }
 
   // Alkatrészek keresése név, autómodell és kategória alapján (bővített adattal tér vissza)
-  searchParts(query: string, carModelId: number | null, partsCategoryId: number | null): Observable<PartDisplay[]> {
-    let url = `${this.apiUrl}/search?name=${query}`;
+  searchParts(
+  query: string,
+  carModelId: number | null,
+  partsCategoryId: number | null,
+  year: number | null,
+  engine: string | null
+): Observable<PartDisplay[]> {
+  let url = `${this.apiUrl}/search?name=${query}`;
 
-    if (carModelId !== null) {
-      url += `&carModelId=${carModelId}`;
+  if (carModelId !== null) url += `&carModelId=${carModelId}`;
+  if (partsCategoryId !== null) url += `&partsCategoryId=${partsCategoryId}`;
+  if (year !== null) url += `&year=${year}`;
+  if (engine) {
+  const parts = engine.split('/');
+  if (parts.length === 2) {
+    fuelType = parts[0];
+    engineSize = parseInt(parts[1], 10);
     }
-    if (partsCategoryId !== null) {
-      url += `&partsCategoryId=${partsCategoryId}`;
-    }
-
-    return this.http.get<PartDisplay[]>(url);
   }
+  if (fuelType !== null) url += `&fuelType=${encodeURIComponent(fuelType)}`;
+  if (engineSize !== null) url += `&engineSize=${engineSize}`;
+
+  return this.http.get<PartDisplay[]>(url);
+}
 }

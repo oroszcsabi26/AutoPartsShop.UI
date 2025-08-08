@@ -13,6 +13,8 @@ export interface CarModel {
   id: number;
   name: string;
   carBrandId: number;
+  fuelType?: string;
+  engineSize?: number;
 }
 
 @Injectable({
@@ -32,4 +34,14 @@ export class CarService {
   getCarModels(brandId: number): Observable<CarModel[]> {
     return this.http.get<CarModel[]>(`${this.apiUrl}/models/brand/${brandId}`);
   }
+
+  // Egy adott autómodellhez tartozó kompatibilis évjáratok lekérése
+  getCompatibleYearsByModel(modelId: number): Observable<number[]> {
+    return this.http.get<number[]>(`${this.apiUrl}/models/compatible-years/model/${modelId}`);
+}
+  getEngineVariants(brandId: number, modelName: string, year: number): Observable<string[]> {
+  return this.http.get<string[]>(
+    `${this.apiUrl}/models/brandId/${brandId}/modelName/${modelName}/year/${year}/engine-options`
+  );
+}
 }

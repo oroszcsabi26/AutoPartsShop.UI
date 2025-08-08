@@ -43,14 +43,21 @@
         
             <div class="search-container">
                 <app-vehicle-selection
-                    (selectedModelChange)="selectedModelId = $event"
-                    (selectedCategoryChange)="selectedCategoryId = $event">
+                    (selectedBrandChange)="onBrandChanged($event)"
+                    (selectedModelChange)="onModelChanged($event)"
+                    (selectedYearChange)="onYearChanged($event)"
+                    (selectedEngineVariantChange)="onEngineVariantChanged($event)"
+                    (selectedCategoryChange)="onCategoryChanged($event)">
                 </app-vehicle-selection>
 
                 <app-part-list
+                    [selectedBrandId]="selectedBrandId"
                     [selectedModelId]="selectedModelId"
+                    [selectedYear]="selectedYear"
+                    [selectedEngine]="selectedEngineVariant"
                     [selectedCategoryId]="selectedCategoryId"
                     [selectedEquipmentCategoryId]="selectedEquipmentCategoryId">
+
                 </app-part-list>
             </div>
 

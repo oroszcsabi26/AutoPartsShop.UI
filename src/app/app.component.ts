@@ -45,7 +45,10 @@ export class AppComponent implements OnInit {
   equipmentSearchQuery: string = '';
   equipmentResults: Equipment[] = []; 
 
+  selectedBrandId: number | null = null;
   selectedModelId: number | null = null;
+  selectedYear: number | null = null;
+  selectedEngineVariant: string | null = null;
   selectedCategoryId: number | null = null;
 
   constructor(
@@ -159,4 +162,34 @@ export class AppComponent implements OnInit {
   toggleProfileMenu(): void {
     this.isProfileMenuOpen = !this.isProfileMenuOpen;
   }
+
+  onBrandChanged(brandId: number | null): void {
+  this.selectedBrandId = brandId;
+  this.selectedModelId = null;
+  this.selectedYear = null;
+  this.selectedEngineVariant = null;
+  this.selectedCategoryId = null;
+}
+
+onModelChanged(modelId: number | null): void {
+  this.selectedModelId = modelId;
+  this.selectedYear = null;
+  this.selectedEngineVariant = null;
+  this.selectedCategoryId = null;
+}
+
+onYearChanged(year: number | null): void {
+  this.selectedYear = year;
+  this.selectedEngineVariant = null;
+  this.selectedCategoryId = null;
+}
+
+onEngineVariantChanged(variant: string | null): void {
+  this.selectedEngineVariant = variant;
+  this.selectedCategoryId = null;
+}
+
+onCategoryChanged(categoryId: number | null): void {
+  this.selectedCategoryId = categoryId;
+}
 }

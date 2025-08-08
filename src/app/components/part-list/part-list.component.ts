@@ -22,7 +22,10 @@ export class PartListComponent implements OnInit {
   showSuccessMessage = false;   // Sikeres hozzáadás üzenet megjelenítése
   selectedImageUrl: string | null = null; // Kép URL tárolása
 
+  @Input() selectedBrandId: number | null = null;
   @Input() selectedModelId: number | null = null;
+  @Input() selectedYear: number | null = null;
+  @Input() selectedEngine: string | null = null; 
   @Input() selectedCategoryId: number | null = null;
   @Input() selectedEquipmentCategoryId: number | null = null; 
 
@@ -55,7 +58,7 @@ export class PartListComponent implements OnInit {
       return;
     }
 
-    this.partService.searchParts(this.searchQuery, this.selectedModelId, this.selectedCategoryId).subscribe({
+    this.partService.searchParts(this.searchQuery, this.selectedModelId, this.selectedCategoryId, this.selectedYear, this.selectedEngine).subscribe({
       next: (data) => {
         this.parts = data.map(part => ({ ...part, quantity: part.quantity || 1 }));
       },

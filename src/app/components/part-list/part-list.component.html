@@ -5,7 +5,6 @@
   <input 
     type="text" 
     [(ngModel)]="searchQuery" 
-    (keyup.enter)="searchParts()" 
     placeholder="Írd be az alkatrész nevét..." 
   />
   <button (click)="searchParts()">Keresés</button>
@@ -70,7 +69,6 @@
   <input 
     type="text" 
     [(ngModel)]="equipmentSearchQuery" 
-    (keyup.enter)="searchEquipments()" 
     placeholder="Írd be a felszerelési cikk nevét..." 
   />
   <button (click)="searchEquipments()">Keresés</button>

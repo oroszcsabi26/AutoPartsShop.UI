@@ -1,6 +1,6 @@
 <!-- 🔹 Autómárka választó -->
 <label for="carBrand">Autómárka:</label>
-<select id="carBrand" [(ngModel)]="selectedBrandId" (change)="loadCarModels()">
+<select id="carBrand" [(ngModel)]="selectedBrandId" (change)="onBrandSelected()">
   <option *ngFor="let brand of carBrands" [value]="brand.id">{{ brand.name }}</option>
 </select>
 
@@ -8,6 +8,21 @@
 <label for="carModel">Autómodell:</label>
 <select id="carModel" [(ngModel)]="selectedModelId" (change)="onModelSelected($event)">
   <option *ngFor="let model of carModels" [value]="model.id">{{ model.name }}</option>
+</select>
+
+<!-- 🔹 Évjárat választó -->
+<label for="year">Évjárat:</label>
+<select id="year" [(ngModel)]="selectedYear" (change)="onYearSelected()">
+  <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+</select>
+
+<!-- 🔹 Motorváltozat választó -->
+<label for="engineVariant">Motorváltozat (üzemanyag / cm³):</label>
+<select id="engineVariant" [(ngModel)]="selectedEngineVariant" (change)="onEngineVariantSelected($event)">
+  <option *ngFor="let variant of engineVariants" 
+          [value]="variant.fuelType + '/' + variant.engineSize">
+    {{ variant.fuelType }} / {{ variant.engineSize }} cm³
+  </option>
 </select>
 
 <!-- 🔹 Alkatrész kategória választó -->
