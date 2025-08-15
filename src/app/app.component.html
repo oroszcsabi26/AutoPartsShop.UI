@@ -2,19 +2,15 @@
     <div class="site-title">CSCarShop Kft.</div>
     <nav class="nav-bar">
         <div class="nav-left">
-            <!-- Bejelentkezés és Regisztráció gombok -->
             <a *ngIf="!isAuthenticated" routerLink="/bejelentkezes" class="auth-link">🔑 Bejelentkezés</a>
             <a *ngIf="!isAuthenticated" routerLink="/regisztracio" class="auth-link">📝 Regisztráció</a>
 
-            <!-- Kijelentkezés gomb, ha a felhasználó be van jelentkezve -->
             <a *ngIf="isAuthenticated" (click)="logout()" class="auth-link logout-button">🚪 Kijelentkezés</a>
         </div>
 
         <div class="nav-right">
-            <!-- Kosár gomb -->
             <a *ngIf="isAuthenticated" routerLink="/kosar" class="cart-link">🛒 Kosár</a>
 
-            <!-- Profil gomb és menü -->
             <div *ngIf="isAuthenticated" class="profile-dropdown">
                 <button class="profile-btn" (click)="toggleProfileMenu()">
                     👤 {{ userName }} ▼
@@ -29,15 +25,12 @@
 </header>
 
 <div class="container">
-    <!-- A fő tartalom -->
     <div class="content">
-        <!-- Csak az adott oldal tartalma jelenjen meg -->
         <div *ngIf="isLoginPage || isRegisterPage || isOrderPage || isSuccessPage || isCartPage || isProfilePage || isAdminPage || isAdminDashboardPage || isAdminCarsPage
             || IsAdminModelsPage || isAdminEquipmentCategoriesPage || isAdminEquipmentPage || isAdminPartsCategoriesPage || isAdminPartsPage || isAdminOrdersPage">
             <router-outlet></router-outlet>
         </div>
 
-        <!-- Ha nem ezek az oldalak, akkor a keresési modulok jelenjenek meg -->
         <div *ngIf="!(isLoginPage || isRegisterPage || isOrderPage || isSuccessPage || isCartPage || isProfilePage || isAdminPage || isAdminDashboardPage || isAdminCarsPage
             || IsAdminModelsPage || isAdminEquipmentCategoriesPage || isAdminEquipmentPage || isAdminPartsCategoriesPage || isAdminPartsPage || isAdminOrdersPage)">
         
@@ -54,20 +47,18 @@
                     [selectedBrandId]="selectedBrandId"
                     [selectedModelId]="selectedModelId"
                     [selectedYear]="selectedYear"
-                    [selectedEngine]="selectedEngineVariant"
+                    [selectedEngineVariantId]="selectedEngineVariantId"
                     [selectedCategoryId]="selectedCategoryId"
                     [selectedEquipmentCategoryId]="selectedEquipmentCategoryId">
 
                 </app-part-list>
             </div>
 
-            <!-- Angular Router kimeneti hely -->
             <router-outlet></router-outlet>
         </div>
     </div>
 </div>
 
-<!--  Footer -->
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-section">

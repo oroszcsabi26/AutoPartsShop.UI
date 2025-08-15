@@ -7,7 +7,7 @@
     [(ngModel)]="searchQuery" 
     placeholder="Írd be az alkatrész nevét..." 
   />
-  <button (click)="searchParts()">Keresés</button>
+  <button (click)="searchParts()" [disabled]="!selectedEngineVariantId || !selectedCategoryId">Keresés</button>
 
   <!-- Keresési találatok (Alkatrészek) -->
   <div class="results-container" *ngIf="parts.length > 0">

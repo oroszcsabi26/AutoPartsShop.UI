@@ -78,14 +78,12 @@ export class AdminEquipmentCategoriesComponent implements OnInit {
     if (modal) modal.style.display = 'block';
   }
 
-  // 🔹 Modal bezárása
   closeDeleteModal(): void {
     this.categoryToDelete = null;
     const modal = document.getElementById('deleteModal');
     if (modal) modal.style.display = 'none';
   }
 
-  // 🔹 Kategória törlésének megerősítése
   confirmDelete(): void {
     if (!this.categoryToDelete) return;
 

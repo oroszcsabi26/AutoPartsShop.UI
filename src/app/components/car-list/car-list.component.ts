@@ -34,13 +34,12 @@ export class CarListComponent {
 
   toggleModels(brandId: number): void {
     if (this.expandedBrands.has(brandId)) {
-      this.expandedBrands.delete(brandId); // Ha már nyitva van, zárjuk be
+      this.expandedBrands.delete(brandId);
     } else {
-      this.expandedBrands.add(brandId); // Ha zárva van, nyissuk meg
+      this.expandedBrands.add(brandId); 
     }
   }
 
-  // Ellenőrizzük, hogy az adott autómárka nyitva van-e
   isExpanded(brandId: number): boolean {
     return this.expandedBrands.has(brandId);
   }

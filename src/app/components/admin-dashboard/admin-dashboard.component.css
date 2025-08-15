@@ -15,9 +15,9 @@ h1 {
 .admin-menu ul {
     list-style: none;
     padding: 0;
-    display: flex; /* ✅ Menüpontok egymás mellé helyezése */
-    flex-wrap: wrap; /* ✅ Ha nem fér ki, akkor új sorba törik */
-    justify-content: center; /* ✅ Középre igazítás */
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
 }
 
 .admin-menu li {
@@ -25,21 +25,21 @@ h1 {
 }
 
 .admin-menu a {
-    display: flex; /* Flex, hogy az ikon és szöveg egy sorban legyen */
+    display: flex; 
     align-items: center;
     justify-content: center;
 
-    width: 220px; /* elég széles minden szövegnek */
+    width: 220px; 
     padding: 12px;
     background-color: #007bff;
     color: white;
     text-decoration: none;
     border-radius: 5px;
     text-align: center;
-    font-size: 15px; /* kisebb, hogy egy sorba férjen */
-    white-space: nowrap; /* ❗ Ne törjön sort */
+    font-size: 15px; 
+    white-space: nowrap; 
     overflow: hidden;
-    text-overflow: ellipsis; /* hosszú szövegnél "..." */
+    text-overflow: ellipsis; 
 }
 
 .admin-menu a:hover {

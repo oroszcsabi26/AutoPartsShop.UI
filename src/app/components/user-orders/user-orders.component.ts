@@ -27,13 +27,12 @@ export class UserOrdersComponent implements OnInit {
     this.loadUserOrders();
   }
 
-  // Felhasználói rendelések lekérése
   loadUserOrders(): void {
     this.userService.getUserOrders().subscribe({
       next: (data) => {
         this.orders = data.map(order => ({
           ...order,
-          totalPrice: order.orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0) // Végösszeg számítása
+          totalPrice: order.orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0) 
         }));
 
       this.orders.forEach(order => {

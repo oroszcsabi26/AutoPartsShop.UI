@@ -2,17 +2,16 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService, RegisterRequest } from '../../services/auth.service'; // ✅ AuthService és interfész importálása
+import { AuthService, RegisterRequest } from '../../services/auth.service'; 
 
 @Component({
   selector: 'app-register',
   standalone: true,
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
-  imports: [CommonModule, FormsModule] // ✅ FormsModule az `ngModel` használatához
+  imports: [CommonModule, FormsModule] 
 })
 export class RegisterComponent {
-  // 🔹 Regisztrációs adatok tárolása egy objektumban
   user: RegisterRequest = {
     firstName: '',
     lastName: '',
@@ -23,12 +22,11 @@ export class RegisterComponent {
     phoneNumber: ''
   };
 
-  errorMessage: string = ''; // 🔹 Hibaüzenet megjelenítéséhez
-  successMessage: string = ''; // 🔹 Sikeres regisztráció üzenet
+  errorMessage: string = ''; 
+  successMessage: string = ''; 
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  // 🔹 Ellenőrizzük, hogy minden mező ki van-e töltve és megfelelő-e az adatformátum
   validateFields(): boolean {
     if (!this.user.firstName || !this.user.lastName || !this.user.email || !this.user.passwordHash || 
         !this.user.address || !this.user.shippingAddress || !this.user.phoneNumber) {
@@ -51,11 +49,10 @@ export class RegisterComponent {
       return false;
     }
 
-    this.errorMessage = ''; // ✅ Ha minden rendben van, töröljük a hibaüzenetet
+    this.errorMessage = ''; 
     return true;
   }
 
-  // 🔹 Regisztráció indítása
   register(): void {
     if (!this.validateFields()) return;
 
@@ -63,7 +60,7 @@ export class RegisterComponent {
       next: () => {
         this.successMessage = '✅ Sikeres regisztráció! Átirányítás...';
         setTimeout(() => {
-          this.router.navigate(['/bejelentkezes']); // ✅ Átirányítás bejelentkezési oldalra
+          this.router.navigate(['/bejelentkezes']); 
         }, 2000);
       },
       error: (err) => {

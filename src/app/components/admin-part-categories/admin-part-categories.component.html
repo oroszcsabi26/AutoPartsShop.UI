@@ -3,20 +3,17 @@
   
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
   
-    <!-- 🔹 Új kategória hozzáadása -->
     <div class="add-category">
       <input type="text" [(ngModel)]="newCategoryName" placeholder="Új kategória neve">
       <button (click)="addCategory()">➕ Hozzáadás</button>
     </div>
   
-    <!-- 🔹 Kategóriák listája -->
     <ul class="category-list">
       <li *ngFor="let category of categories">
         <div *ngIf="editCategoryId !== category.id">
           <strong>{{ category.name }}</strong>
         </div>
   
-        <!-- 🔹 Szerkesztő mező -->
         <div *ngIf="editCategoryId === category.id">
           <input type="text" [(ngModel)]="editCategoryName">
         </div>
@@ -27,7 +24,6 @@
       </li>
     </ul>
   
-    <!-- 🔹 Törlés megerősítő modal -->
     <div id="deleteModal" class="modal">
       <div class="modal-content">
         <p>Biztosan törölni szeretnéd ezt a kategóriát?</p>

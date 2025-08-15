@@ -1,4 +1,3 @@
-/* 🔹 Az oldal teljes magassága és elrendezése */
 html, body {
     height: 100%;
     margin: 0;
@@ -7,30 +6,26 @@ html, body {
     flex-direction: column;
 }
 
-/* 🔹 Az egész oldal szerkezete */
 .container {
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Legalább az ablak magassága */
+    min-height: 100vh; 
 }
 
-/* 🔹 A tartalom terület */
 .content {
-    flex: 1; /* A fő tartalom kitölti a rendelkezésre álló helyet */
-    padding-bottom: 20px; /* Kis távolság a lábléc felett */
+    flex: 1; 
+    padding-bottom: 20px; 
 }
 
-/* 🔹 Kosár oldal tartalmának igazítása */
 .cart-container {
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    min-height: 70vh; /* Minimum magasság, hogy ne legyen túl kicsi */
+    min-height: 70vh; 
 }
 
-/* 🔹 Felső sáv stílusa */
 .header {
     background-color: #003366;
     color: white;
@@ -42,7 +37,6 @@ html, body {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* 🔹 Az oldal teljes hátterének világoskék beállítása */
 body {
     background-color: #e3f2fd;
     font-family: 'Arial', sans-serif;
@@ -50,7 +44,6 @@ body {
     flex-direction: column;
 }
 
-/* 🔹 Kereső és eredmények konténer */
 .search-container {
     max-width: 800px;
     margin: 20px auto;
@@ -60,7 +53,6 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* 🔹 Űrlap elemei */
 .search-container select,
 .search-container input,
 .search-container button {
@@ -72,7 +64,6 @@ body {
     font-size: 16px;
 }
 
-/* 🔹 Keresés gomb */
 .search-container button {
     background-color: #007bff;
     color: white;
@@ -85,7 +76,6 @@ body {
     background-color: #0056b3;
 }
 
-/* 🔹 Találatok listája */
 .results-container {
     margin-top: 20px;
     padding: 15px;
@@ -94,13 +84,11 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* 🔹 Keresési találatok stílusa */
 .results-container h3 {
     color: #007bff;
     margin-bottom: 10px;
 }
 
-/* 🔹 Egy-egy találat megjelenése */
 .results-container ul {
     list-style: none;
     padding: 0;
@@ -114,19 +102,16 @@ body {
     border-bottom: 1px solid #ddd;
 }
 
-/* 🔹 Alkatrész neve és felszerelési cikk neve */
 .part-name {
     font-weight: bold;
     color: #007bff;
 }
 
-/* 🔹 Alkatrész ára és felszerelési cikk ára */
 .part-price {
     font-weight: bold;
     color: #28a745;
 }
 
-/* 🔹 Ha nincs találat, ez jelenik meg */
 .no-results {
     color: #dc3545;
     font-weight: bold;
@@ -134,7 +119,6 @@ body {
     margin-top: 10px;
 }
 
-/* 🔹 Footer mindig az oldal alján, de a tartalom alatt */
 .footer {
     background-color: #333;
     color: white;
@@ -142,10 +126,9 @@ body {
     text-align: center;
     font-size: 16px;
     width: 100%;
-    margin-top: auto; /* Footer mindig az alján marad */
+    margin-top: auto; 
 }
 
-/* 🔹 Footer belső elemek stílusa */
 .footer-container {
     max-width: 1200px;
     margin: 0 auto;

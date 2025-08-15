@@ -37,7 +37,6 @@ export class AdminOrdersComponent implements OnInit {
   this.loadOrders();
   }
 
-  // Összes rendelés lekérése
   loadOrders(): void {
     this.http.get<any[]>(`${environment.azureApiUrl}/api/orders/all`).subscribe({
       next: (data) => {
@@ -48,8 +47,6 @@ export class AdminOrdersComponent implements OnInit {
           return fullName.includes(query);
         });
 
-      //this.selectedStatusMap = {};
-        // minden rendeléshez beállítjuk a jelenlegi státuszt
       this.orders.forEach(order => {
       const statusString = this.statusNumberToLabelMap[order.status];
       this.selectedStatusMap[order.id] = statusString;
@@ -63,19 +60,16 @@ export class AdminOrdersComponent implements OnInit {
     });
   }
 
-  // Törlés megerősítő modal megnyitása
   openDeleteModal(order: any): void {
     this.orderToDelete = order;
     document.getElementById('deleteModal')!.style.display = 'block';
   }
 
-  // Modal bezárása
   closeDeleteModal(): void {
     this.orderToDelete = null;
     document.getElementById('deleteModal')!.style.display = 'none';
   }
 
-  // Rendelés törlése
   confirmDelete(): void {
     if (!this.orderToDelete) return;
 
@@ -96,14 +90,12 @@ export class AdminOrdersComponent implements OnInit {
       next: () => {
         this.statusUpdateMessageMap[orderId] = '✅ Sikeresen frissítve!';
 
-        // Vizuálisan frissíted a státuszt az orders tömbben
         const updatedOrder = this.orders.find(o => o.id === orderId);
         if (updatedOrder) {
           updatedOrder.status = Object.keys(this.statusNumberToLabelMap)
             .find(key => this.statusNumberToLabelMap[+key] === newStatus);
         }
 
-        // Üzenet eltűntetése 3 másodperc után
         setTimeout(() => {
           delete this.statusUpdateMessageMap[orderId];
         }, 3000);

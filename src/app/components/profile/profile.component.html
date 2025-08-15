@@ -2,7 +2,6 @@
   <h2>👤 Saját Profil</h2>
 
   <form (ngSubmit)="updateProfile()" class="profile-form">
-    <!-- 🔹 Név mezők egymás mellett -->
     <div class="profile-row">
       <div class="profile-field">
         <label for="firstName">Vezetéknév:</label>
@@ -14,26 +13,20 @@
       </div>
     </div>
 
-    <!-- 🔹 E-mail -->
     <label for="email">E-mail:</label>
     <input type="email" id="email" [(ngModel)]="userProfile.email" name="email" readonly>
 
-    <!-- 🔹 Telefonszám -->
     <label for="phoneNumber">Telefonszám:</label>
     <input type="text" id="phoneNumber" [(ngModel)]="userProfile.phoneNumber" name="phoneNumber" required>
 
-    <!-- 🔹 Lakcím -->
     <label for="address">Lakcím:</label>
     <input type="text" id="address" [(ngModel)]="userProfile.address" name="address" required>
 
-    <!-- 🔹 Szállítási cím -->
     <label for="shippingAddress">Szállítási cím:</label>
     <input type="text" id="shippingAddress" [(ngModel)]="userProfile.shippingAddress" name="shippingAddress" required>
 
-    <!-- 🔹 Adatok mentése gomb -->
     <button type="submit">💾 Mentés</button>
   </form>
 
-  <!-- 🔹 Sikerüzenet -->
   <p *ngIf="successMessage" class="success-message">{{ successMessage }}</p>
 </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { CarService, CarBrand, CarModel } from '../../services/car.service';
+import { CarService, CarBrand, CarModel, EngineVariant } from '../../services/car.service';
 import { PartService, PartsCategory } from '../../services/part.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -22,14 +22,15 @@ export class VehicleSelectionComponent implements OnInit {
 
   years: number[] = [];
   selectedYear: number | null = null;
-  engineVariants: { fuelType: string, engineSize: number }[] = [];
-  selectedEngineVariant: string | null = null; // pl. 'benzin/1389'
+  engineVariants: EngineVariant[] = [];
+  filteredEngineVariants: EngineVariant[] = [];
+  selectedEngineVariantId: number | null = null;
 
   @Output() selectedBrandChange = new EventEmitter<number | null>();
   @Output() selectedYearChange = new EventEmitter<number | null>();
-  @Output() selectedModelChange = new EventEmitter<number | null>(); // ✅ Engedélyezzük a null értéket
-  @Output() selectedCategoryChange = new EventEmitter<number | null>(); // ✅ Engedélyezzük a null értéket
-  @Output() selectedEngineVariantChange = new EventEmitter<string | null>();
+  @Output() selectedModelChange = new EventEmitter<number | null>(); 
+  @Output() selectedCategoryChange = new EventEmitter<number | null>(); 
+  @Output() selectedEngineVariantChange = new EventEmitter<number | null>();
 
   constructor(private carService: CarService, private partService: PartService) {}
 
@@ -37,7 +38,6 @@ export class VehicleSelectionComponent implements OnInit {
     this.loadCarBrands();
   }
 
-  // 🔹 Autómárkák lekérése az API-ból
   loadCarBrands(): void {
     this.carService.getCarBrands().subscribe({
       next: (data) => {
@@ -49,7 +49,6 @@ export class VehicleSelectionComponent implements OnInit {
     });
   }
 
-  // 🔹 Autómodellek lekérése a kiválasztott márkához
   loadCarModels(): void {
     if (this.selectedBrandId) {
       this.carService.getCarModels(this.selectedBrandId).subscribe({
@@ -65,7 +64,6 @@ export class VehicleSelectionComponent implements OnInit {
     }
   }
 
-  // 🔹 Alkatrészkategóriák lekérése
   loadPartCategories(): void {
     
           this.partService.getPartCategories().subscribe({
@@ -80,18 +78,18 @@ export class VehicleSelectionComponent implements OnInit {
   }
 
 onBrandSelected(): void {
-  // Alaphelyzetbe állítjuk a modelleket, évjáratokat, motortípusokat
   this.selectedModelId = null;
   this.carModels = [];
 
   this.selectedYear = null;
   this.years = [];
 
-  this.selectedEngineVariant = null;
+  this.selectedEngineVariantId = null;
   this.engineVariants = [];
+  this.filteredEngineVariants = [];
   this.selectedCategoryId = null;
 
-  this.selectedModelChange.emit(null); // szükséges ha külső komponens figyeli
+  this.selectedModelChange.emit(null); 
   this.selectedBrandChange.emit(this.selectedBrandId);
 
   if (this.selectedBrandId) {
@@ -123,20 +121,32 @@ onCategorySelected(event: Event): void {
   this.selectedModelChange.emit(this.selectedModelId);
   this.selectedYear = null;
   this.years = [];
-  this.selectedEngineVariant = null;
+  this.selectedEngineVariantId = null;
   this.engineVariants = [];
   this.selectedCategoryId = null;
+  this.filteredEngineVariants = [];
 
-  if (this.selectedModelId !== null) {
-  this.loadCompatibleYears(this.selectedModelId);
-  }
+  if (this.selectedModelId != null) {
+      this.loadCompatibleYears(this.selectedModelId);
+      this.carService.getEngineVariantsByCarModel(this.selectedModelId).subscribe({
+        next: (variants: EngineVariant[]) => {
+          this.engineVariants = variants;
+          this.applyYearFilter(); 
+        },
+        error: (err: unknown) => {
+          console.error('❌ Hiba a motorváltozatok lekérdezésekor:', err);
+          this.engineVariants = [];
+          this.filteredEngineVariants = []; 
+        }
+      });
+    }
 }
 
 onYearSelected(): void {
-  this.selectedEngineVariant = null;
-  this.engineVariants = [];
+  this.selectedEngineVariantId = null;
   this.selectedCategoryId = null;
   this.selectedYearChange.emit(this.selectedYear);
+  this.applyYearFilter();
   
   if (this.selectedModelId !== null && this.selectedYear !== null && this.selectedBrandId !== null) {
     const selectedModel = this.carModels.find(m => m.id === this.selectedModelId);
@@ -145,23 +155,28 @@ onYearSelected(): void {
       return;
     }
 
-    this.carService.getEngineVariants(this.selectedBrandId, selectedModel.name, this.selectedYear).subscribe({
-      next: (variants) => {
-        this.engineVariants = variants.map(v => {
-          const [fuelType, engineSizeStr] = v.split('/');
-          return {
-            fuelType: fuelType.trim(),
-            engineSize: parseInt(engineSizeStr)
-          };
-        });
+        this.carService.getEngineVariantsByCarModel(this.selectedModelId!).subscribe({
+      next: (variants: EngineVariant[]) => {
+        this.engineVariants = variants;
+        this.applyYearFilter(); 
       },
-      error: (err) => {
+      error: (err: unknown) => {
         console.error("❌ Hiba a motorváltozatok lekérdezésekor:", err);
         this.engineVariants = [];
+        this.filteredEngineVariants = [];
       }
     });
   }
 }
+
+  private applyYearFilter(): void {
+    if (this.selectedYear == null) {
+      this.filteredEngineVariants = this.engineVariants.slice();
+    } else {
+      this.filteredEngineVariants = this.engineVariants
+        .filter(ev => ev.yearFrom <= this.selectedYear! && this.selectedYear! <= ev.yearTo);
+    }
+  }
 
   loadCompatibleYears(modelId: number): void {
     this.selectedCategoryId = null;
@@ -176,25 +191,10 @@ onYearSelected(): void {
   });
   }
 
-  generateEngineVariantsForSelectedModel(): void {
-  this.engineVariants = []; // először ürítjük
-
-  const selectedModel = this.carModels?.find(model => model.id === this.selectedModelId);
-
-  if (selectedModel && selectedModel.fuelType && selectedModel.engineSize) {
-    this.engineVariants.push({
-      fuelType: selectedModel.fuelType.toLowerCase(),
-      engineSize: selectedModel.engineSize
-    });
-  }
-}
-
 onEngineVariantSelected(event: Event): void {
-  this.loadPartCategories();
-  const target = event.target as HTMLSelectElement;
-  this.selectedEngineVariant = target.value || null;
-
-  console.log("📌 Kiválasztott motorváltozat:", this.selectedEngineVariant);
-  this.selectedEngineVariantChange.emit(this.selectedEngineVariant);
-}
+    const target = event.target as HTMLSelectElement;
+    this.selectedEngineVariantId = target.value ? Number(target.value) : null;
+    this.loadPartCategories();
+    this.selectedEngineVariantChange.emit(this.selectedEngineVariantId);
+  }
 }

@@ -1,4 +1,3 @@
-/* 🔹 Központozás és alapbeállítások */
 .admin-login-container {
     max-width: 400px;
     margin: 50px auto;
@@ -9,14 +8,12 @@
     text-align: center;
 }
 
-/* 🔹 Cím stílusa */
 .admin-login-container h2 {
     font-size: 22px;
     color: #333;
     margin-bottom: 15px;
 }
 
-/* 🔹 Input mezők */
 .admin-login-container input {
     width: 100%;
     padding: 10px;
@@ -26,7 +23,6 @@
     font-size: 16px;
 }
 
-/* 🔹 Bejelentkezés gomb */
 .admin-login-container button {
     width: 100%;
     padding: 10px;
@@ -43,7 +39,6 @@
     background-color: #0056b3;
 }
 
-/* 🔹 Hibaüzenet */
 .error-message {
     color: red;
     font-size: 14px;

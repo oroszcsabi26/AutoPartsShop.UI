@@ -1,4 +1,3 @@
-/* 🔹 Alap konténer stílus */
 .order-container {
   max-width: 600px;
   margin: 20px auto;
@@ -8,13 +7,11 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* 🔹 Címsor középre igazítva */
 h2 {
   text-align: center;
   color: #333;
 }
 
-/* 🔹 Kosár tartalom stílus */
 .order-container ul {
   list-style-type: none;
   padding: 0;
@@ -29,7 +26,6 @@ h2 {
   border-bottom: none;
 }
 
-/* 🔹 Űrlap konténer */
 .order-form {
   display: flex;
   flex-direction: column;
@@ -37,13 +33,11 @@ h2 {
   margin-top: 20px;
 }
 
-/* 🔹 Label-ek formázása */
 .order-form label {
   font-weight: bold;
   color: #333;
 }
 
-/* 🔹 Input mezők és textarea */
 .order-form input,
 .order-form textarea {
   width: 100%;
@@ -53,19 +47,16 @@ h2 {
   font-size: 16px;
 }
 
-/* 🔹 Readonly mezők halványabb színnel */
 .order-form input[readonly] {
   background-color: #e9ecef;
   color: #495057;
 }
 
-/* 🔹 Megjegyzés mező formázása */
 .order-form textarea {
   height: 80px;
   resize: none;
 }
 
-/* 🔹 Gomb stílus */
 .order-form button {
   background-color: #007bff;
   color: white;
@@ -81,7 +72,6 @@ h2 {
   background-color: #0056b3;
 }
 
-/* 🔹 Reszponzivitás */
 @media (max-width: 600px) {
   .order-container {
       width: 90%;

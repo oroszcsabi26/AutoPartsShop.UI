@@ -1,11 +1,8 @@
-<!-- Regisztrációs űrlapot tartalmazó konténer -->
 <div class="register-container">
     <h2>Regisztráció</h2>
 
-    <!-- Az űrlap deklarációja -->
     <form #registerForm="ngForm" (ngSubmit)="register()">
       
-      <!-- Vezetéknév beviteli mező -->
       <label for="lastName">Vezetéknév:</label>
       <input 
         type="text" 
@@ -15,7 +12,6 @@
         required 
       />
 
-      <!-- Keresztnév beviteli mező -->
       <label for="firstName">Keresztnév:</label>
       <input 
         type="text" 
@@ -25,7 +21,6 @@
         required 
       />
 
-      <!-- E-mail cím beviteli mező -->
       <label for="email">E-mail:</label>
       <input 
         type="email" 
@@ -36,7 +31,6 @@
       />
       <p *ngIf="errorMessage.includes('e-mail')" class="error">{{ errorMessage }}</p>
 
-      <!-- Jelszó beviteli mező -->
       <label for="password">Jelszó:</label>
       <input 
         type="password" 
@@ -48,7 +42,6 @@
       />
       <p *ngIf="errorMessage.includes('jelszó')" class="error">{{ errorMessage }}</p>
 
-      <!-- Lakcím beviteli mező -->
       <label for="address">Cím:</label>
       <input 
         type="text" 
@@ -58,7 +51,6 @@
         required 
       />
 
-      <!-- Szállítási cím beviteli mező -->
       <label for="shippingAddress">Szállítási cím:</label>
       <input 
         type="text" 
@@ -68,7 +60,6 @@
         required 
       />
 
-      <!-- Telefonszám beviteli mező -->
       <label for="phoneNumber">Telefonszám:</label>
       <input 
         type="text" 
@@ -79,7 +70,6 @@
       />
       <p *ngIf="errorMessage.includes('telefonszám')" class="error">{{ errorMessage }}</p>
 
-      <!-- Regisztrációs gomb -->
       <button 
         type="submit" 
         [disabled]="registerForm.invalid"
@@ -87,7 +77,6 @@
         Regisztráció
       </button>
 
-      <!-- Hibaüzenet -->
       <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
       <p *ngIf="successMessage" class="success">{{ successMessage }}</p>
     </form>

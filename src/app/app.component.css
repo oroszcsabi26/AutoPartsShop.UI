@@ -1,4 +1,3 @@
-/* Navigációs sáv beállítása */
 nav {
   display: flex;
   justify-content: space-between;
@@ -9,7 +8,6 @@ nav {
   position: relative;
 }
 
-/* Navigációs linkek stílusa */
 nav a {
   color: white;
   text-decoration: none;
@@ -23,7 +21,6 @@ nav a:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Kosár és Profil gombok elhelyezése */
 .nav-right {
   display: flex;
   align-items: center;
@@ -34,14 +31,12 @@ nav a:hover {
   transform: translateY(-50%);
 }
 
-/* Kosár gomb */
 .cart-link {
   font-weight: bold;
   display: flex;
   align-items: center;
 }
 
-/* Profil gomb */
 .profile-dropdown {
   position: relative;
   display: flex;
@@ -65,11 +60,10 @@ nav a:hover {
   background-color: #0056b3;
 }
 
-/* Lenyíló menü (A gomb ALATT jelenik meg) */
 .dropdown-menu {
   display: none;
   position: absolute;
-  top: 100%; /* ✅ A gomb ALATT nyílik le */
+  top: 100%; 
   left: 0;
   background-color: white;
   width: 200px;
@@ -94,7 +88,6 @@ nav a:hover {
   background-color: #f1f1f1;
 }
 
-/* Bejelentkezés, Regisztráció és Kijelentkezés gombok konténer */
 .nav-left {
   position: absolute;
   top: 50%;
@@ -104,7 +97,6 @@ nav a:hover {
   gap: 10px;
 }
 
-/* Bejelentkezés, Regisztráció és Kijelentkezés gombok */
 .auth-link {
   background-color: #007bff;
   color: white;
@@ -122,7 +114,6 @@ nav a:hover {
   background-color: #0056b3;
 }
 
-/* Kijelentkezés gomb */
 .logout-button {
   background-color: #dc3545 !important;
 }
@@ -131,7 +122,6 @@ nav a:hover {
   background-color: #a71d2a !important;
 }
 
-/* A fő tartalom megfelelő elhelyezése */
 .content {
   margin-top: 20px;
   display: flex;
@@ -140,7 +130,6 @@ nav a:hover {
   width: 100%;
 }
 
-/* Bejelentkezési és Regisztrációs oldal középre igazítása */
 .login-container,
 .register-container {
   display: flex;
@@ -151,7 +140,6 @@ nav a:hover {
   width: 100%;
 }
 
-/* Bejelentkezési és regisztrációs doboz */
 .login-box,
 .register-box {
   background-color: white;
@@ -162,7 +150,6 @@ nav a:hover {
   text-align: center;
 }
 
-/* Űrlapok stílusa */
 form {
   display: flex;
   flex-direction: column;
@@ -199,7 +186,6 @@ form button:hover {
   background-color: #218838;
 }
 
-/* Hibaüzenetek stílusa */
 .error {
   color: #dc3545;
   font-size: 14px;
@@ -207,7 +193,6 @@ form button:hover {
   margin-top: 5px;
 }
 
-/* Sikerüzenetek */
 .success {
   color: #28a745;
   font-size: 14px;
@@ -215,13 +200,12 @@ form button:hover {
   margin-top: 5px;
 }
 
-/* Footer stílusa */
 .footer {
-  background-color: #d2b48c; /* világosbarna */
+  background-color: #d2b48c; 
   color: black;
   text-align: center;
   padding: 20px 0;
-  width: 100vw; /* Teljes szélesség */
+  width: 100vw; 
   margin-top: auto;
 }
 
@@ -245,7 +229,6 @@ form button:hover {
   box-sizing: border-box;
 }
 
-/* Teljes szélességű fejléc, ha még külön is van */
 .header {
   width: 100vw;
   background-color: #003366;

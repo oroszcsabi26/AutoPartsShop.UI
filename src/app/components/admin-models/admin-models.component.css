@@ -58,21 +58,27 @@ h1 {
 .add-car button:hover {
     background-color: #218838;
 }
+
 .modal {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 20px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
-    text-align: center;
+  position: fixed;
+  inset: 0; 
+  display: none;               
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.45);
+  z-index: 1000;
+}
+
+.modal.show {          
+  display: flex;
 }
 
 .modal-content {
-    padding: 15px;
+  background: #fff;
+  width: min(520px, 92vw);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
 }
 
 .modal-buttons {
@@ -96,4 +102,46 @@ h1 {
     padding: 8px 12px;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.ev-panel {
+     margin-top: 10px; 
+     padding: 10px; 
+     background:#fff; 
+     border:1px solid #e5e7eb; 
+     border-radius:8px; 
+}
+
+.ev-form { 
+    margin-top: 12px; 
+    text-align: left; 
+}
+
+.ev-form-row { 
+    display: grid; 
+    grid-template-columns: repeat(4, minmax(140px, 1fr)); 
+    gap: 10px; 
+}
+
+.ev-form-row input { 
+    padding: 8px; 
+    border:1px solid #ccc; 
+    border-radius:6px; 
+}
+
+.ev-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid #eee;
+}
+.ev-item input {
+  padding: 6px;
+  margin-right: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.ev-item button {
+  margin-left: 6px;
 }

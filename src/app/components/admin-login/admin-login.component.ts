@@ -20,7 +20,7 @@ export class AdminLoginComponent {
   constructor(private http: HttpClient, private router: Router) {}
 
   login(): void {
-    this.errorMessage = ''; // Hibaüzenet törlése az új próbálkozás előtt
+    this.errorMessage = ''; 
 
     this.http.post<{ token: string, user: any }>(`${environment.azureApiUrl}/api/user/login`, {
       email: this.email,
@@ -30,7 +30,7 @@ export class AdminLoginComponent {
         if (response.user.isAdmin) {
           localStorage.setItem('authToken', response.token);
           localStorage.setItem('adminUser', JSON.stringify(response.user));
-          this.router.navigate(['/admin/dashboard']); // Sikeres belépés esetén átirányítás
+          this.router.navigate(['/admin/dashboard']); 
         } else {
           this.errorMessage = 'Nincs admin jogosultság!';
         }

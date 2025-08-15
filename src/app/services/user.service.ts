@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';  
 
-// 🔹 DTO a felhasználói adatokhoz
 export interface UserProfile {
   firstName: string;
   lastName: string;
@@ -13,40 +12,36 @@ export interface UserProfile {
   shippingAddress: string;
 }
 
-// 🔹 DTO a rendelési adatokhoz
 export interface UserOrder {
-  id: number;                // Rendelés azonosítója
-  orderDate: string;         // Rendelés leadásának dátuma
-  status: string;            // Rendelés állapota (pl.: "Feldolgozás alatt")
-  totalPrice: number;        // Rendelés végösszege
-  orderItems: OrderItem[];   // Rendelési tételek listája
+  id: number;               
+  orderDate: string;         
+  status: string;            
+  totalPrice: number;        
+  orderItems: OrderItem[];   
 }
 
 export interface OrderItem {
-  name: string;  // Termék neve
-  quantity: number;     // Megrendelt mennyiség
-  price: number;        // Egy darab ára
+  name: string;  
+  quantity: number;     
+  price: number;        
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = `${environment.azureApiUrl}/api/user`; // Backend API URL
+  private apiUrl = `${environment.azureApiUrl}/api/user`; 
 
-  constructor(private http: HttpClient) {} // 🔹 Itt injektáljuk a HttpClient-et!
+  constructor(private http: HttpClient) {} 
 
-  // 🔹 Felhasználói adatok lekérése
   getUserProfile(): Observable<UserProfile> {
     return this.http.get<UserProfile>(`${this.apiUrl}/profile`);
   }
 
-  // 🔹 Felhasználói adatok frissítése
   updateUserProfile(userData: UserProfile): Observable<any> {
     return this.http.put(`${this.apiUrl}/update-profile`, userData);
   }
 
-  // 🔹 🔥 ÚJ: Felhasználói rendeléseinek lekérése
   getUserOrders(): Observable<UserOrder[]> {
     return this.http.get<UserOrder[]>(`${this.apiUrl}/my-orders`);
   }

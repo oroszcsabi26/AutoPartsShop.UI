@@ -1,7 +1,6 @@
 <div class="login-container">
   <h2>Bejelentkezés</h2>
   <form (ngSubmit)="login()" #loginForm="ngForm">
-      <!-- E-mail mező -->
       <label for="email">E-mail:</label>
       <input 
           type="email" 
@@ -11,7 +10,6 @@
           required 
       />
 
-      <!-- Jelszó mező -->
       <label for="password">Jelszó:</label>
       <input 
           type="password" 
@@ -21,10 +19,8 @@
           required 
       />
 
-      <!-- Bejelentkezés gomb -->
       <button type="submit" [disabled]="!loginForm.valid">Bejelentkezés</button>
 
-      <!-- Hibaüzenet -->
       <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
   </form>
 </div>

@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';  
 
-// Alkatrész típus, amelyet hozzáadásnál/módosításnál használunk
 export interface Part {
   id: number;
   name: string;
@@ -14,7 +13,6 @@ export interface Part {
   imageUrl?: string;
 }
 
-// Keresési eredményekhez bővített megjelenítés
 export interface PartDisplay {
   id: number;
   name: string;
@@ -36,76 +34,55 @@ export interface PartDisplay {
   imageUrl?: string;
 }
 
-// Alkatrész kategóriák
 export interface PartsCategory {
   id: number;
   name: string;
 }
 
-let fuelType: string | null = null;
-let engineSize: number | null = null;
-
 @Injectable({
   providedIn: 'root'
 })
 export class PartService {
-  private apiUrl = `${environment.azureApiUrl}/api/parts`;  // Backend API URL
+  private apiUrl = `${environment.azureApiUrl}/api/parts`;  
 
   constructor(private http: HttpClient) {}
 
-  // Összes alkatrész lekérése
   getParts(): Observable<Part[]> {
     return this.http.get<Part[]>(this.apiUrl);
   }
 
-  // Alkatrész lekérése ID alapján
   getPartById(id: number): Observable<Part> {
     return this.http.get<Part>(`${this.apiUrl}/${id}`);
   }
 
-  // Alkatrész hozzáadása
   addPart(part: Part): Observable<Part> {
     return this.http.post<Part>(this.apiUrl, part);
   }
 
-  // Alkatrész módosítása
   updatePart(id: number, part: Part): Observable<Part> {
     return this.http.put<Part>(`${this.apiUrl}/${id}`, part);
   }
 
-  // Alkatrész törlése
   deletePart(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  // Alkatrész kategóriák lekérése
   getPartCategories(): Observable<PartsCategory[]> {
     return this.http.get<PartsCategory[]>(`${this.apiUrl}/categories`);
   }
 
-  // Alkatrészek keresése név, autómodell és kategória alapján (bővített adattal tér vissza)
   searchParts(
   query: string,
   carModelId: number | null,
   partsCategoryId: number | null,
-  year: number | null,
-  engine: string | null
+  engineVariantId: number | null
 ): Observable<PartDisplay[]> {
-  let url = `${this.apiUrl}/search?name=${query}`;
-
-  if (carModelId !== null) url += `&carModelId=${carModelId}`;
-  if (partsCategoryId !== null) url += `&partsCategoryId=${partsCategoryId}`;
-  if (year !== null) url += `&year=${year}`;
-  if (engine) {
-  const parts = engine.split('/');
-  if (parts.length === 2) {
-    fuelType = parts[0];
-    engineSize = parseInt(parts[1], 10);
-    }
-  }
-  if (fuelType !== null) url += `&fuelType=${encodeURIComponent(fuelType)}`;
-  if (engineSize !== null) url += `&engineSize=${engineSize}`;
-
+  const params: string[] = [];
+  if (query?.trim()) params.push(`name=${encodeURIComponent(query)}`);
+  if (carModelId != null)      params.push(`carModelId=${carModelId}`);
+  if (partsCategoryId != null) params.push(`partsCategoryId=${partsCategoryId}`);
+  if (engineVariantId != null) params.push(`engineVariantId=${engineVariantId}`);
+  const url = `${this.apiUrl}/search${params.length ? '?' + params.join('&') : ''}`;
   return this.http.get<PartDisplay[]>(url);
 }
 }

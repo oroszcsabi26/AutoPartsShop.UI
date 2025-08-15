@@ -1,4 +1,3 @@
-/* 🔹 Regisztrációs űrlap központozása */
 .register-container {
     width: 600px;
     margin: 40px auto;
@@ -9,13 +8,11 @@
     text-align: center;
 }
 
-/* 🔹 Cím formázása */
 .register-container h2 {
     color: #003366;
     margin-bottom: 20px;
 }
 
-/* 🔹 Input mezők és címkék formázása */
 .register-container label {
     display: block;
     font-weight: bold;
@@ -32,14 +29,12 @@
     font-size: 16px;
 }
 
-/* 🔹 Input mező fókusz effekt */
 .register-container input:focus {
     border-color: #0056b3;
     outline: none;
     box-shadow: 0 0 5px rgba(0, 86, 179, 0.5);
 }
 
-/* 🔹 Regisztrációs gomb formázása */
 .register-container button {
     width: 100%;
     background-color: #007bff;
@@ -62,14 +57,12 @@
     background-color: #0056b3;
 }
 
-/* 🔹 Hibaüzenetek */
 .error {
     color: #dc3545;
     font-weight: bold;
     margin-top: 10px;
 }
 
-/* 🔹 Sikeres üzenet */
 .success {
     color: #28a745;
     font-weight: bold;

@@ -5,10 +5,9 @@ import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';  
 
-// 🔹 Kosár elem interfész
 export interface CartItem {
   id?: number;
-  itemType: string; // "Part" vagy "Equipment"
+  itemType: string; 
   quantity: number;
   name: string;
   price: number;
@@ -26,12 +25,10 @@ export class CartService {
 
   constructor() {}
 
-  // 🔹 Ellenőrzi, hogy a felhasználó be van-e jelentkezve
   private isAuthenticated(): boolean {
-    return !!localStorage.getItem('authToken'); // ✅ Ha van token, be van jelentkezve
+    return !!localStorage.getItem('authToken'); 
   }
 
-  // 🔹 Kosár lekérése (ha nem létezik, nem dob hibát)
   getCart(): Observable<CartItem[] | null> {
     return this.http.get<CartItem[]>(`${this.apiUrl}/my-cart`).pipe(
       catchError(error => {
@@ -46,12 +43,11 @@ export class CartService {
     );
   }
 
-  // 🔹 Termék hozzáadása a kosárhoz (ha nincs bejelentkezve, átirányítás a login oldalra!)
   addToCart(item: CartItem): Observable<void> {
     if (!this.isAuthenticated()) {
       console.warn("⚠️ Nincs bejelentkezve, átirányítás a bejelentkezésre...");
       this.router.navigate(['/bejelentkezes']);
-      return of(); // Hibát elkerülő üres Observable
+      return of(); 
     }
 
     return this.http.post<void>(`${this.apiUrl}/add`, {
@@ -62,7 +58,6 @@ export class CartService {
     });
   }
 
-  // 🔹 Kosárban lévő termék mennyiségének módosítása
   updateCartItem(cartItemId: number, newQuantity: number): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/update/${cartItemId}/${newQuantity}`, {}).pipe(
       catchError(error => {
@@ -72,7 +67,6 @@ export class CartService {
     );
   }
 
-  // 🔹 Termék eltávolítása a kosárból
   removeFromCart(cartItemId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/remove/${cartItemId}`).pipe(
       catchError(error => {
@@ -82,7 +76,6 @@ export class CartService {
     );
   }
 
-  // 🔹 Backend kosár törlése kijelentkezéskor
   clearCartOnLogout(): Observable<any> {
     return this.http.delete(`${this.apiUrl}/delete`).pipe(
       catchError(error => {
@@ -92,7 +85,6 @@ export class CartService {
     );
   }
 
-  // 🔹 Frontend kosár törlése
   clearLocalCart(): void {
     localStorage.removeItem('cart');
   }

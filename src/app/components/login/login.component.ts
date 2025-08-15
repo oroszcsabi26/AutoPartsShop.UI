@@ -23,7 +23,7 @@ export class LoginComponent {
 
     this.authService.login(credentials).subscribe({
       next: () => {
-        this.router.navigate(['/']); // Sikeres bejelentkezés után átirányítás a főoldalra
+        this.router.navigate(['/']); 
       },
       error: () => {
         this.errorMessage = 'Hibás e-mail vagy jelszó!';

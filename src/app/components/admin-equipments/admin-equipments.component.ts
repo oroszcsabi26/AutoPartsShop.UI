@@ -20,19 +20,17 @@ export class AdminEquipmentsComponent implements OnInit {
   editEquipment: any = {};
   errorMessage: string = '';
   equipmentToDelete: any = null;
-  selectedCategoryId: number | null = null; // Kiválasztott kategória ID
-  searchQuery: string = ''; // Keresési lekérdezés
+  selectedCategoryId: number | null = null; 
+  searchQuery: string = ''; 
   selectedImageFile: File | null = null;
   
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    //this.loadEquipments();
     this.loadCategories();
   }
 
   loadEquipments(): void {
-    // Ha nincs keresési kifejezés, ne jelenítsünk meg semmit
     if (!this.searchQuery.trim()) {
       this.equipments = [];
       return;
@@ -51,7 +49,6 @@ export class AdminEquipmentsComponent implements OnInit {
   }
    
 
-  // Kategóriák betöltése
   loadCategories(): void {
     this.http.get<any[]>(`${environment.azureApiUrl}/api/equipmentcategories`).subscribe({
       next: (data) => this.categories = data,
@@ -59,7 +56,6 @@ export class AdminEquipmentsComponent implements OnInit {
     });
   }
 
-  // Új felszerelés hozzáadása
   addEquipment(): void {
   const priceValue = parseFloat(this.newEquipment.price);
 
@@ -117,7 +113,6 @@ export class AdminEquipmentsComponent implements OnInit {
     this.editEquipment = { ...equipment };
   }
 
-  // Módosítás mentése
   saveEdit(): void {
     if (!this.editEquipment.name.trim() || !this.editEquipment.manufacturer.trim() || this.editEquipment.price <= 0 || !this.editEquipment.equipmentCategoryId) {
       return;
@@ -132,12 +127,12 @@ export class AdminEquipmentsComponent implements OnInit {
       error: () => this.errorMessage = 'Hiba történt a felszerelés módosításakor!'
     });
   } 
-  // Törlés megerősítő modal megnyitása
+
   openDeleteModal(equipment: any): void {
     this.equipmentToDelete = equipment;
     document.getElementById('deleteModal')!.style.display = 'block';
   }
-  // Modal bezárása
+
   closeDeleteModal(): void {
     this.equipmentToDelete = null;
     document.getElementById('deleteModal')!.style.display = 'none';

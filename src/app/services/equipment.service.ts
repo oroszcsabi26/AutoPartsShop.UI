@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';  
 
-// Equipment hozzáadásához/szerkesztéséhez használt interfész
 export interface Equipment {
   id: number;
   name: string;
@@ -18,7 +17,6 @@ export interface Equipment {
   description?: string;
 }
 
-// Bővített EquipmentDisplay csak megjelenítéshez
 export interface EquipmentDisplay {
   id: number;
   name: string;
@@ -43,17 +41,15 @@ export interface EquipmentCategory {
   providedIn: 'root'
 })
 export class EquipmentService {
-  private apiUrlGetEquipmentCategories = `${environment.azureApiUrl}/api/equipmentcategories`;  // API URL
-  private apiUrlGetEquipments = `${environment.azureApiUrl}/api/equipment/category`;  // API URL
+  private apiUrlGetEquipmentCategories = `${environment.azureApiUrl}/api/equipmentcategories`;  
+  private apiUrlGetEquipments = `${environment.azureApiUrl}/api/equipment/category`;  
 
   constructor(private http: HttpClient) {}
 
-  // 🔹 Egy adott kategóriához tartozó felszerelések lekérése
   getEquipmentsByCategory(categoryId: number): Observable<EquipmentDisplay[]> {
     return this.http.get<EquipmentDisplay[]>(`${this.apiUrlGetEquipments}/${categoryId}`);
   }
 
-  // 🔹 Equipment kategóriák lekérése
   getEquipmentCategories(): Observable<EquipmentCategory[]> {
     return this.http.get<EquipmentCategory[]>(this.apiUrlGetEquipmentCategories);
   }

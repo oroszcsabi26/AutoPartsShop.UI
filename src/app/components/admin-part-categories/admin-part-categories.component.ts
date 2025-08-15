@@ -17,7 +17,7 @@ export class AdminPartCategoriesComponent implements OnInit {
   editCategoryId: number | null = null;
   editCategoryName: string = '';
   errorMessage: string = '';
-  categoryToDelete: any = null; // A törlendő kategória adatai
+  categoryToDelete: any = null; 
 
   constructor(private http: HttpClient) {}
 
@@ -25,7 +25,6 @@ export class AdminPartCategoriesComponent implements OnInit {
     this.loadCategories();
   }
 
-  // 🔹 Kategóriák betöltése
   loadCategories(): void {
     this.http.get<any[]>(`${environment.azureApiUrl}/api/parts/categories`).subscribe({
       next: (data) => this.categories = data,
@@ -33,7 +32,6 @@ export class AdminPartCategoriesComponent implements OnInit {
     });
   }
 
-  // 🔹 Új kategória hozzáadása
   addCategory(): void {
     if (!this.newCategoryName.trim()) {
       this.errorMessage = 'A kategória neve nem lehet üres!';
@@ -42,20 +40,18 @@ export class AdminPartCategoriesComponent implements OnInit {
 
     this.http.post(`${environment.azureApiUrl}/api/parts/categories`, { name: this.newCategoryName }).subscribe({
       next: () => {
-        this.newCategoryName = ''; // Mező törlése
-        this.loadCategories(); // Kategóriák frissítése
+        this.newCategoryName = ''; 
+        this.loadCategories(); 
       },
       error: () => this.errorMessage = 'Hiba történt az új kategória hozzáadásakor!'
     });
   }
 
-  // 🔹 Szerkesztés indítása
   startEdit(category: any): void {
     this.editCategoryId = category.id;
     this.editCategoryName = category.name;
   }
 
-  // 🔹 Szerkesztés mentése
   saveEdit(): void {
     if (!this.editCategoryName.trim()) {
       this.errorMessage = 'A kategória neve nem lehet üres!';
@@ -66,7 +62,7 @@ export class AdminPartCategoriesComponent implements OnInit {
       next: () => {
         this.editCategoryId = null;
         this.editCategoryName = '';
-        this.loadCategories(); // Kategóriák frissítése
+        this.loadCategories(); 
       },
       error: () => this.errorMessage = 'Hiba történt a kategória módosításakor!'
     });
@@ -78,13 +74,11 @@ export class AdminPartCategoriesComponent implements OnInit {
     document.getElementById('deleteModal')!.style.display = 'block';
   }
 
-  // 🔹 Modal bezárása
   closeDeleteModal(): void {
     this.categoryToDelete = null;
     document.getElementById('deleteModal')!.style.display = 'none';
   }
 
-  // 🔹 Kategória törlése
   confirmDelete(): void {
     if (!this.categoryToDelete) return;
 

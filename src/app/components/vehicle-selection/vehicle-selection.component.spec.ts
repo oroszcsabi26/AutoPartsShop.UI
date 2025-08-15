@@ -9,7 +9,7 @@ describe('VehicleSelectionComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [VehicleSelectionComponent],
-      providers: [provideHttpClient()] // ✅ HttpClient hozzáadása a tesztkörnyezethez
+      providers: [provideHttpClient()] 
     })
     .compileComponents();
 

@@ -1,22 +1,18 @@
 <div class="orders-container">
     <h2>📦 Rendeléseim</h2>
 
-    <!-- 🔹 Betöltés jelzése -->
     <div *ngIf="isLoading" class="loading-message">
         🔄 Rendelések betöltése...
     </div>
 
-    <!-- 🔹 Hibaüzenet megjelenítése -->
     <div *ngIf="errorMessage" class="error-message">
         ❌ {{ errorMessage }}
     </div>
 
-    <!-- 🔹 Ha nincs rendelés -->
     <div *ngIf="!isLoading && orders.length === 0" class="no-orders">
         🚫 Még nem adtál le rendelést.
     </div>
 
-    <!-- 🔹 Rendelések listája -->
     <div *ngIf="!isLoading && orders.length > 0" class="orders-list">
         <div *ngFor="let order of orders" class="order-card">
             <h3>🛒 Rendelés azonosító: <span class="order-id">#{{ order.id }}</span></h3>
@@ -24,7 +20,6 @@
             <p><strong>📌 Státusz:</strong> {{ selectedStatusMap[order.id] }}</p>
             <p><strong>💰 Végösszeg:</strong> <span class="total-price">{{ order.totalPrice | currency:'HUF' }}</span></p>
 
-            <!-- 🔹 Rendelési tételek -->
             <div class="order-items">
                 <h4>📋 Rendelési tételek:</h4>
                 <table class="order-table">

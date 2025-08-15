@@ -20,6 +20,9 @@ export class AdminPartsComponent implements OnInit {
   selectedBrandId: number | null = null;
   selectedModelId: number | null = null;
   selectedCategoryId: number | null = null;
+  engineVariants: any[] = [];                 
+  selectedEngineVariantIds: number[] = [];    
+  editSelectedEngineVariantIds: number[] = []; 
 
   newPart = {
     name: '',
@@ -49,7 +52,6 @@ export class AdminPartsComponent implements OnInit {
     this.loadCategories();
   }
 
-  // Autómárkák betöltése
   loadCarBrands(): void {
     this.http.get<any[]>(`${environment.azureApiUrl}/api/cars`).subscribe({
       next: (data) => this.carBrands = data,
@@ -57,7 +59,6 @@ export class AdminPartsComponent implements OnInit {
     });
   }
 
-  // Modellek betöltése a kiválasztott márka alapján
   loadCarModels(): void {
     this.carModels = [];
     this.selectedModelId = null;
@@ -71,7 +72,6 @@ export class AdminPartsComponent implements OnInit {
     });
   }
 
-  // Alkatrész kategóriák betöltése
   loadCategories(): void {
     this.http.get<any[]>(`${environment.azureApiUrl}/api/parts/categories`).subscribe({
       next: (data) => this.categories = data,
@@ -79,30 +79,37 @@ export class AdminPartsComponent implements OnInit {
     });
   }
 
-  // Alkatrészek betöltése (csak ha minden szűrési feltétel megvan)
   loadParts(): void {
     this.parts = [];
-
     if (!this.selectedModelId || !this.selectedCategoryId) return;
 
-    this.http.get<any[]>(`${environment.azureApiUrl}/api/parts/search?carModelId=${this.selectedModelId}&partsCategoryId=${this.selectedCategoryId}`)
-      .subscribe({
-        next: (data) => this.parts = data,
-        error: () => this.errorMessage = 'Nem sikerült betölteni az alkatrészeket!'
-      });
+    let url = `${environment.azureApiUrl}/api/parts/search?carModelId=${this.selectedModelId}&partsCategoryId=${this.selectedCategoryId}`;
+
+    if (this.selectedEngineVariantIds && this.selectedEngineVariantIds.length === 1) {
+      url += `&engineVariantId=${this.selectedEngineVariantIds[0]}`;
+    }
+
+    this.http.get<any[]>(url).subscribe({
+      next: (data) => this.parts = data,
+      error: () => this.errorMessage = 'Nem sikerült betölteni az alkatrészeket!'
+    });
   }
 
-  // Új alkatrész hozzáadása
   addPart(): void {
     if (!this.newPart.name.trim() || parseFloat(this.newPart.price as string) <= 0 || !this.selectedModelId || !this.selectedCategoryId || !this.newPart.manufacturer.trim()) {
       this.errorMessage = 'Minden mező kitöltése kötelező!';
       return;
     }
   
+    if (this.selectedEngineVariantIds.length === 0) {
+      this.errorMessage = 'Válassz legalább egy motorváltozatot!';
+      return;
+    }
+
     if (this.newPart.quantity === null || isNaN(Number(this.newPart.quantity))) {
       this.newPart.quantity = 1;
     }
-  
+
     this.newPart.carModelId = this.selectedModelId;
     this.newPart.partsCategoryId = this.selectedCategoryId;
     this.newPart.price = parseFloat(this.newPart.price as string);
@@ -110,20 +117,23 @@ export class AdminPartsComponent implements OnInit {
   
     const formData = new FormData();
   
-    // Adatok hozzáadása a formData-hoz
     for (const key in this.newPart) {
       const value = (this.newPart as any)[key];
       if (value !== null && value !== undefined) {
         formData.append(key, value.toString());
       }
     }
-  
-    // Kép csatolása, ha van
+
     if (this.selectedImageFile) {
       formData.append('imageFile', this.selectedImageFile);
     }
-  
-    // Küldés backendre
+    
+    if (this.selectedEngineVariantIds?.length) {
+      [...new Set(this.selectedEngineVariantIds)].forEach(id => {
+      formData.append('engineVariantIds', id.toString());
+    });
+}
+
     this.http.post(`${environment.azureApiUrl}/api/parts`, formData).subscribe({
       next: () => {
         this.newPart = {
@@ -147,13 +157,37 @@ export class AdminPartsComponent implements OnInit {
     });
   }  
 
-  // Szerkesztés indítása
-  startEdit(part: any): void {
-    this.editPartId = part.id;
-    this.editPart = { ...part };
-  }
+startEdit(part: any): void {
+  this.editPartId = part.id;
+  this.editPart = { ...part };
 
-  // Módosítás mentése
+  // EV ID-k alaphelyzetben
+  this.editSelectedEngineVariantIds = [];
+
+  this.selectedModelId = part.carModelId;
+  this.http.get<any[]>(`${environment.azureApiUrl}/api/enginevariants/carModel/${this.selectedModelId}`)
+    .subscribe({
+      next: (evList) => {
+        this.engineVariants = evList;
+
+        this.http.get<any>(`${environment.azureApiUrl}/api/parts/${part.id}`).subscribe({
+          next: (data) => {
+            const partEvIds: number[] = Array.isArray(data.engineVariantIds) ? (data.engineVariantIds as number[]) : [];
+              this.editSelectedEngineVariantIds = partEvIds.filter((id: number) =>
+              this.engineVariants.some((ev: any) => ev.id === id)
+            );
+          },
+          error: () => {
+            this.errorMessage = 'Nem sikerült lekérni a motorváltozatokat az alkatrészhez.';
+          }
+        });
+      },
+      error: () => {
+        this.errorMessage = 'Nem sikerült betölteni a motorváltozatokat a modellhez.';
+      }
+    });
+}
+
   saveEdit(): void {
     if (!this.editPart.name.trim() || this.editPart.price <= 0) {
       return;
@@ -168,7 +202,6 @@ export class AdminPartsComponent implements OnInit {
   
     const formData = new FormData();
   
-    // Adatok hozzáadása
     for (const key in this.editPart) {
       const value = this.editPart[key];
       if (value !== null && value !== undefined) {
@@ -176,12 +209,16 @@ export class AdminPartsComponent implements OnInit {
       }
     }
   
-    // Ha új képet választottak
     if (this.editImageFile) {
       formData.append('imageFile', this.editImageFile);
     }
-  
-    // PUT kérés küldése
+
+    if (this.editSelectedEngineVariantIds?.length) {
+      [...new Set(this.editSelectedEngineVariantIds)].forEach(id => {
+        formData.append('engineVariantIds', id.toString());
+      });
+    }
+
     this.http.put(`${environment.azureApiUrl}/api/parts/${this.editPartId}`, formData).subscribe({
       next: () => {
         this.editPartId = null;
@@ -193,19 +230,16 @@ export class AdminPartsComponent implements OnInit {
     });
   }  
 
-  // Törlés megerősítő modal megnyitása
   openDeleteModal(part: any): void {
     this.partToDelete = part;
     document.getElementById('deleteModal')!.style.display = 'block';
   }
 
-  // Modal bezárása
   closeDeleteModal(): void {
     this.partToDelete = null;
     document.getElementById('deleteModal')!.style.display = 'none';
   }
 
-  // Alkatrész törlése
   confirmDelete(): void {
     if (!this.partToDelete) return;
 
@@ -231,4 +265,39 @@ export class AdminPartsComponent implements OnInit {
       this.editImageFile = input.files[0];
     }
   }
+
+  onModelChange(): void {
+  this.loadEngineVariants();
+  this.loadParts(); 
+}
+
+onEngineVariantChange(event: any, mode: 'add' | 'edit'): void {
+  const evId = +event.target.value;
+  const list = mode === 'add' ? this.selectedEngineVariantIds : this.editSelectedEngineVariantIds;
+
+  if (event.target.checked) {
+    if (!list.includes(evId)) list.push(evId);
+  } else {
+    const index = list.indexOf(evId);
+    if (index > -1) list.splice(index, 1);
+  }
+
+    if (mode === 'add') {
+    this.loadParts();
+  }
+}
+
+  loadEngineVariants(): void {
+  this.engineVariants = [];
+  this.selectedEngineVariantIds = [];
+  this.editSelectedEngineVariantIds = [];
+
+  if (!this.selectedModelId) return;
+
+  this.http.get<any[]>(`${environment.azureApiUrl}/api/enginevariants/carModel/${this.selectedModelId}`)
+    .subscribe({
+      next: (data) => this.engineVariants = data,
+      error: () => this.errorMessage = 'Nem sikerült betölteni a motorváltozatokat!'
+    });
+}
 }

@@ -11,7 +11,7 @@
         </select>
 
         <label>Válassz autómodellt:</label>
-        <select [(ngModel)]="selectedModelId">
+        <select [(ngModel)]="selectedModelId" (change)="onModelChange()">
           <option [value]="null">-- Válassz autómodellt --</option>
           <option *ngFor="let model of carModels" [value]="model.id">{{ model.name }}</option>
         </select>
@@ -32,16 +32,31 @@
         <input type="text" [(ngModel)]="newPart.size" placeholder="Méret">
         <input type="text" [(ngModel)]="newPart.type" placeholder="Kivitel">
         <input type="text" [(ngModel)]="newPart.material" placeholder="Anyag">
-        <input type="text" [(ngModel)]="newPart.description" placeholder="Leírás">
+        <textarea class="wide-2" [(ngModel)]="newPart.description" placeholder="Leírás"></textarea>
         <input type="text" [(ngModel)]="newPart.quantity" placeholder="Mennyiség" inputmode="numeric">
-        <input type="file" (change)="onFileSelected($event)" accept="image/*">
-        <button (click)="addPart()">➕ Hozzáadás</button>
+
+        <div *ngIf="engineVariants.length > 0" class="engine-variants wide-2">
+        <label>Motorváltozatok:</label>
+          <div *ngFor="let ev of engineVariants">
+            <input 
+              type="checkbox" 
+              [value]="ev.id" 
+              (change)="onEngineVariantChange($event, 'add')"
+              [checked]="selectedEngineVariantIds.includes(ev.id)"
+            >
+            {{ ev.fuelType }}/{{ ev.engineSize }} ({{ ev.yearFrom }} - {{ ev.yearTo }})
+          </div>
+        </div>
+
+        <div class="add-actions full">
+          <input type="file" (change)="onFileSelected($event)" accept="image/*">
+          <button (click)="addPart()">➕ Hozzáadás</button>
+        </div>
     </div>
 
     <ul class="part-list">
         <li *ngFor="let part of parts">
           
-          <!-- Ha éppen szerkesztés alatt van -->
           <div *ngIf="editPartId === part.id">
             <input type="text" [(ngModel)]="editPart.name" placeholder="Alkatrész neve">
             <input type="number" [(ngModel)]="editPart.price" placeholder="Ár">
@@ -51,18 +66,30 @@
             <input type="text" [(ngModel)]="editPart.size" placeholder="Méret">
             <input type="text" [(ngModel)]="editPart.type" placeholder="Kivitel">
             <input type="text" [(ngModel)]="editPart.material" placeholder="Anyag">
-            <input type="text" [(ngModel)]="editPart.description" placeholder="Leírás">
+            <textarea class="wide-2" [(ngModel)]="editPart.description" placeholder="Leírás"></textarea>
             <input type="number" [(ngModel)]="editPart.quantity" placeholder="Mennyiség">
+
+            <div *ngIf="selectedBrandId && selectedModelId && engineVariants.length > 0" class="engine-variants wide-2">
+              <label>Motorváltozatok:</label>
+              <div *ngFor="let ev of engineVariants">
+                <input 
+                  type="checkbox" 
+                  [value]="ev.id" 
+                  (change)="onEngineVariantChange($event, 'edit')"
+                  [checked]="editSelectedEngineVariantIds.includes(ev.id)"
+                >
+                {{ ev.fuelType }}/{{ ev.engineSize }} ({{ ev.yearFrom }} - {{ ev.yearTo }})
+              </div>
+            </div>
+
             <input type="file" (change)="onEditFileSelected($event)" accept="image/*">
-            
             <button class="save" (click)="saveEdit()">💾 Mentés</button>
             <button class="delete" (click)="editPartId = null">❌ Mégse</button>
           </div>
       
-          <!-- Ha NEM szerkesztés alatt van -->
           <div *ngIf="editPartId !== part.id">
             <strong>{{ part.name }}</strong> - {{ part.price }} Ft
-              <!-- 🔽 Kép megjelenítése, ha van -->
+
             <div *ngIf="part.imageUrl" class="part-image-container">
               <img [src]="part.imageUrl" alt="Alkatrész kép" class="part-image">
             </div>

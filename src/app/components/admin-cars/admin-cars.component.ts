@@ -12,11 +12,11 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./admin-cars.component.css']
 })
 export class AdminCarsComponent implements OnInit {
-  cars: any[] = []; // Autómárkák listája
-  newCarName: string = ''; // Új autómárka neve
+  cars: any[] = []; 
+  newCarName: string = ''; 
   editCarId: number | null = null;
   editCarName: string = '';
-  errorMessage: string = ''; // Hibaüzenetek tárolására
+  errorMessage: string = ''; 
 
   constructor(private http: HttpClient) {}
 

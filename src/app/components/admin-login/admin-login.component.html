@@ -2,19 +2,15 @@
     <h2>🔑 Admin bejelentkezés</h2>
 
     <form (submit)="login()">
-        <!-- E-mail mező -->
         <label for="email">📧 E-mail:</label>
         <input type="email" id="email" [(ngModel)]="email" name="email" required />
 
-        <!-- Jelszó mező -->
         <label for="password">🔒 Jelszó:</label>
         <input type="password" id="password" [(ngModel)]="password" name="password" required />
 
-        <!-- Bejelentkezés gomb -->
         <button type="submit">Bejelentkezés</button>
     </form>
 
-    <!-- Hibaüzenet megjelenítése -->
     <div *ngIf="errorMessage" class="error-message">
         ❌ {{ errorMessage }}
     </div>

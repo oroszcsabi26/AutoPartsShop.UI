@@ -3,37 +3,86 @@
   
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
   
-    <!-- 🔹 Autómárkák kiválasztása -->
     <select [(ngModel)]="selectedBrandId" (change)="loadModels()" class="dropdown">
       <option [value]="null">Válassz egy autómárkát</option>
       <option *ngFor="let brand of carBrands" [value]="brand.id">{{ brand.name }}</option>
     </select>
   
-    <!-- 🔹 Új autómodell hozzáadása -->
     <div class="add-car">
       <input type="text" [(ngModel)]="newModelName" placeholder="Új autómodell neve">
       <input type="number" [(ngModel)]="newModelYear" placeholder="Gyártási év">
       <button (click)="addModel()">➕ Hozzáadás</button>
     </div>
   
-    <!-- 🔹 Autómodellek listája -->
     <ul class="car-list">
       <li *ngFor="let model of carModels">
         <div>
           <strong>{{ model.name }}</strong> ({{ model.year }})
         </div>
-  
+
         <input *ngIf="editModelId === model.id" type="text" [(ngModel)]="editModelName">
         <input *ngIf="editModelId === model.id" type="number" [(ngModel)]="editModelYear">
         
         <button *ngIf="editModelId !== model.id" (click)="startEdit(model)">✏️ Szerkesztés</button>
         <button *ngIf="editModelId === model.id" (click)="saveEdit()">💾 Mentés</button>
         <button (click)="openDeleteModal(model)">🗑️ Törlés</button>
+
+        <button (click)="toggleEvPanel(model)">🧩 Motorváltozatok</button>
+
+        <div *ngIf="openedEvModelId === model.id" class="ev-panel">
+          <div *ngIf="evLoading">Betöltés…</div>
+          <div *ngIf="evError" class="error-message">{{ evError }}</div>
+
+        <div *ngIf="!evLoading && !evError">
+          <div *ngIf="engineVariants.length === 0">Nincs felvéve motorváltozat.</div>
+
+          <div class="ev-item" *ngFor="let ev of engineVariants">
+            <div *ngIf="editEvId === ev.id; else evView">
+              <input type="text" [(ngModel)]="editEvForm.fuelType" placeholder="Üzemanyag">
+              <input type="number" [(ngModel)]="editEvForm.engineSize" placeholder="Hengerűrtartalom (cc)">
+              <input type="number" [(ngModel)]="editEvForm.yearFrom" placeholder="Gyártás évétől">
+              <input type="number" [(ngModel)]="editEvForm.yearTo" placeholder="Gyártás évéig">
+              <button (click)="saveEvEdit(ev.id)">💾 Mentés</button>
+              <button (click)="cancelEvEdit()">Mégse</button>
+            </div>
+
+            <ng-template #evView>
+              <span>{{ ev.fuelType }} – {{ ev.engineSize }} cm³ ({{ ev.yearFrom }} - {{ ev.yearTo }})</span>
+              <button (click)="startEvEdit(ev)">✏️ Szerkesztés</button>
+              <button (click)="openEvDeleteModal(ev)">🗑️ Törlés</button>
+            </ng-template>
+          </div>
+        </div>
+
+          <div *ngIf="openedEvModelId === model.id && !evLoading" class="ev-form">
+            <h4>Új motorváltozat hozzáadása</h4>
+
+            <div class="ev-form-row">
+              <input type="text" [(ngModel)]="evForm.fuelType" placeholder="Üzemanyag (pl. Benzin, Dízel)">
+              <input type="number" [(ngModel)]="evForm.engineSize" placeholder="Hengerűrtartalom (cc)">
+              <input type="number" [(ngModel)]="evForm.yearFrom" placeholder="Gyártás évétől">
+              <input type="number" [(ngModel)]="evForm.yearTo" placeholder="Gyártás évéig">
+            </div>
+
+            <button (click)="addEngineVariant()">➕ Hozzáadás</button>
+            <div *ngIf="evFormError" class="error-message">{{ evFormError }}</div>
+          </div>
+        </div>
       </li>
     </ul>
-  </div>
   
-  <!-- 🔹 Törlés megerősítő modal -->
+  <div class="modal" *ngIf="isEvDeleteOpen" [class.show]="isEvDeleteOpen" (click)="closeEvDeleteModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <p>Biztosan törlöd ezt a motorváltozatot?</p>
+      <strong>{{ evToDelete?.label }}</strong>
+      <div class="modal-buttons">
+        <button class="cancel" (click)="closeEvDeleteModal()">Mégse</button>
+        <button class="confirm" (click)="confirmEvDelete()">Törlés</button>
+      </div>
+    </div>
+  </div>
+
+
   <div id="deleteModal" class="modal">
     <div class="modal-content">
       <p>Biztosan törölni szeretnéd?</p>

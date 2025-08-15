@@ -11,7 +11,7 @@ import { UserService, UserProfile } from '../../services/user.service';
   imports: [CommonModule, FormsModule]
 })
 export class ProfileComponent implements OnInit {
-  userProfile: UserProfile = { // ✅ Változó név javítva, interfész típust kapott!
+  userProfile: UserProfile = { 
     firstName: '',
     lastName: '',
     email: '',
@@ -28,22 +28,20 @@ export class ProfileComponent implements OnInit {
     this.loadUserData();
   }
 
-  // 🔹 Felhasználói adatok betöltése
   loadUserData(): void {
     this.userService.getUserProfile().subscribe({
       next: (data) => {
-        this.userProfile = data; // ✅ Helyes változó használat
+        this.userProfile = data; 
       },
       error: (err) => console.error('Hiba történt a felhasználói adatok lekérésekor:', err)
     });
   }
 
-  // 🔹 Felhasználói adatok frissítése
   updateProfile(): void {
     this.userService.updateUserProfile(this.userProfile).subscribe({
       next: () => {
         this.successMessage = '✅ A profil sikeresen frissítve!';
-        setTimeout(() => this.successMessage = '', 3000); // Üzenet eltüntetése 3 mp után
+        setTimeout(() => this.successMessage = '', 3000); 
       },
       error: (err) => console.error('Hiba történt a profil frissítésekor:', err)
     });

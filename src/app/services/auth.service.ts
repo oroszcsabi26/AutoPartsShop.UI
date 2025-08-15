@@ -40,13 +40,12 @@ export class AuthService {
 
   private authState = new BehaviorSubject<boolean>(false);
   private userSubject = new BehaviorSubject<LoginResponse['user'] | null>(null);
-  private cartService = inject(CartService); // 🔹 Így nincs ciklikus függőség
+  private cartService = inject(CartService); 
 
   constructor(private http: HttpClient) {
     this.loadUserFromStorage();
   }
 
-  // Betölti a felhasználói adatokat a localStorage-ból
   private loadUserFromStorage(): void {
     const storedUser = localStorage.getItem(this.userKey);
     const storedToken = localStorage.getItem(this.tokenKey);
@@ -56,7 +55,6 @@ export class AuthService {
     }
   }
 
-  // Bejelentkezés a backend API-n keresztül
   login(credentials: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials).pipe(
       tap((response) => {
@@ -68,27 +66,22 @@ export class AuthService {
     );
   }
 
-  // Regisztráció a backend API-n keresztül
   register(userData: RegisterRequest): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, userData);
   }
 
-  // Token visszaadása
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
 
-  // Figyeljük, hogy be van-e jelentkezve
   isAuthenticated(): Observable<boolean> {
     return this.authState.asObservable();
   }
 
-  // Lekéri a bejelentkezett felhasználó adatait
   getUser(): Observable<LoginResponse['user'] | null> {
     return this.userSubject.asObservable();
   }
 
-  // Kijelentkezés (backend + frontend kosár törlés)
   logout(): void {
     this.cartService.clearCartOnLogout().subscribe({
       next: () => console.log('✅ Kosár törölve a backendről kijelentkezéskor.'),
@@ -96,10 +89,10 @@ export class AuthService {
       complete: () => {
         localStorage.removeItem(this.tokenKey);
         localStorage.removeItem(this.userKey);
-        localStorage.removeItem('cartId'); // Kijelentkezéskor a cartId is törlődik!
+        localStorage.removeItem('cartId'); 
         this.authState.next(false);
         this.userSubject.next(null);
-        this.cartService.clearLocalCart(); // Frontend kosár törlése
+        this.cartService.clearLocalCart(); 
       }
     });
   }

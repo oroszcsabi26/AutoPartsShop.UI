@@ -1,12 +1,10 @@
 <div class="cart-container">
   <h2>🛒 Kosár</h2>
 
-  <!-- 🔹 Ha a kosár üres -->
   <div *ngIf="cartItems.length === 0" class="empty-cart">
     A kosár üres.
   </div>
 
-  <!-- 🔹 Kosár tartalmának megjelenítése -->
   <div *ngIf="cartItems.length > 0">
     <table class="cart-table">
       <thead>
@@ -37,12 +35,10 @@
       </tbody>
     </table>
 
-    <!-- 🔹 Kosár összértéke -->
     <div class="cart-total">
       <strong>Összesen: {{ totalPrice | currency:'HUF' }}</strong>
     </div>
 
-    <!-- 🔹 Rendelés leadása gomb -->
     <div class="order-btn-container">
       <button class="order-btn" (click)="goToOrderPage()">✅ Rendelés leadása</button>
     </div>

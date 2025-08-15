@@ -3,12 +3,12 @@ import { CanActivateFn, Router } from '@angular/router';
 
 export const adminGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
-  const adminUser = localStorage.getItem('adminUser'); // 🔹 Ellenőrizzük, van-e admin adat
+  const adminUser = localStorage.getItem('adminUser'); 
 
   if (adminUser) {
-    return true; // ✅ Admin belépve, mehet tovább
+    return true;
   } else {
-    router.navigate(['/admin/login']); // ❌ Nincs bejelentkezve → átirányítás
+    router.navigate(['/admin/login']); 
     return false;
   }
 };
