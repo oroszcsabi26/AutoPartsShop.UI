@@ -23,4 +23,18 @@
 
       <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
   </form>
+  <div style="text-align:center; margin-top:10px;">
+    <a href="" (click)="$event.preventDefault(); toggleReset()">Elfelejtett jelszó?</a>
+  </div>
+
+  <div *ngIf="showReset" style="margin-top:16px; border-top:1px solid #eee; padding-top:12px;">
+    <label for="resetEmail">E-mail cím</label>
+    <input id="resetEmail" type="email" [(ngModel)]="resetEmail" name="resetEmail" />
+
+    <button type="button" (click)="sendResetLink()" [disabled]="resetBusy" style="width: 60%;">
+      {{ resetBusy ? 'Küldés…' : 'Reset link küldése' }}
+    </button>
+
+    <p *ngIf="resetMsg" style="text-align:center; margin-top:8px;">{{ resetMsg }}</p>
+  </div>
 </div>

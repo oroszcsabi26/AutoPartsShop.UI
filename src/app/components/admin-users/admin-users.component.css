@@ -1,0 +1,76 @@
+.admin-users { 
+    max-width: 1100px; 
+    margin: 20px auto; 
+    padding: 16px; 
+}
+.filters { 
+    display: flex; 
+    gap: 8px; 
+    flex-wrap: wrap; 
+    margin-bottom: 12px; 
+}
+.filters input, .filters select { 
+    padding: 8px; 
+}
+.users-table { 
+    width: 100%; 
+    border-collapse: collapse; 
+}
+.users-table th, .users-table td { 
+    padding: 8px; 
+    border-bottom: 1px solid #eee; 
+    text-align: left; 
+}
+.error { 
+    color: #b3261e; 
+    margin: 8px 0; 
+}
+.empty { 
+    text-align: center; 
+    color: #666; 
+}
+
+.confirm-actions{
+  display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px;
+}
+
+.overlay{
+  position: fixed; inset: 0; background: rgba(0,0,0,.45);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2000;
+}
+
+.dialog{
+  background: #fff; padding: 16px 20px; border-radius: 10px;
+  min-width: 320px; max-width: 92vw;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+
+.modal-actions{ display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
+
+.details-modal{
+  background: #fff; padding: 16px 20px; border-radius: 12px;
+  min-width: 520px; max-width: 92vw; max-height: 90vh; overflow: auto;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+
+.details-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.details-header h3{ margin:0; }
+.details-grid{
+  display:grid; gap:8px; grid-template-columns: repeat(2, minmax(220px, 1fr));
+  margin-bottom: 12px;
+}
+
+.details-grid .grid-span-2{ grid-column: span 2; }
+.details-actions{ display:flex; justify-content:flex-end; margin: 8px 0 12px; }
+
+button.danger {
+  border: 1px solid #b3261e;
+  color: #b3261e;
+  background: #fff;
+}
+button.danger:disabled { opacity: .6; }
+
+.warning { color: #b3261e; margin: 8px 0; }
+
+

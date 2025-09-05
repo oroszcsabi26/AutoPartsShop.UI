@@ -1,0 +1,181 @@
+<div class="admin-users">
+  <h1>👥 Felhasználók</h1>
+
+  <!-- Szűrők -->
+  <div class="filters">
+    <input
+      type="text"
+      placeholder="Keresés névre vagy e-mailre…"
+      [(ngModel)]="search"
+      (keyup.enter)="load()"
+    />
+
+    <select [(ngModel)]="status" (change)="load()">
+      <option value="">Összes státusz</option>
+      <option value="active">Aktív</option>
+      <option value="locked">Zárolt</option>
+      <option value="deleted">Törölt</option>
+    </select>
+
+    <input type="date" [(ngModel)]="from" (change)="load()" />
+    <input type="date" [(ngModel)]="to" (change)="load()" />
+
+    <button (click)="load()" [disabled]="loading">🔎 Keresés</button>
+    <button (click)="clearFilters()" [disabled]="loading">♻️ Szűrők törlése</button>
+  </div>
+
+  <!-- Állapotjelzések -->
+  <div *ngIf="loading">Betöltés…</div>
+  <div *ngIf="errorMsg" class="error">{{ errorMsg }}</div>
+
+  <!-- Lista -->
+  <table *ngIf="!loading && !errorMsg" class="users-table">
+    <thead>
+      <tr>
+        <th>Név</th>
+        <th>E-mail</th>
+        <th>Státusz</th>
+        <th>Regisztráció</th>
+        <th>Utolsó belépés</th>
+        <th>Rendelések</th>
+        <th><!-- gombok helye később --></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let u of users">
+        <td>{{ u.fullName }}</td>
+        <td>{{ u.email }}</td>
+        <td>
+          <span *ngIf="u.deletedAt">🗑️ Törölt</span>
+          <span *ngIf="!u.deletedAt && u.isActive">✅ Aktív</span>
+          <span *ngIf="!u.deletedAt && !u.isActive">⛔ Zárolt</span>
+        </td>
+        <td>{{ u.createdAt | date:'yyyy.MM.dd HH:mm' }}</td>
+        <td>{{ u.lastLoginAt ? (u.lastLoginAt | date:'yyyy.MM.dd HH:mm') : '—' }}</td>
+        <td>{{ u.orderCount }}</td>
+        <td>
+          <button (click)="openDetails(u.id)" [disabled]="busy">ℹ️ Részletek</button>
+          <button *ngIf="!u.deletedAt" (click)="openToggleModal(u)" [disabled]="busy">
+            {{ u.isActive ? '🛑 Deaktiválás' : '✅ Aktiválás' }}
+          </button>
+          <button *ngIf="!u.deletedAt" (click)="sendResetForUser(u.email)" [disabled]="busy" title="Jelszó visszaállító link küldése e-mailben">
+            🔑 Reset link
+          </button>
+            <button *ngIf="!u.deletedAt" (click)="openDeleteModal(u)" [disabled]="busy" class="danger">🗑️ Törlés</button>
+          <span *ngIf="u.deletedAt" title="Törölt fiók – nem módosítható">—</span>
+        </td>
+      </tr>
+      <tr *ngIf="users.length === 0">
+        <td colspan="7" class="empty">Nincs találat.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="confirmModalOpen" class="overlay">
+  <div class="dialog">
+    <p>
+      Biztosan 
+      <strong *ngIf="confirmTarget?.action === 'deactivate'">DEAKTIVÁLOD</strong>
+      <strong *ngIf="confirmTarget?.action === 'activate'">AKTIVÁLOD</strong>
+      ezt a fiókot?
+    </p>
+    <p><em>{{ confirmTarget?.email }}</em></p>
+
+    <div class="confirm-actions">
+      <button (click)="closeModal()" [disabled]="busy">Mégse</button>
+      <button (click)="confirmToggle()" [disabled]="busy">
+        {{ confirmTarget?.action === 'deactivate' ? 'Deaktiválás' : 'Aktiválás' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Törlés megerősítő modal -->
+<div *ngIf="deleteModalOpen" class="overlay"> 
+  <div class="dialog">
+    <p>
+      Biztosan <strong>TÖRLÖD</strong> ezt a fiókot?
+    </p>
+    <p><em>{{ deleteTarget?.email }}</em></p>
+
+    <div class="modal-actions">
+      <button (click)="closeDeleteModal()" [disabled]="busy">Mégse</button>
+      <button (click)="confirmDelete()" [disabled]="busy" class="danger">
+        🗑️ Törlés megerősítése
+      </button>
+    </div>
+    <p class="warning">⚠️ A fiók törlésével a felhasználó kosara és rendelései is törlődnek.</p>
+  </div>
+</div>
+
+<!-- Részletek modal -->
+<div *ngIf="detailsOpen" class="overlay">
+  <div class="dialog">
+    <div class="details-header">
+      <h3>👤 Felhasználó részletei</h3>
+      <button (click)="closeDetails()">✖</button>
+    </div>
+
+    <div *ngIf="detailsLoading">Betöltés…</div>
+    <div *ngIf="detailsError" class="error">{{ detailsError }}</div>
+
+    <ng-container *ngIf="!detailsLoading && details">
+      <div class="details-grid">
+        <div><strong>Név:</strong> {{ details.fullName }}</div>
+        <div><strong>E-mail:</strong> {{ details.email }}</div>
+        <div>
+          <strong>Státusz:</strong>
+          <span *ngIf="details.deletedAt">🗑️ Törölt</span>
+          <span *ngIf="!details.deletedAt && details.isActive">✅ Aktív</span>
+          <span *ngIf="!details.deletedAt && !details.isActive">⛔ Zárolt</span>
+        </div>
+        <div><strong>Regisztráció:</strong> {{ details.createdAt | date:'yyyy.MM.dd HH:mm' }}</div>
+        <div><strong>Utolsó belépés:</strong> {{ details.lastLoginAt ? (details.lastLoginAt | date:'yyyy.MM.dd HH:mm') : '—' }}</div>
+        <div><strong>Rendelések száma:</strong> {{ details.orderCount }}</div>
+
+        <div><strong>Telefon:</strong> {{ details.phoneNumber || '—' }}</div>
+        <div class="grid-span-2"><strong>Számlázási cím:</strong> {{ details.address || '—' }}</div>
+        <div class="grid-span-2"><strong>Szállítási cím:</strong> {{ details.shippingAddress || '—' }}</div>
+      </div>
+
+      <div class="details-actions">
+        <button (click)="loadOrdersForDetails()" [disabled]="detailsLoading">
+          📦 Rendelések betöltése
+        </button>
+      </div>
+
+      <div *ngIf="details.orders?.length">
+        <h4>📦 Rendelések</h4>
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Dátum</th>
+              <th>Státusz</th>
+              <th>Tételek</th>
+              <th>Összesen</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let o of details.orders">
+              <td>{{ o.id }}</td>
+              <td>{{ o.orderDate | date:'yyyy.MM.dd HH:mm' }}</td>
+              <td>{{ o.status }}</td>
+              <td>{{ o.itemCount }}</td>
+              <td>{{ o.total | number:'1.0-0' }} Ft</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div *ngIf="details.orders === null">
+        <em>Rendelések még nincsenek betöltve.</em>
+      </div>
+      <div *ngIf="details.orders?.length === 0">
+        <em>Nincs rendelés.</em>
+      </div>
+    </ng-container>
+  </div>
+</div>
+

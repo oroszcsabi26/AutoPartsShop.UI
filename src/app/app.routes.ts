@@ -8,6 +8,7 @@ import { SuccessComponent } from './components/success/success.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { UserOrdersComponent } from './components/user-orders/user-orders.component';
 import { adminGuard } from './guards/admin.guard'; 
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { AdminCarsComponent } from './components/admin-cars/admin-cars.component';
@@ -18,6 +19,7 @@ import { AdminEquipmentsComponent } from './components/admin-equipments/admin-eq
 import { AdminEquipmentCategoriesComponent } from './components/admin-equipment-categories/admin-equipment-categories.component';
 import { AdminOrdersComponent } from './components/admin-orders/admin-orders.component';
 import { AdminLoginComponent } from './components/admin-login/admin-login.component';
+import { AdminUsersComponent } from './components/admin-users/admin-users.component';
 
 export const routes: Routes = [
     { path: 'alkatreszek', component: PartListComponent },
@@ -28,6 +30,7 @@ export const routes: Routes = [
     { path: 'success', component: SuccessComponent },
     { path: 'profil', component: ProfileComponent },
     { path: 'rendeleseim', component: UserOrdersComponent },
+    { path: 'reset-password', component: ResetPasswordComponent },
 
     { path: 'admin/login', component: AdminLoginComponent },
     { path: 'admin/dashboard', component: AdminDashboardComponent, canActivate: [adminGuard] },
@@ -38,4 +41,5 @@ export const routes: Routes = [
     { path: 'admin/equipments', component: AdminEquipmentsComponent },
     { path: 'admin/equipment-categories', component: AdminEquipmentCategoriesComponent },
     { path: 'admin/orders', component: AdminOrdersComponent },
+    { path: 'admin/users', component: AdminUsersComponent, canActivate: [adminGuard] },
 ];

@@ -35,6 +35,8 @@ export class AppComponent implements OnInit {
   isAdminPartsCategoriesPage: boolean = false;
   isAdminPartsPage: boolean = false;
   isAdminOrdersPage: boolean = false;
+  isAdminUsersPage: boolean = false;
+  isResetPasswordPage: boolean = false;
   userName: string | null = null;
 
   equipmentCategories: EquipmentCategory[] = [];
@@ -76,8 +78,9 @@ export class AppComponent implements OnInit {
         this.isAdminPartsCategoriesPage = this.router.url.includes('/admin/part-categories');
         this.isAdminPartsPage = this.router.url.includes('/admin/parts');
         this.isAdminOrdersPage = this.router.url.includes('/admin/orders');
-
-      this.isProfileMenuOpen = false;
+        this.isAdminUsersPage = this.router.url.includes('/admin/users');
+        this.isResetPasswordPage = this.router.url.includes('/reset-password');
+        this.isProfileMenuOpen = false;
       }
     });
 

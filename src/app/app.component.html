@@ -27,13 +27,13 @@
 <div class="container">
     <div class="content">
         <div *ngIf="isLoginPage || isRegisterPage || isOrderPage || isSuccessPage || isCartPage || isProfilePage || isAdminPage || isAdminDashboardPage || isAdminCarsPage
-            || IsAdminModelsPage || isAdminEquipmentCategoriesPage || isAdminEquipmentPage || isAdminPartsCategoriesPage || isAdminPartsPage || isAdminOrdersPage">
+            || IsAdminModelsPage || isAdminEquipmentCategoriesPage || isAdminEquipmentPage || isAdminPartsCategoriesPage || isAdminPartsPage || isAdminOrdersPage || isAdminUsersPage || isResetPasswordPage">
             <router-outlet></router-outlet>
         </div>
 
         <div *ngIf="!(isLoginPage || isRegisterPage || isOrderPage || isSuccessPage || isCartPage || isProfilePage || isAdminPage || isAdminDashboardPage || isAdminCarsPage
-            || IsAdminModelsPage || isAdminEquipmentCategoriesPage || isAdminEquipmentPage || isAdminPartsCategoriesPage || isAdminPartsPage || isAdminOrdersPage)">
-        
+            || IsAdminModelsPage || isAdminEquipmentCategoriesPage || isAdminEquipmentPage || isAdminPartsCategoriesPage || isAdminPartsPage || isAdminOrdersPage || isAdminUsersPage || isResetPasswordPage)">
+
             <div class="search-container">
                 <app-vehicle-selection
                     (selectedBrandChange)="onBrandChanged($event)"
@@ -50,10 +50,8 @@
                     [selectedEngineVariantId]="selectedEngineVariantId"
                     [selectedCategoryId]="selectedCategoryId"
                     [selectedEquipmentCategoryId]="selectedEquipmentCategoryId">
-
                 </app-part-list>
             </div>
-
             <router-outlet></router-outlet>
         </div>
     </div>

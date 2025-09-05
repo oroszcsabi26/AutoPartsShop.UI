@@ -1,3 +1,4 @@
+  <h2>Alkatrészek keresése</h2>
 <label for="carBrand">Autómárka:</label>
 <select id="carBrand" [(ngModel)]="selectedBrandId" (change)="onBrandSelected()">
   <option *ngFor="let brand of carBrands" [value]="brand.id">{{ brand.name }}</option>

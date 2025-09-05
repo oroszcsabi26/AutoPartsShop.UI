@@ -30,6 +30,12 @@ export interface RegisterRequest {
   phoneNumber: string;
 }
 
+export interface ResetPasswordConfirmDto {
+  email: string;
+  token: string;
+  newPassword: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -95,5 +101,17 @@ export class AuthService {
         this.cartService.clearLocalCart(); 
       }
     });
+  }
+
+    requestPasswordReset(email: string) {
+      const body = { email };
+      return this.http.post(`${this.apiUrl}/reset-request`, body);
+    }
+
+    confirmPasswordReset(dto: ResetPasswordConfirmDto) {
+      return this.http.post<{ message: string }>(
+      `${this.apiUrl}/reset-password`,
+      dto
+    );
   }
 }

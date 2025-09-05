@@ -71,18 +71,21 @@ export class PartService {
     return this.http.get<PartsCategory[]>(`${this.apiUrl}/categories`);
   }
 
-  searchParts(
-  query: string,
-  carModelId: number | null,
-  partsCategoryId: number | null,
-  engineVariantId: number | null
-): Observable<PartDisplay[]> {
-  const params: string[] = [];
-  if (query?.trim()) params.push(`name=${encodeURIComponent(query)}`);
-  if (carModelId != null)      params.push(`carModelId=${carModelId}`);
-  if (partsCategoryId != null) params.push(`partsCategoryId=${partsCategoryId}`);
-  if (engineVariantId != null) params.push(`engineVariantId=${engineVariantId}`);
-  const url = `${this.apiUrl}/search${params.length ? '?' + params.join('&') : ''}`;
-  return this.http.get<PartDisplay[]>(url);
-}
+  searchParts(query: string, carModelId: number | null, partsCategoryId: number | null, engineVariantId: number | null): 
+  Observable<PartDisplay[]> {
+    const params: string[] = [];
+    
+      if (query?.trim()) 
+        params.push(`name=${encodeURIComponent(query)}`);
+      if (carModelId != null)
+        params.push(`carModelId=${carModelId}`);
+      if (partsCategoryId != null) 
+        params.push(`partsCategoryId=${partsCategoryId}`);
+      if (engineVariantId != null) 
+        params.push(`engineVariantId=${engineVariantId}`);
+    
+      const url = `${this.apiUrl}/search${params.length ? '?' + params.join('&') : ''}`;
+    
+      return this.http.get<PartDisplay[]>(url);
+  }
 }
