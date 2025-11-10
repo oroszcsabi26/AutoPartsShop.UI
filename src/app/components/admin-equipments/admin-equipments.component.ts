@@ -16,8 +16,10 @@ export class AdminEquipmentsComponent implements OnInit {
   categories: any[] = [];
   newEquipment: { name: string; manufacturer: string; size: string; price: string; equipmentCategoryId: number | null; description: string; quantity: number | null; imageUrl: string; material: string; side: string } = 
   { name: '', manufacturer: '', size: '', price: '', equipmentCategoryId: null, description: '', quantity: null, imageUrl: '', material: '', side: '' };
-  editEquipmentId: number | null = null;
-  editEquipment: any = {};
+  editEquipment: { name: string; manufacturer: string; size: string; price: number; equipmentCategoryId: number | null; description: string; quantity: number | null; imageUrl: string; material: string; side: string;} 
+  | null = null;
+
+  editEquipmentId: number | null = null; 
   errorMessage: string = '';
   equipmentToDelete: any = null;
   selectedCategoryId: number | null = null; 
@@ -47,7 +49,6 @@ export class AdminEquipmentsComponent implements OnInit {
       error: () => this.errorMessage = 'Nem sikerült betölteni a felszereléseket!'
     });
   }
-   
 
   loadCategories(): void {
     this.http.get<any[]>(`${environment.azureApiUrl}/api/equipmentcategories`).subscribe({
@@ -82,7 +83,7 @@ export class AdminEquipmentsComponent implements OnInit {
   if (this.newEquipment.side) formData.append('Side', this.newEquipment.side);
 
   if (this.selectedImageFile) {
-    formData.append('ImageFile', this.selectedImageFile);
+    formData.append('p_imageFile', this.selectedImageFile);
   }
 
   this.http.post(`${environment.azureApiUrl}/api/equipment`, formData).subscribe({
@@ -106,27 +107,49 @@ export class AdminEquipmentsComponent implements OnInit {
   });
 }
 
-
-  // Szerkesztés indítása
   startEdit(equipment: any): void {
     this.editEquipmentId = equipment.id;
     this.editEquipment = { ...equipment };
   }
 
   saveEdit(): void {
-    if (!this.editEquipment.name.trim() || !this.editEquipment.manufacturer.trim() || this.editEquipment.price <= 0 || !this.editEquipment.equipmentCategoryId) {
-      return;
-    }
+  if (!this.editEquipment) {
+    this.errorMessage = 'Nincs kijelölt felszerelés szerkesztésre!';
+    return;
+  }
+  if (!this.editEquipment.name.trim() || !this.editEquipment.manufacturer.trim() || this.editEquipment.price <= 0 || !this.editEquipment.equipmentCategoryId) {
+    this.errorMessage = 'Kötelező mezők hiányoznak!';
+    return;
+  }
 
-    this.http.put(`${environment.azureApiUrl}/api/equipment/${this.editEquipmentId}`, this.editEquipment).subscribe({
-      next: () => {
-        this.editEquipmentId = null;
-        this.editEquipment = {};
-        this.loadEquipments();
-      },
-      error: () => this.errorMessage = 'Hiba történt a felszerelés módosításakor!'
-    });
-  } 
+  const formData = new FormData();
+  formData.append('Id', this.editEquipmentId!.toString());
+  formData.append('Name', this.editEquipment.name);
+  formData.append('Manufacturer', this.editEquipment.manufacturer);
+  formData.append('Price', this.editEquipment.price.toString());
+  formData.append('EquipmentCategoryId', this.editEquipment.equipmentCategoryId.toString());
+
+  if (this.editEquipment.size) formData.append('Size', this.editEquipment.size);
+  if (this.editEquipment.description) formData.append('Description', this.editEquipment.description);
+  if (this.editEquipment.quantity) formData.append('Quantity', this.editEquipment.quantity.toString());
+  if (this.editEquipment.material) formData.append('Material', this.editEquipment.material);
+  if (this.editEquipment.side) formData.append('Side', this.editEquipment.side);
+
+  // opcionális képfrissítés (ha a user újat választ)
+  if (this.selectedImageFile) {
+    formData.append('p_imageFile', this.selectedImageFile);
+  }
+
+  this.http.put(`${environment.azureApiUrl}/api/equipment/${this.editEquipmentId}`, formData).subscribe({
+    next: () => {
+      this.editEquipmentId = null;
+      this.editEquipment = null;
+      this.selectedImageFile = null;
+      this.loadEquipments();
+    },
+    error: () => this.errorMessage = 'Hiba történt a felszerelés módosításakor!'
+  });
+}
 
   openDeleteModal(equipment: any): void {
     this.equipmentToDelete = equipment;

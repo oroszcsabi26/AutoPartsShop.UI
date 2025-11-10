@@ -42,7 +42,7 @@
       </div>
 
       <!-- Szerkesztő mezők -->
-      <div *ngIf="editEquipmentId === equipment.id">
+      <div *ngIf="editEquipment && editEquipmentId === equipment.id">
         <input type="text" [(ngModel)]="editEquipment.name">
         <input type="text" [(ngModel)]="editEquipment.manufacturer">
         <input type="text" [(ngModel)]="editEquipment.size" placeholder="Méret (opcionális)">
