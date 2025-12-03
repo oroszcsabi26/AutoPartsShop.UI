@@ -24,7 +24,10 @@ export class AdminEquipmentsComponent implements OnInit {
   equipmentToDelete: any = null;
   selectedCategoryId: number | null = null; 
   searchQuery: string = ''; 
+  showRequiredWarn = false;
+  
   selectedImageFile: File | null = null;
+  selectedEditImageFile: File | null = null;   // EDIT form
   
   constructor(private http: HttpClient) {}
 
@@ -65,8 +68,10 @@ export class AdminEquipmentsComponent implements OnInit {
     !this.newEquipment.manufacturer.trim() ||
     isNaN(priceValue) || priceValue <= 0 ||
     !this.newEquipment.equipmentCategoryId
+  
   ) {
     this.errorMessage = 'Minden kötelező mezőt ki kell tölteni!';
+    this.showRequiredWarn = true;
     return;
   }
 
@@ -102,6 +107,7 @@ export class AdminEquipmentsComponent implements OnInit {
       };
       this.selectedImageFile = null;
       this.loadEquipments();
+      this.showRequiredWarn = false;
     },
     error: () => this.errorMessage = 'Hiba történt az új felszerelés hozzáadásakor!'
   });
@@ -129,11 +135,12 @@ export class AdminEquipmentsComponent implements OnInit {
   formData.append('Price', this.editEquipment.price.toString());
   formData.append('EquipmentCategoryId', this.editEquipment.equipmentCategoryId.toString());
 
-  if (this.editEquipment.size) formData.append('Size', this.editEquipment.size);
-  if (this.editEquipment.description) formData.append('Description', this.editEquipment.description);
-  if (this.editEquipment.quantity) formData.append('Quantity', this.editEquipment.quantity.toString());
-  if (this.editEquipment.material) formData.append('Material', this.editEquipment.material);
-  if (this.editEquipment.side) formData.append('Side', this.editEquipment.side);
+  formData.append('Size', this.editEquipment.size ?? '');
+  formData.append('Description', this.editEquipment.description ?? '');
+  formData.append('Material', this.editEquipment.material ?? '');
+  formData.append('Side', this.editEquipment.side ?? '');
+  formData.append('ImageUrl', this.editEquipment.imageUrl ?? '');
+  formData.append('Quantity', String(this.editEquipment.quantity ?? 1));
 
   // opcionális képfrissítés (ha a user újat választ)
   if (this.selectedImageFile) {
@@ -144,7 +151,9 @@ export class AdminEquipmentsComponent implements OnInit {
     next: () => {
       this.editEquipmentId = null;
       this.editEquipment = null;
-      this.selectedImageFile = null;
+      this.selectedEditImageFile = null;
+      this.errorMessage = '';
+      this.showRequiredWarn = false;
       this.loadEquipments();
     },
     error: () => this.errorMessage = 'Hiba történt a felszerelés módosításakor!'
@@ -179,4 +188,11 @@ export class AdminEquipmentsComponent implements OnInit {
       this.selectedImageFile = file;
     }
   }
+
+  onEditImageSelected(event: any): void {
+  const file = event.target.files[0];
+  if (file) {
+      this.selectedImageFile = file;
+    }
+}
 }

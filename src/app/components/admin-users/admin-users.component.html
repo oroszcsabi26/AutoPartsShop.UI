@@ -1,5 +1,6 @@
 <div class="admin-users">
   <h1>👥 Felhasználók</h1>
+  <div *ngIf="resetMessage" class="toast-success">{{ resetMessage }}</div>
 
   <!-- Szűrők -->
   <div class="filters">

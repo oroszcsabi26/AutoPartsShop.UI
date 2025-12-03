@@ -20,7 +20,7 @@ export class AdminUsersComponent implements OnInit {
   users: AdminUserListItemDto[] = [];
   loading = false;
   errorMsg = '';
-
+  resetMessage = '';
   confirmModalOpen = false;
   confirmTarget:{id: number; email: string; action: 'activate' | 'deactivate'} | null = null;
   busy = false;
@@ -177,13 +177,18 @@ closeDeleteModal(): void {
     this.adminUsers.requestPasswordReset(normalized).subscribe({
       next: () => {
         this.busy = false;
-        alert('Ha a cím létezik, elküldtük a jelszó-visszaállító linket.');
+        this.showResetMessage();
       },
       error: () => {
         this.busy = false;
         // privacy okból itt is ugyanazt az üzenetet adjuk
-        alert('Ha a cím létezik, elküldtük a jelszó-visszaállító linket.');
+        this.showResetMessage();
       }
     });
+  }
+
+  showResetMessage(): void {
+    this.resetMessage = 'Ha a cím létezik, elküldtük a jelszó-visszaállító linket.';
+    setTimeout(() => (this.resetMessage = ''), 4000);
   }
 }

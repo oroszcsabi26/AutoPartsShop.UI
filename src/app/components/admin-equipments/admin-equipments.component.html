@@ -10,7 +10,9 @@
       placeholder="🔍 Keresés név vagy gyártó alapján..." />
   </div>
 
-  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div *ngIf="showRequiredWarn" class="required-warn">
+    Minden kötelező mezőt ki kell tölteni!
+  </div>
 
   <!-- Új felszerelés hozzáadása -->
   <div class="add-equipment">
@@ -50,6 +52,7 @@
         <input type="text" [(ngModel)]="editEquipment.description" placeholder="Leírás (opcionális)">
         <input type="number" [(ngModel)]="editEquipment.quantity" placeholder="Mennyiség (opcionális)">
         <input type="text" [(ngModel)]="editEquipment.imageUrl" placeholder="Kép URL (opcionális)">
+        <input type="file" (change)="onEditImageSelected($event)" />
         <input type="text" [(ngModel)]="editEquipment.material" placeholder="Anyag (opcionális)">
         <input type="text" [(ngModel)]="editEquipment.side" placeholder="Oldal (opcionális)">
         <select [(ngModel)]="editEquipment.equipmentCategoryId">
